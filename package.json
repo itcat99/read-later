@@ -1,0 +1,38 @@
+{
+  "name": "read-later",
+  "version": "0.0.1",
+  "description": "a chrome extension .",
+  "main": "index.js",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "css-loader": "^0.28.9",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "node-sass": "^4.7.2",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.20.1",
+    "svg-url-loader": "^2.3.1",
+    "webpack": "^3.10.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itcat99/read-later.git"
+  },
+  "keywords": [
+    "chrome",
+    "extension",
+    "readlater"
+  ],
+  "author": "FreMaNgo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/itcat99/read-later/issues"
+  },
+  "homepage": "https://github.com/itcat99/read-later#readme"
+}
