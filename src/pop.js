@@ -8,14 +8,11 @@ window.onload = () => {
 
   // get postList
   chrome.storage.local.get(null, data => {
-    console.dir(data);
-
     if (!data.readLaterList) {
       return false;
     };
 
     postList = [].concat(data.readLaterList);
-    console.log('post list', data)
     if (!postList) {
       return false;
     };
@@ -31,24 +28,18 @@ window.onload = () => {
    * utils
    */
   function listener() {
-    // remove a post
+    // list click post
     $list.addEventListener('click', e => {
       const $target = e.target;
       const className = $target.getAttribute('class')
-      if (!className || className.indexOf('remove') < 0) {
+      if (!className) {
         return false;
       }
 
-      const $parent = $target.parentNode;
-      const index = $parent.dataset.index;
-
-      chrome.runtime.sendMessage({
-        type: 'remove',
-        data: index
-      }, () => {
-        console.log('remove one.')
-        $parent.remove()
-      });
+      // remove a post
+      if (className.indexOf('remove') > -1) {
+        remove($target);
+      }
     })
 
     // clear all post
@@ -65,19 +56,35 @@ window.onload = () => {
   /*
    * utils
    */
-  function addPost(details) {
-    const {url, index, info} = details;
-    // const info = await getTabInfo();
+  function remove($target) {
+    const $parent = $target.parentNode;
+    const index = $parent.dataset.index;
 
+    chrome.runtime.sendMessage({
+      type: 'remove',
+      data: index
+    }, () => {
+      $parent.remove()
+    });
+  }
+
+  function addPost(details) {
+    const {
+      url,
+      index,
+      info
+    } = details;
+
+    // build post item modules
     const $item = document.createElement('li');
     const $link = document.createElement('a');
     const $remove = document.createElement('span');
     const $num = document.createElement('span');
     const $icon = getIcon(info);
-    console.log('$icon => ', $icon)
+
+    // set modules attribute
     $link.setAttribute('href', url);
     $link.innerHTML = info.title;
-    // $remove.innerHTML = 'X';
     $num.innerHTML = `${index}.`;
 
     $item.setAttribute('data-index', index);
@@ -86,11 +93,13 @@ window.onload = () => {
     $remove.setAttribute('class', 'remove');
     $num.setAttribute('class', 'num');
 
+    // append modules to post item
     $item.appendChild($num);
     $item.appendChild($icon);
     $item.appendChild($link);
     $item.appendChild($remove);
 
+    // append post item to post list
     $list.appendChild($item);
   }
 
