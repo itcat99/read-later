@@ -3,6 +3,3 @@ node_modules/
 
 # mac os files
 .DS_Store
-
-# dist
-dist/

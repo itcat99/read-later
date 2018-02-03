@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+
+  "name": "read later",
+  "description": "This extension save pages when you want read later.",
+  "version": "0.0.1",
+
+  "browser_action": {
+    "default_icon": "./icons/icon.png",
+    "default_popup": "popup.html",
+    "default_title": "read later"
+  },
+  "background": {
+    "scripts": ["./assets/background.js"]
+  },
+  "permissions": [
+    "tabs",
+    "contextMenus",
+    "notifications",
+    "storage"
+  ]
+}

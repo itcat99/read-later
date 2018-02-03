@@ -90,6 +90,7 @@ window.onload = () => {
     $item.setAttribute('data-index', index);
     $item.setAttribute('class', 'item');
     $link.setAttribute('class', 'link');
+    $link.setAttribute('target', '_blank');
     $remove.setAttribute('class', 'remove');
     $num.setAttribute('class', 'num');
 
