@@ -741,8 +741,8 @@ var _asyncToGenerator2 = __webpack_require__(41);
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
 // add new read later
-var onclick = function () {
-  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(data) {
+var addNewPost = function () {
+  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
     var _this = this;
 
     var info;
@@ -758,7 +758,7 @@ var onclick = function () {
 
 
             postList.push({
-              url: data.pageUrl,
+              url: info.url,
               index: postList.length,
               info: info
             });
@@ -776,7 +776,7 @@ var onclick = function () {
     }, _callee, this);
   }));
 
-  return function onclick(_x) {
+  return function addNewPost() {
     return _ref.apply(this, arguments);
   };
 }();
@@ -809,9 +809,16 @@ chrome.runtime.onMessage.addListener(function (details) {
 
 // create a rightclick menu
 chrome.contextMenus.create({
-  title: 'read-later',
+  title: 'read later',
   contexts: ['page'],
-  onclick: onclick
+  onclick: addNewPost
+});
+
+// listener Command
+chrome.commands.onCommand.addListener(function (commands) {
+  if (commands === 'add-new-post') {
+    addNewPost();
+  }
 });
 
 /*
@@ -875,7 +882,7 @@ function clearStorage() {
     iconUrl: './icons/icon.png',
     type: 'basic',
     title: 'success!',
-    message: 'add a read load post.'
+    message: 'add a read later post.'
   });
 }
 

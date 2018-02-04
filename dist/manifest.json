@@ -18,5 +18,17 @@
     "contextMenus",
     "notifications",
     "storage"
-  ]
+  ],
+  "icons": {
+    "16": "./icons/icon_menu.png"
+  },
+  "commands": {
+    "add-new-post": {
+      "suggested_key": {
+        "default": "Ctrl+M",
+        "mac": "Command+M"
+      },
+      "description": "add a new read later post."
+    }
+  }
 }

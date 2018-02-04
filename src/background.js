@@ -22,9 +22,16 @@ chrome.runtime.onMessage.addListener(details => {
 
 // create a rightclick menu
 chrome.contextMenus.create({
-  title: 'read-later',
+  title: 'read later',
   contexts: ['page'],
-  onclick
+  onclick: addNewPost
+})
+
+// listener Command
+chrome.commands.onCommand.addListener(commands => {
+  if(commands === 'add-new-post'){
+    addNewPost();
+  }
 })
 
 
@@ -87,11 +94,11 @@ function clearStorage() {
 }
 
 // add new read later
-async function onclick(data) {
+async function addNewPost() {
   let info = await getTabInfo();
 
   postList.push({
-    url: data.pageUrl,
+    url: info.url,
     index: postList.length,
     info
   });
@@ -108,7 +115,7 @@ function showSuccess() {
     iconUrl: './icons/icon.png',
     type: 'basic',
     title: 'success!',
-    message: 'add a read load post.'
+    message: 'add a read later post.'
   })
 }
 

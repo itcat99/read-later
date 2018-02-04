@@ -1,4 +1,4 @@
-body{
+body {
   display: flex;
   flex-flow: column;
   min-height: 300px;
@@ -6,39 +6,51 @@ body{
   width: 320px;
 }
 
-header,main,footer{
+header,
+main,
+footer {
   padding: 0 10px;
 }
 
-header{
+header {
   height: 36px;
-
-  h1{
+  h1 {
     margin: 0;
-    font-size: 26px;
+    font-size: 20px;
   }
 }
 
-main{
+main {
+  display: flex;
+  flex-flow: column;
   flex-grow: 1;
   padding: 0;
   margin: 12px 0;
   overflow-y: auto;
   overflow-x: hidden;
+  &.is-empty {
+    .empty {
+      display: flex;
+    }
+    #list, #clear{
+      display: none;
+    }
+  }
 }
 
-footer{
+footer {
   height: 24px;
 }
 
-#list{
+#list {
   display: flex;
   padding: 0;
   list-style: none;
   flex-flow: column;
+  flex-grow: 1;
 }
 
-.item{
+.item {
   display: flex;
   height: 20px;
   align-items: center;
@@ -47,37 +59,86 @@ footer{
   opacity: 1;
   padding: 6px;
   transition: background 200ms;
-
-  img{
+  img {
     height: 100%;
     margin-right: 4px;
     width: 20px;
   }
-
-  &:hover{
+  &:hover {
     background: rgba(0, 0, 0, .1);
     transition: background 200ms;
   }
 }
 
-.num{
+.num {
   margin-right: 10px;
 }
 
-.link{
+.link {
   flex-grow: 1;
   margin-right: 4px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  &:focus {
+    outline: none;
+  }
 }
 
-.remove{
+.remove {
   min-width: 14px;
   height: 14px;
   background: url('./icons/close.svg');
   background-repeat: no-repeat;
   background-size: 100%;
-
   cursor: pointer;
+}
+
+.clear {
+  *:focus {
+    outline: none;
+  }
+}
+
+.empty {
+  display: none;
+  flex-flow: column;
+  align-items: center;
+}
+
+.hidden {
+  display: none;
+}
+
+.search {
+  position: relative;
+  width: 100%;
+  height: 30px;
+  box-sizing: border-box;
+  padding: 4px 6px;
+
+  >input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-bottom: 1px solid #9e9e9e;
+    padding: 4px 0;
+    &:focus {
+      outline: none;
+      border-bottom-color: lightblue;
+    }
+  }
+  .remove {
+    position: absolute;
+    opacity: 0;
+    top: 50%;
+    right: 6px;
+    transform: translateY(-50%);
+    transition: opacity 400ms;
+  }
+
+  &:hover .remove{
+    opacity: 1;
+    transition: opacity 400ms;
+  }
 }

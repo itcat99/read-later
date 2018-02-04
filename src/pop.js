@@ -1,32 +1,40 @@
 import './style.scss';
 
 window.onload = () => {
+  const $main = document.querySelector('main');
   const $list = document.getElementById('list');
   const $clear = document.getElementById('clear');
 
   let postList = [];
 
-  // get postList
-  chrome.storage.local.get(null, data => {
-    if (!data.readLaterList) {
-      return false;
-    };
-
-    postList = [].concat(data.readLaterList);
-    if (!postList) {
-      return false;
-    };
-
-    postList.forEach(post => {
-      addPost(post)
-    })
-  })
-
-  listener();
+  build();
 
   /*
-   * utils
+   * methods
    */
+  async function build() {
+    try {
+      postList = await getPostList();
+
+      if ($main.className.indexOf('is-empty') >= 0) {
+        $main.setAttribute('class', $main.className.replace('is-empty').trim());
+      }
+
+      buildList();
+      buildSearch();
+
+      listener();
+    } catch (error) {
+      const $empty = document.createElement('div');
+
+      $empty.setAttribute('class', 'empty');
+      $empty.innerHTML = `<p> Empty list.  </p> <p>you have 2 ways to add post. </p> <p>1. click context menu 'read later'. </p> <p>2. 'Ctrl + m' or 'command + m'. </p>`;
+
+      $main.appendChild($empty);
+      $main.setAttribute('class', 'is-empty');
+    }
+  }
+
   function listener() {
     // list click post
     $list.addEventListener('click', e => {
@@ -50,12 +58,84 @@ window.onload = () => {
         $list.innerHTML = '';
       })
     })
+
+    $main.querySelector('.search').addEventListener('input', e => {
+      clearTimeout(input);
+      const input = setTimeout(() => {
+        const $target = e.target;
+        const val = $target.value;
+
+        searching(val);
+      }, 100);
+    })
+
+    $main.querySelector('.search .remove').addEventListener('click', () => {
+      $main.querySelector('.search input').value = '';
+      searching('');
+    })
   }
 
 
   /*
    * utils
    */
+  function searching(val) {
+    for (let post of postList) {
+      const index = post.index;
+      const title = post.info.title.toLowerCase();
+      const $post = $list.querySelectorAll('.item')[index];
+      const className = $post.className;
+
+      if (title.indexOf(val.toLowerCase()) < 0) {
+        if (className.indexOf('hidden') >= 0) {
+          continue;
+        }
+
+        $post.setAttribute('class', `${className} hidden`)
+      } else {
+        $post.setAttribute('class', className.replace('hidden', '').trim());
+      }
+    }
+  }
+
+  function buildList() {
+    postList.forEach((post, index) => {
+      addPost(post)
+    })
+  }
+
+  function buildSearch() {
+    const $search = document.createElement('div');
+    const $input = document.createElement('input');
+    const $remove = document.createElement('span');
+
+    $input.setAttribute('type', 'input');
+    $input.setAttribute('placeholder', 'please search...');
+    $search.setAttribute('class', 'search');
+    $remove.setAttribute('class', 'remove');
+
+    $search.appendChild($input);
+    $search.appendChild($remove);
+    $main.querySelector('#list').before($search);
+  }
+
+  function getPostList() {
+    return new Promise((resolve, reject) => {
+      let list = [];
+
+      chrome.storage.local.get(null, data => {
+        if (!data.readLaterList) {
+          // return false;
+          reject();
+        };
+
+        list = [].concat(data.readLaterList);
+
+        resolve(list);
+      })
+    })
+  }
+
   function remove($target) {
     const $parent = $target.parentNode;
     const index = $parent.dataset.index;
