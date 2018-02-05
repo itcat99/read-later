@@ -25,8 +25,8 @@
   "commands": {
     "add-new-post": {
       "suggested_key": {
-        "default": "Ctrl+M",
-        "mac": "Command+M"
+        "default": "Ctrl+Shift+M",
+        "mac": "MacCtrl+Shift+M"
       },
       "description": "add a new read later post."
     }

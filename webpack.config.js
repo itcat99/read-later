@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
   entry: {
@@ -31,9 +32,14 @@ module.exports = {
       ],
       use: ExtractTextPlugin.extract({
         fallback: "style-loader",
-        use: ["css-loader", "sass-loader"]
+        use: [{
+          loader: "css-loader",
+          options: {
+            minimize: true
+          }
+        }, "sass-loader"]
       })
-    },{
+    }, {
       test: /\.svg/,
       loader: 'svg-url-loader'
     }]
@@ -47,6 +53,7 @@ module.exports = {
     //   name: 'commons',
     //   filename: 'commons.js'
     // }),
+    new UglifyJsPlugin(),
     new ExtractTextPlugin('style.css')
   ]
 };
