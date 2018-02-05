@@ -25,12 +25,6 @@ window.onload = () => {
 
       listener();
     } catch (error) {
-      const $empty = document.createElement('div');
-
-      $empty.setAttribute('class', 'empty');
-      $empty.innerHTML = `<p> Empty list.  </p> <p>you have 2 ways to add post. </p> <p>1. click context menu 'read later'. </p> <p>2. 'Ctrl + m' or 'command + m'. </p>`;
-
-      $main.appendChild($empty);
       $main.setAttribute('class', 'is-empty');
     }
   }
@@ -123,7 +117,7 @@ window.onload = () => {
     return new Promise((resolve, reject) => {
       let list = [];
 
-      chrome.storage.local.get(null, data => {
+      chrome.storage.sync.get(null, data => {
         if (!data.readLaterList) {
           // return false;
           reject();

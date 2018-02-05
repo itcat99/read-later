@@ -1,7 +1,7 @@
 let postList = [];
 
 // get post list in chrome storage
-chrome.storage.local.get(null, data => {
+chrome.storage.sync.get(null, data => {
   const list = data.readLaterList;
   if (Array.isArray(list) && list.length) {
     postList = list || [];
@@ -80,7 +80,7 @@ function clearPost() {
 }
 
 function updateStorage(list, callback) {
-  chrome.storage.local.set({
+  chrome.storage.sync.set({
     readLaterList: list
   }, () => {
     if (callback) {
@@ -90,7 +90,7 @@ function updateStorage(list, callback) {
 }
 
 function clearStorage() {
-  chrome.storage.local.remove('readLaterList');
+  chrome.storage.sync.remove('readLaterList');
 }
 
 // add new read later

@@ -47,12 +47,12 @@ module.exports = {
   resolve: {
     extensions: ['.json', '.js', '.scss']
   },
-  devtool: 'source-map',
+  // devtool: 'source-map',
   plugins: [
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: 'commons',
-    //   filename: 'commons.js'
-    // }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'commons',
+      filename: 'commons.js'
+    }),
     new UglifyJsPlugin(),
     new ExtractTextPlugin('style.css')
   ]
