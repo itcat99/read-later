@@ -1,6 +1,7 @@
 import './style.scss';
 
 window.onload = () => {
+  const $header = document.querySelector('header');
   const $main = document.querySelector('main');
   const $list = document.getElementById('list');
   const $clear = document.getElementById('clear');
@@ -20,7 +21,6 @@ window.onload = () => {
       }
 
       buildList();
-      buildSearch();
 
       listener();
     } catch (error) {
@@ -55,7 +55,7 @@ window.onload = () => {
 
     // setTimeout val
     let input = null;
-    $main.querySelector('.search').addEventListener('input', e => {
+    $header.querySelector('.search').addEventListener('input', e => {
       clearTimeout(input);
 
       input = setTimeout(() => {
@@ -66,8 +66,8 @@ window.onload = () => {
       }, 300);
     })
 
-    $main.querySelector('.search .remove').addEventListener('click', () => {
-      $main.querySelector('.search input').value = '';
+    $header.querySelector('.search .remove').addEventListener('click', () => {
+      $header.querySelector('.search input').value = '';
       searching('');
     })
   }
@@ -112,28 +112,12 @@ window.onload = () => {
     })
   }
 
-  function buildSearch() {
-    const $search = createEl('div', {
-      class: 'search'
-    })
-    const $input = createEl('input', {
-      type: 'input',
-      placeholder: 'please search...'
-    })
-    const $remove = createEl('span', {
-      class: 'remove'
-    })
-
-    append($search, [$input, $remove]);
-    $main.querySelector('#list').before($search);
-  }
-
   function getPostList() {
     return new Promise((resolve, reject) => {
       let list = [];
 
       chrome.storage.sync.get(null, data => {
-        if (!data.readLaterList) {
+        if (!data.readLaterList || !Array.isArray(data.readLaterList) || !data.readLaterList.length) {
           // return false;
           reject();
         };
@@ -186,7 +170,7 @@ window.onload = () => {
     $num.innerHTML = `${index}.`;
 
     // append modules to post item
-    append($item, [$num, $icon, $link, $remove]);
+    append($item, [$icon, $link, $remove]);
 
     // append post item to post list
     append($list, $item);

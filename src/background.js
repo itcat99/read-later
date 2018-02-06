@@ -40,7 +40,7 @@ chrome.commands.onCommand.addListener(commands => {
  */
 function update(type, data) {
   if (type === 'remove') {
-    removePost(data.index);
+    removePost(data);
   }
 
   if (type === 'clear') {
