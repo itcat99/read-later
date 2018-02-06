@@ -112,7 +112,7 @@ async function addNewPost() {
 // show success information
 function showSuccess() {
   chrome.notifications.create({
-    iconUrl: './icons/icon.png',
+    iconUrl: './icons/icon_128.png',
     type: 'basic',
     title: 'success!',
     message: 'add a read later post.'

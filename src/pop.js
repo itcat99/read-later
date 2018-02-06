@@ -15,9 +15,8 @@ window.onload = () => {
   async function build() {
     try {
       postList = await getPostList();
-
       if ($main.className.indexOf('is-empty') >= 0) {
-        $main.setAttribute('class', $main.className.replace('is-empty').trim());
+        removeClass($main, 'is-empty')
       }
 
       buildList();
@@ -25,7 +24,8 @@ window.onload = () => {
 
       listener();
     } catch (error) {
-      $main.setAttribute('class', 'is-empty');
+      // console.error('ERR => ', error)
+      addClass($main, 'is-empty')
     }
   }
 
@@ -53,14 +53,17 @@ window.onload = () => {
       })
     })
 
+    // setTimeout val
+    let input = null;
     $main.querySelector('.search').addEventListener('input', e => {
       clearTimeout(input);
-      const input = setTimeout(() => {
+
+      input = setTimeout(() => {
         const $target = e.target;
         const val = $target.value;
 
         searching(val);
-      }, 100);
+      }, 300);
     })
 
     $main.querySelector('.search .remove').addEventListener('click', () => {
@@ -71,13 +74,24 @@ window.onload = () => {
 
 
   /*
-   * utils
+   * methods
    */
   function searching(val) {
+    const $posts = $list.querySelectorAll('.item');
+    if (!$posts.length) {
+      return false;
+    }
+
+    if (!val) {
+      $posts.forEach($post => {
+        removeClass($post, 'hidden');
+      })
+    }
+
     for (let post of postList) {
       const index = post.index;
       const title = post.info.title.toLowerCase();
-      const $post = $list.querySelectorAll('.item')[index];
+      const $post = $posts[index];
       const className = $post.className;
 
       if (title.indexOf(val.toLowerCase()) < 0) {
@@ -85,9 +99,9 @@ window.onload = () => {
           continue;
         }
 
-        $post.setAttribute('class', `${className} hidden`)
+        addClass($post, 'hidden');
       } else {
-        $post.setAttribute('class', className.replace('hidden', '').trim());
+        removeClass($post, 'hidden');
       }
     }
   }
@@ -99,17 +113,18 @@ window.onload = () => {
   }
 
   function buildSearch() {
-    const $search = document.createElement('div');
-    const $input = document.createElement('input');
-    const $remove = document.createElement('span');
+    const $search = createEl('div', {
+      class: 'search'
+    })
+    const $input = createEl('input', {
+      type: 'input',
+      placeholder: 'please search...'
+    })
+    const $remove = createEl('span', {
+      class: 'remove'
+    })
 
-    $input.setAttribute('type', 'input');
-    $input.setAttribute('placeholder', 'please search...');
-    $search.setAttribute('class', 'search');
-    $remove.setAttribute('class', 'remove');
-
-    $search.appendChild($input);
-    $search.appendChild($remove);
+    append($search, [$input, $remove]);
     $main.querySelector('#list').before($search);
   }
 
@@ -149,33 +164,32 @@ window.onload = () => {
       info
     } = details;
 
-    // build post item modules
-    const $item = document.createElement('li');
-    const $link = document.createElement('a');
-    const $remove = document.createElement('span');
-    const $num = document.createElement('span');
+    const $item = createEl('li', {
+      'data-index': index,
+      'class': 'item'
+    })
+    const $link = createEl('a', {
+      'href': url,
+      'class': 'link',
+      'target': '_blank'
+    })
+    const $remove = createEl('span', {
+      'class': 'remove'
+    })
+    const $num = createEl('span', {
+      'class': 'num'
+    })
     const $icon = getIcon(info);
 
     // set modules attribute
-    $link.setAttribute('href', url);
     $link.innerHTML = info.title;
     $num.innerHTML = `${index}.`;
 
-    $item.setAttribute('data-index', index);
-    $item.setAttribute('class', 'item');
-    $link.setAttribute('class', 'link');
-    $link.setAttribute('target', '_blank');
-    $remove.setAttribute('class', 'remove');
-    $num.setAttribute('class', 'num');
-
     // append modules to post item
-    $item.appendChild($num);
-    $item.appendChild($icon);
-    $item.appendChild($link);
-    $item.appendChild($remove);
+    append($item, [$num, $icon, $link, $remove]);
 
     // append post item to post list
-    $list.appendChild($item);
+    append($list, $item);
   }
 
   // create && return $img element
@@ -183,7 +197,7 @@ window.onload = () => {
     const {
       favIconUrl
     } = info;
-    const $img = document.createElement('img');
+    const $img = createEl('img');
 
     if (favIconUrl && favIconUrl !== '') {
       $img.setAttribute('src', favIconUrl);
@@ -197,4 +211,44 @@ window.onload = () => {
     $img.setAttribute('src', `http://www.google.com/s2/favicons?domain=${url.replace(/^(https|http):\/\//, '')}`);
     return $img;
   }
+}
+
+/*
+ * utils
+ */
+function append(target, children) {
+  if (!Array.isArray(children)) {
+    target.appendChild(children)
+  } else {
+    children.forEach(child => {
+      target.appendChild(child);
+    })
+  }
+}
+
+function createEl(target, attrs) {
+  const $target = document.createElement(target);
+  if (attrs) {
+    for (let key of Object.keys(attrs)) {
+      $target.setAttribute(key, attrs[key]);
+    }
+  }
+
+  return $target;
+}
+
+function addClass(el, className) {
+  className = className.trim().split(' ');
+  let oldClassName = el.className.trim().split(' ');
+  const newClassName = [].concat(oldClassName, className);
+
+  el.setAttribute('class', newClassName.toString().replace(',', ' '));
+}
+
+function removeClass(el, className) {
+  className = className.trim().split(' ');
+
+  className.forEach(item => {
+    el.setAttribute('class', el.className.replace(item, '').trim());
+  })
 }
