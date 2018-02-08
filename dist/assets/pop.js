@@ -1,1 +1,390 @@
-webpackJsonp([0],{37:function(e,t,n){"use strict";var r=i(n(21)),a=i(n(22));function i(e){return e&&e.__esModule?e:{default:e}}function c(e,t){Array.isArray(t)?t.forEach(function(t){e.appendChild(t)}):e.appendChild(t)}function o(e,t){var n=document.createElement(e);if(t){var r=!0,a=!1,i=void 0;try{for(var c,o,u=Object.keys(t)[Symbol.iterator]();!(r=(c=u.next()).done);r=!0)o=c.value,n.setAttribute(o,t[o])}catch(e){a=!0,i=e}finally{try{!r&&u.return&&u.return()}finally{if(a)throw i}}}return n}function u(e,t){t=t.trim().split(" ");var n=e.className.trim().split(" "),r=[].concat(n,t);e.setAttribute("class",r.toString().replace(","," "))}function s(e,t){(t=t.trim().split(" ")).forEach(function(t){e.setAttribute("class",e.className.replace(t,"").trim())})}n(75),window.onload=function(){var e=function(){var e=(0,a.default)(r.default.mark(function e(){return r.default.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return e.prev=0,e.next=3,new Promise(function(e,t){var n=[];chrome.storage.sync.get(null,function(r){r.readLaterList&&Array.isArray(r.readLaterList)&&r.readLaterList.length||t(),n=[].concat(r.readLaterList),e(n)})});case 3:f=e.sent,0<=n.className.indexOf("is-empty")&&s(n,"is-empty"),f.forEach(function(e){!function(e){var t=e.url,n=e.index,r=e.info,a=o("li",{"data-index":n,class:"item"}),u=o("a",{href:t,class:"link",target:"_blank"}),s=o("span",{class:"remove"}),l=o("span",{class:"num"}),f=function(e){var t=e.favIconUrl,n=o("img");if(t&&""!==t)return n.setAttribute("src",t),n;var r=e.url;return n.setAttribute("src","http://www.google.com/s2/favicons?domain="+r.replace(/^(https|http):\/\//,"")),n}(r);u.innerHTML=r.title,l.innerHTML=n+".",c(a,[f,u,s]),c(i,a)}(e)}),d(),e.next=12;break;case 9:e.prev=9,e.t0=e.catch(0),u(n,"is-empty");case 12:case"end":return e.stop()}},e,this,[[0,9]])}));return function(){return e.apply(this,arguments)}}(),t=document.querySelector("header"),n=document.querySelector("main"),i=document.getElementById("list"),l=document.getElementById("clear"),f=[];function d(){i.addEventListener("click",function(e){var t=e.target,n=t.getAttribute("class");return!!n&&void(-1<n.indexOf("remove")&&function(e){var t=e.parentNode,n=t.dataset.index;chrome.runtime.sendMessage({type:"remove",data:n},function(){t.remove()})}(t))}),l.addEventListener("click",function(){chrome.runtime.sendMessage({type:"clear"},function(){i.innerHTML=""})});var e=null;t.querySelector(".search").addEventListener("input",function(t){clearTimeout(e),e=setTimeout(function(){m(t.target.value)},300)}),t.querySelector(".search .remove").addEventListener("click",function(){t.querySelector(".search input").value="",m("")})}function m(e){var t=i.querySelectorAll(".item");if(!t.length)return!1;e||t.forEach(function(e){s(e,"hidden")});var n=!0,r=!1,a=void 0;try{for(var c,o=f[Symbol.iterator]();!(n=(c=o.next()).done);n=!0){var l=c.value,d=l.index,m=l.info.title.toLowerCase(),v=t[d],p=v.className;if(0>m.indexOf(e.toLowerCase())){if(0<=p.indexOf("hidden"))continue;u(v,"hidden")}else s(v,"hidden")}}catch(e){r=!0,a=e}finally{try{!n&&o.return&&o.return()}finally{if(r)throw a}}}e()}},75:function(e,t){}},[37]);
+webpackJsonp([0],[
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(1);
+
+window.onload = function () {
+  var info = void 0;
+
+  var $header = document.querySelector('header');
+  var $main = document.querySelector('main');
+  var $listWrap = document.querySelector('#list');
+  var $list = $listWrap.querySelector('#list ul');
+  var $clear = document.getElementById('clear');
+  var $scroll = void 0,
+      $handlebar = void 0;
+
+  var postList = [];
+
+  /*
+   * initializtion
+   */
+
+  // ==== get post list data ==== //
+  chrome.runtime.sendMessage({
+    type: 'get_data'
+  }, function (data) {
+    console.log('popup get  data', data);
+  });
+
+  // ==== create post list item on HTML ==== //
+  chrome.runtime.onMessage.addListener(function (details) {
+    var type = details.type,
+        data = details.data;
+
+
+    if (type === 'return_data') {
+      updateList(data);
+    }
+  });
+
+  // ==== listenning Event ==== //
+  listener();
+
+  /*
+   * Core
+   */
+  function updateList(data) {
+    console.log(data);
+    if (!Object.keys(data).length) {
+      addClass($main, 'is-empty');
+      return;
+    }
+
+    chrome.bookmarks.getChildren(data.id, function (result) {
+      if (!result.length) {
+        addClass($main, 'is-empty');
+        return;
+      }
+
+      result.forEach(function (bk) {
+        addPost(bk);
+      });
+    });
+  }
+
+  function removePost($target) {
+    var $parent = $target.parentNode;
+    var id = $parent.dataset.id;
+
+    chrome.runtime.sendMessage({
+      type: 'remove',
+      data: id
+    }, function () {
+      $parent.remove();
+    });
+  }
+
+  function addPost(details) {
+    var url = details.url,
+        id = details.id,
+        title = details.title;
+
+
+    var $item = createEl('li', {
+      'data-id': id,
+      'class': 'item'
+    });
+    var $link = createEl('a', {
+      'href': url,
+      'class': 'link',
+      'target': '_blank'
+    });
+    var $remove = createEl('span', {
+      'class': 'remove'
+    });
+    // const $num = createEl('span', {
+    //   'class': 'num'
+    // })
+    // const $icon = getIcon(info);
+
+    // set modules attribute
+    $link.innerHTML = title;
+    // $num.innerHTML = `${index}.`;
+
+    // append modules to post item
+    // append($item, [$icon, $link, $remove]);
+    append($item, [$link, $remove]);
+
+    // append post item to post list
+    append($list, $item);
+
+    // show scroll
+    if (!$scroll) {
+      if ($list.clientHeight > $listWrap.clientHeight) {
+        showScroll();
+      } else {
+        removeScroll();
+      }
+    }
+
+    // push to postList
+    postList.push({
+      title: title,
+      id: id,
+      url: url,
+      el: $item
+    });
+  }
+
+  function listener() {
+    bindRemove();
+    bindClear();
+    bindSearch();
+  }
+
+  /*
+   * methods
+   */
+
+  // ==== bind event ==== //
+  function bindRemove() {
+    // list click post
+    $list.addEventListener('click', function (e) {
+      var $target = e.target;
+      var className = $target.getAttribute('class');
+      if (!className) {
+        return false;
+      }
+
+      // remove a post
+      if (className.indexOf('remove') > -1) {
+        removePost($target);
+      }
+    });
+  }
+
+  function bindClear() {
+    // clear all post
+    $clear.addEventListener('click', function () {
+      chrome.runtime.sendMessage({
+        type: 'clear'
+      }, function () {
+        $list.innerHTML = '';
+      });
+    });
+  }
+
+  function bindSearch() {
+    // setTimeout val
+    var input = null;
+    $header.querySelector('.search').addEventListener('input', function (e) {
+      clearTimeout(input);
+
+      input = setTimeout(function () {
+        var $target = e.target;
+        var val = $target.value;
+
+        searching(val);
+      }, 300);
+    });
+
+    // clear input
+    $header.querySelector('.search .remove').addEventListener('click', function () {
+      $header.querySelector('.search input').value = '';
+      searching('');
+    });
+  }
+
+  // ==== searching ==== //
+  function searching(val) {
+    var $posts = $list.querySelectorAll('.item');
+    if (!$posts.length) {
+      return false;
+    }
+
+    if (!val) {
+      $posts.forEach(function ($post) {
+        removeClass($post, 'hidden');
+      });
+    }
+
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = postList[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var post = _step.value;
+
+        var id = post.id;
+        var title = post.title.toLowerCase();
+        var $post = post.el;
+        var className = $post.className;
+
+        if (title.indexOf(val.toLowerCase()) < 0) {
+          if (className.indexOf('hidden') >= 0) {
+            continue;
+          }
+
+          addClass($post, 'hidden');
+        } else {
+          removeClass($post, 'hidden');
+        }
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+  }
+
+  // ==== scrollbar ==== //
+  function showScroll() {
+    addClass($main, 'scroll-show');
+    $scroll = $listWrap.querySelector('.scroll');
+    $handlebar = $scroll.querySelector('.scroll-handle');
+
+    updateScroll();
+  }
+
+  function removeScroll() {
+    removeClass($main, 'scroll-show');
+    // $handlebar.removeEventListener('mousedown', e => mouseDown.apply(this, [e, moveSize]));
+
+    $scroll = null;
+    $handlebar = null;
+  }
+
+  function updateScroll() {
+    var _this = this;
+
+    var ratio = $listWrap.clientHeight / $list.clientHeight;
+    var handlebarHeight = ratio * $listWrap.clientHeight;
+    var moveSize = $listWrap.clientHeight - handlebarHeight;
+
+    $handlebar.style.height = handlebarHeight + 'px';
+    // $handlebar.removeEventListener('mousedown');
+
+    $handlebar.addEventListener('mousedown', function (e) {
+      return mouseDown.apply(_this, [e, moveSize]);
+    });
+  }
+
+  function mouseDown(e, moveSize) {
+    // const {e, moveSize} = props;
+    console.log('mouse down');
+
+    var oldY = parseFloat($handlebar.style.transform.split(',')[1], 10) || 0;
+    var startY = e.clientY;
+
+    function mousemove(e) {
+      var size = oldY + e.clientY - startY;
+      size = Math.max(0, Math.min(size, moveSize));
+      $handlebar.style.transform = 'translate3d(0, ' + size + 'px, 0)';
+
+      var scrollTop = size / moveSize * ($list.clientHeight - $listWrap.clientHeight);
+      $scroll.style.transform = 'translate3d(0, ' + scrollTop + 'px, 0)';
+      $listWrap.scrollTop = scrollTop;
+    }
+
+    function mouseup(e) {
+      $handlebar.removeEventListener('mousemove', mousemove);
+      $handlebar.removeEventListener('mouseup', mouseup);
+    }
+
+    $handlebar.addEventListener('mousemove', mousemove);
+    $handlebar.addEventListener('mouseup', mouseup);
+  }
+
+  // ==== get website favIcon ==== //
+  function getIcon(info) {
+    var favIconUrl = info.favIconUrl;
+
+    var $img = createEl('img');
+
+    if (favIconUrl && favIconUrl !== '') {
+      $img.setAttribute('src', favIconUrl);
+      return $img;
+    };
+
+    var url = info.url;
+
+
+    $img.setAttribute('src', 'http://www.google.com/s2/favicons?domain=' + url.replace(/^(https|http):\/\//, ''));
+    return $img;
+  }
+};
+
+/*
+ * utils
+ */
+function append(target, children) {
+  if (!Array.isArray(children)) {
+    target.appendChild(children);
+  } else {
+    children.forEach(function (child) {
+      target.appendChild(child);
+    });
+  }
+}
+
+function createEl(target, attrs) {
+  var $target = document.createElement(target);
+  if (attrs) {
+    var _iteratorNormalCompletion2 = true;
+    var _didIteratorError2 = false;
+    var _iteratorError2 = undefined;
+
+    try {
+      for (var _iterator2 = Object.keys(attrs)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+        var key = _step2.value;
+
+        $target.setAttribute(key, attrs[key]);
+      }
+    } catch (err) {
+      _didIteratorError2 = true;
+      _iteratorError2 = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion2 && _iterator2.return) {
+          _iterator2.return();
+        }
+      } finally {
+        if (_didIteratorError2) {
+          throw _iteratorError2;
+        }
+      }
+    }
+  }
+
+  return $target;
+}
+
+function addClass(el, className) {
+  className = className.trim().split(' ');
+  var oldClassName = el.className.trim().split(' ');
+  var newClassName = [].concat(oldClassName, className);
+
+  el.setAttribute('class', newClassName.toString().replace(',', ' '));
+}
+
+function removeClass(el, className) {
+  className = className.trim().split(' ');
+
+  className.forEach(function (item) {
+    el.setAttribute('class', el.className.replace(item, '').trim());
+  });
+}
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ })
+],[0]);

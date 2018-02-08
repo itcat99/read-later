@@ -1,3 +1,8 @@
+// display scrollbar
+::-webkit-scrollbar{
+  display:none;
+}
+
 body {
   display: flex;
   flex-flow: column;
@@ -16,8 +21,7 @@ header {
   flex-wrap: wrap;
   padding: 6px 12px;
   border-bottom: 1px solid #9e9e9e;
-
-  .info{
+  .info {
     display: flex;
     align-items: baseline;
     flex-grow: 1;
@@ -29,7 +33,6 @@ header {
       color: #4d4d4d;
     }
   }
-
   .search {
     position: relative;
     width: 120px;
@@ -37,15 +40,12 @@ header {
     box-sizing: border-box;
     padding: 2px 6px;
     border: 1px solid #9e9e9e;
-    border-radius: 8px;
-    // padding: 4px 6px;
-  
+    border-radius: 8px; // padding: 4px 6px;
     >input {
       width: 100%;
       height: 100%;
       border: none;
-      padding: 0;
-      // border-bottom: 1px solid #9e9e9e;
+      padding: 0; // border-bottom: 1px solid #9e9e9e;
       // padding: 4px 0;
       &:focus {
         outline: none;
@@ -60,21 +60,20 @@ header {
       transform: translateY(-50%);
       transition: opacity 400ms;
     }
-  
-    &:hover .remove{
+    &:hover .remove {
       opacity: .5;
       transition: opacity 400ms;
     }
   }
-
-  .contcat{
+  .contcat {
     width: 100%;
     margin-top: 10px;
-    >a{
+    >a {
       text-decoration: none;
       margin-right: 4px;
     }
-    .git, .email{
+    .git,
+    .email {
       display: inline-block;
       min-width: 16px;
       height: 16px;
@@ -83,18 +82,15 @@ header {
       cursor: pointer;
       opacity: 0.5;
       transition: opacity 300ms;
-
-      &:hover{
+      &:hover {
         opacity: 1;
         transition: opacity 300ms;
       }
     }
-
-    .git{
+    .git {
       background: url('./icons/github.svg');
     }
-
-    .email{
+    .email {
       background: url('./icons/email.svg');
     }
   }
@@ -104,28 +100,73 @@ main {
   display: flex;
   flex-flow: column;
   flex-grow: 1;
-  padding: 0;
-  // margin: 12px 0;
+  padding: 0; // margin: 12px 0;
   overflow-y: auto;
   overflow-x: hidden;
   &.is-empty {
     .empty {
       display: flex;
     }
-    #list, #clear{
+    #list,
+    #clear {
       display: none;
+    }
+  }
+
+  &.scroll-show:hover .scroll{
+    opacity: .5;
+    transition: opacity 300ms;
+  }
+
+  .scroll{
+    display: none;
+
+    &-handle{
+      display: block;
+      position: absolute;
+      width: 100%;
+      top: 0;
+      height: 30px;
+      opacity: .8;
+      background-color: rgb(44, 44, 44);
+      cursor: pointer;
+      &:hover{
+        opacity: 1;
+      }
+    }
+  }
+
+  &.scroll-show .scroll{
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 12px;
+    top: 0;
+    right: 0;
+    background: rgba(0, 0, 0, .1);
+    opacity: 0;
+    transition: opacity 300ms;
+    z-index: 999;
+    &:hover{
+      opacity: 1;
+      transition: opacity 300ms;
     }
   }
 }
 
 #list {
-  display: flex;
-  padding: 0;
-  list-style: none;
-  flex-flow: column;
+  position: relative;
+  margin-bottom: 2px;
   flex-grow: 1;
-  margin: 0;
-  margin-bottom: 16px;
+  max-height: 300px;
+  overflow: hidden;
+  ul {
+    display: flex;
+    padding: 0;
+    list-style: none;
+    flex-flow: column;
+    margin: 0;
+  }
 }
 
 .item {
@@ -138,7 +179,7 @@ main {
   opacity: 1;
   padding: 6px 12px;
   transition: background 200ms;
-  &::before{
+  &::before {
     position: absolute;
     content: '';
     display: block;
@@ -158,13 +199,11 @@ main {
   &:hover {
     background: rgba(0, 0, 0, .1);
     transition: background 400ms;
-    
-    &::before{
+    &::before {
       opacity: 1;
       transition: opacity 400ms;
     }
-
-    .remove{
+    .remove {
       transition: opacity 500ms;
       opacity: .5;
     }
@@ -183,7 +222,7 @@ main {
     outline: none;
     color: #4d4d4d;
   }
-  &:active{
+  &:active {
     color: #9e9e9e;
   }
 }
@@ -197,8 +236,7 @@ main {
   cursor: pointer;
   opacity: 0;
   transition: opacity 500ms;
-
-  &:hover{
+  &:hover {
     opacity: 1;
     transition: opacity 500ms;
   }
@@ -215,7 +253,7 @@ main {
   &:focus {
     outline: none;
   }
-  &:hover{
+  &:hover {
     opacity: .8;
     transition: opacity 300ms;
   }

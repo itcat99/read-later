@@ -1,35 +1,142 @@
 import './style.scss';
 
 window.onload = () => {
+  let info;
+
   const $header = document.querySelector('header');
   const $main = document.querySelector('main');
-  const $list = document.getElementById('list');
+  const $listWrap = document.querySelector('#list');
+  const $list = $listWrap.querySelector('#list ul');
   const $clear = document.getElementById('clear');
+  let $scroll, $handlebar;
 
   let postList = [];
 
-  build();
+  /*
+   * initializtion
+   */
+
+  // ==== get post list data ==== //
+  chrome.runtime.sendMessage({
+    type: 'get_data'
+  }, data => {
+    console.log('popup get  data',data)
+  });
+
+  // ==== create post list item on HTML ==== //
+  chrome.runtime.onMessage.addListener(details => {
+    const {
+      type,
+      data
+    } = details;
+
+    if (type === 'return_data') {
+      updateList(data);
+    }
+  })
+
+  // ==== listenning Event ==== //
+  listener();
+
+  /*
+   * Core
+   */
+  function updateList(data) {
+    console.log(data)
+    if (!Object.keys(data).length) {
+      addClass($main, 'is-empty');
+      return;
+    }
+
+    chrome.bookmarks.getChildren(data.id, result => {
+      if (!result.length) {
+        addClass($main, 'is-empty');
+        return;
+      }
+
+      result.forEach(bk => {
+        addPost(bk);
+      })
+    })
+  }
+
+  function removePost($target) {
+    const $parent = $target.parentNode;
+    const id = $parent.dataset.id;
+
+    chrome.runtime.sendMessage({
+      type: 'remove',
+      data: id
+    }, () => {
+      $parent.remove()
+    });
+  }
+
+  function addPost(details) {
+    const {
+      url,
+      id,
+      title
+    } = details;
+
+    const $item = createEl('li', {
+      'data-id': id,
+      'class': 'item'
+    })
+    const $link = createEl('a', {
+      'href': url,
+      'class': 'link',
+      'target': '_blank'
+    })
+    const $remove = createEl('span', {
+      'class': 'remove'
+    })
+    // const $num = createEl('span', {
+    //   'class': 'num'
+    // })
+    // const $icon = getIcon(info);
+
+    // set modules attribute
+    $link.innerHTML = title;
+    // $num.innerHTML = `${index}.`;
+
+    // append modules to post item
+    // append($item, [$icon, $link, $remove]);
+    append($item, [$link, $remove]);
+
+    // append post item to post list
+    append($list, $item);
+
+    // show scroll
+    if (!$scroll) {
+      if ($list.clientHeight > $listWrap.clientHeight) {
+        showScroll();
+      } else {
+        removeScroll();
+      }
+    }
+
+    // push to postList
+    postList.push({
+      title,
+      id,
+      url,
+      el: $item
+    })
+  }
+
+  function listener() {
+    bindRemove();
+    bindClear();
+    bindSearch();
+  }
 
   /*
    * methods
    */
-  async function build() {
-    try {
-      postList = await getPostList();
-      if ($main.className.indexOf('is-empty') >= 0) {
-        removeClass($main, 'is-empty')
-      }
 
-      buildList();
-
-      listener();
-    } catch (error) {
-      // console.error('ERR => ', error)
-      addClass($main, 'is-empty')
-    }
-  }
-
-  function listener() {
+  // ==== bind event ==== //
+  function bindRemove() {
     // list click post
     $list.addEventListener('click', e => {
       const $target = e.target;
@@ -40,10 +147,12 @@ window.onload = () => {
 
       // remove a post
       if (className.indexOf('remove') > -1) {
-        remove($target);
+        removePost($target);
       }
     })
+  }
 
+  function bindClear() {
     // clear all post
     $clear.addEventListener('click', () => {
       chrome.runtime.sendMessage({
@@ -52,7 +161,9 @@ window.onload = () => {
         $list.innerHTML = '';
       })
     })
+  }
 
+  function bindSearch() {
     // setTimeout val
     let input = null;
     $header.querySelector('.search').addEventListener('input', e => {
@@ -66,16 +177,15 @@ window.onload = () => {
       }, 300);
     })
 
+
+    // clear input
     $header.querySelector('.search .remove').addEventListener('click', () => {
       $header.querySelector('.search input').value = '';
       searching('');
     })
   }
 
-
-  /*
-   * methods
-   */
+  // ==== searching ==== //
   function searching(val) {
     const $posts = $list.querySelectorAll('.item');
     if (!$posts.length) {
@@ -89,9 +199,9 @@ window.onload = () => {
     }
 
     for (let post of postList) {
-      const index = post.index;
-      const title = post.info.title.toLowerCase();
-      const $post = $posts[index];
+      const id = post.id;
+      const title = post.title.toLowerCase();
+      const $post = post.el;
       const className = $post.className;
 
       if (title.indexOf(val.toLowerCase()) < 0) {
@@ -106,77 +216,61 @@ window.onload = () => {
     }
   }
 
-  function buildList() {
-    postList.forEach((post, index) => {
-      addPost(post)
-    })
+  // ==== scrollbar ==== //
+  function showScroll() {
+    addClass($main, 'scroll-show');
+    $scroll = $listWrap.querySelector('.scroll');
+    $handlebar = $scroll.querySelector('.scroll-handle');
+
+    updateScroll();
   }
 
-  function getPostList() {
-    return new Promise((resolve, reject) => {
-      let list = [];
+  function removeScroll() {
+    removeClass($main, 'scroll-show');
+    // $handlebar.removeEventListener('mousedown', e => mouseDown.apply(this, [e, moveSize]));
 
-      chrome.storage.sync.get(null, data => {
-        if (!data.readLaterList || !Array.isArray(data.readLaterList) || !data.readLaterList.length) {
-          // return false;
-          reject();
-        };
-
-        list = [].concat(data.readLaterList);
-
-        resolve(list);
-      })
-    })
+    $scroll = null;
+    $handlebar = null;
   }
 
-  function remove($target) {
-    const $parent = $target.parentNode;
-    const index = $parent.dataset.index;
+  function updateScroll() {
+    const ratio = $listWrap.clientHeight / $list.clientHeight;
+    const handlebarHeight = ratio * $listWrap.clientHeight;
+    const moveSize = $listWrap.clientHeight - handlebarHeight;
 
-    chrome.runtime.sendMessage({
-      type: 'remove',
-      data: index
-    }, () => {
-      $parent.remove()
-    });
+    $handlebar.style.height = `${handlebarHeight}px`;
+    // $handlebar.removeEventListener('mousedown');
+
+    $handlebar.addEventListener('mousedown', e => mouseDown.apply(this, [e, moveSize]))
   }
 
-  function addPost(details) {
-    const {
-      url,
-      index,
-      info
-    } = details;
+  function mouseDown(e, moveSize) {
+    // const {e, moveSize} = props;
+    console.log('mouse down')
 
-    const $item = createEl('li', {
-      'data-index': index,
-      'class': 'item'
-    })
-    const $link = createEl('a', {
-      'href': url,
-      'class': 'link',
-      'target': '_blank'
-    })
-    const $remove = createEl('span', {
-      'class': 'remove'
-    })
-    const $num = createEl('span', {
-      'class': 'num'
-    })
-    const $icon = getIcon(info);
+    const oldY = parseFloat($handlebar.style.transform.split(',')[1], 10) || 0;
+    const startY = e.clientY;
 
-    // set modules attribute
-    $link.innerHTML = info.title;
-    $num.innerHTML = `${index}.`;
+    function mousemove(e) {
+      let size = oldY + e.clientY - startY;
+      size = Math.max(0, Math.min(size, moveSize));
+      $handlebar.style.transform = `translate3d(0, ${size}px, 0)`;
 
-    // append modules to post item
-    append($item, [$icon, $link, $remove]);
+      let scrollTop = (size / moveSize) * ($list.clientHeight - $listWrap.clientHeight);
+      $scroll.style.transform = `translate3d(0, ${scrollTop}px, 0)`
+      $listWrap.scrollTop = scrollTop;
+    }
 
-    // append post item to post list
-    append($list, $item);
+    function mouseup(e) {
+      $handlebar.removeEventListener('mousemove', mousemove);
+      $handlebar.removeEventListener('mouseup', mouseup);
+    }
+
+    $handlebar.addEventListener('mousemove', mousemove);
+    $handlebar.addEventListener('mouseup', mouseup);
   }
 
-  // create && return $img element
+  // ==== get website favIcon ==== //
   function getIcon(info) {
     const {
       favIconUrl
