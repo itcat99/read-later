@@ -1,5 +1,7 @@
 import './style.scss';
+import config from './config'
 
+const VERSION = chrome.runtime.getManifest().version;
 window.onload = () => {
   let info;
 
@@ -15,12 +17,11 @@ window.onload = () => {
   /*
    * initializtion
    */
-
+  // ==== set version ==== //
+  $header.querySelector('.version').innerHTML = VERSION;
   // ==== get post list data ==== //
   chrome.runtime.sendMessage({
     type: 'get_data'
-  }, data => {
-    console.log('popup get  data',data)
   });
 
   // ==== create post list item on HTML ==== //
@@ -42,7 +43,6 @@ window.onload = () => {
    * Core
    */
   function updateList(data) {
-    console.log(data)
     if (!Object.keys(data).length) {
       addClass($main, 'is-empty');
       return;
@@ -91,21 +91,19 @@ window.onload = () => {
     const $remove = createEl('span', {
       'class': 'remove'
     })
-    // const $num = createEl('span', {
-    //   'class': 'num'
-    // })
-    // const $icon = getIcon(info);
+    const $icon = getIcon({url});
 
     // set modules attribute
     $link.innerHTML = title;
-    // $num.innerHTML = `${index}.`;
 
     // append modules to post item
-    // append($item, [$icon, $link, $remove]);
-    append($item, [$link, $remove]);
+    append($item, [$icon, $link, $remove]);
 
     // append post item to post list
     append($list, $item);
+
+    // load icon, if get icon time out, use config.img_default facicon
+    loadIcon($icon);
 
     // show scroll
     if (!$scroll) {
@@ -245,9 +243,6 @@ window.onload = () => {
   }
 
   function mouseDown(e, moveSize) {
-    // const {e, moveSize} = props;
-    console.log('mouse down')
-
     const oldY = parseFloat($handlebar.style.transform.split(',')[1], 10) || 0;
     const startY = e.clientY;
 
@@ -272,22 +267,30 @@ window.onload = () => {
 
   // ==== get website favIcon ==== //
   function getIcon(info) {
-    const {
-      favIconUrl
-    } = info;
     const $img = createEl('img');
-
-    if (favIconUrl && favIconUrl !== '') {
-      $img.setAttribute('src', favIconUrl);
-      return $img;
-    };
 
     const {
       url
     } = info;
 
-    $img.setAttribute('src', `http://www.google.com/s2/favicons?domain=${url.replace(/^(https|http):\/\//, '')}`);
+    $img.setAttribute('src', `${config['favicon_api']}${url.replace(/^(https|http):\/\//, '')}`);
     return $img;
+  }
+
+  function loadIcon($icon){
+    let complete = $icon.complete;
+    $icon.addEventListener('load', load);
+
+    function load(){
+      complete = true;
+    }
+
+    setTimeout(() => {
+      if(!complete){
+        $icon.setAttribute('src', config['img_default']);
+        $icon.removeEventListener('load', load);
+      }
+    }, config['img_timeout']);
   }
 }
 

@@ -53,7 +53,7 @@ module.exports = {
       name: 'commons',
       filename: 'commons.js'
     }),
-    // new UglifyJsPlugin(),
+    new UglifyJsPlugin(),
     new ExtractTextPlugin('style.css')
   ]
 };

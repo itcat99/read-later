@@ -7,8 +7,9 @@ let info = {};
 let postList = [];
 
 build().then(result => {
-  updatePostList(result)
-  setbadge();
+  info = result;
+  updatePostList(result);
+  setbadge()
 })
 
 createContxtMenus();
@@ -19,15 +20,23 @@ listener();
  * Core
  */
 function build() {
+  // *************************** //
+  // Maybe optimization here     //
+  // *************************** //
   return new Promise((resolve, reject) => {
     chrome.bookmarks.search({
       title: config.title
     }, bks => {
       bks.length ?
-        concatDir(bks) :
-        createDir();
-
-      resolve(info);
+        (() =>{
+          concatDir(bks)
+          resolve(info);
+        })() :
+        chrome.bookmarks.create({
+          title: config.title
+        }, result => {
+          resolve(result)
+        })
     })
   })
 }
@@ -71,7 +80,7 @@ function setbadge() {
   chrome.bookmarks.getChildren(info.id, result => {
     let count;
 
-    count = result? result.length: 0;
+    count = result ? result.length : 0;
     chrome.browserAction.setBadgeText({
       text: count > 99 ? `+${count}` : `${count}`
     });
@@ -79,10 +88,12 @@ function setbadge() {
 }
 
 function createDir() {
-  chrome.bookmarks.create({
-    title: config.title
-  }, result => {
-    info = Object.assign({}, result[0]);
+  return new Promise((resolve, reject) => {
+    chrome.bookmarks.create({
+      title: config.title
+    }, result => {
+      resolve(result)
+    })
   })
 }
 
@@ -179,28 +190,5 @@ function update(type, data) {
 
 function clearPost() {
   chrome.bookmarks.removeTree(info.id);
-  createDir();
+  chrome.runtime.reload();
 }
-
-/* =============== */
-
-
-/*
- *  utils
- */
-// get current tab info
-// function getTabInfo() {
-//   return new Promise((resolve, reject) => {
-//     const config = {
-//       active: true,
-//       currentWindow: true
-//     }
-//     chrome.tabs.query(config, tabs => {
-//       if (tabs.length === 1) {
-//         resolve(tabs[0]);
-//       } else {
-//         reject();
-//       }
-//     })
-//   })
-// }

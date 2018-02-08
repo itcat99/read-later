@@ -147,4 +147,12 @@
 /******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
 /******/ })
 /************************************************************************/
-/******/ ([]);
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports,'__esModule',{value:!0}),exports.default={title:'__read_later__',favicon_api:'http://www.google.com/s2/favicons?domain=',img_timeout:5e3,img_default:'./icons/icon_48.png'};
+
+/***/ })
+/******/ ]);
