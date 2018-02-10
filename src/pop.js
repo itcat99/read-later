@@ -85,8 +85,9 @@ window.onload = () => {
     })
     const $link = createEl('a', {
       'href': url,
-      'class': 'link',
-      'target': '_blank'
+      'class': 'item-link',
+      'target': '_blank',
+      'title': title
     })
     const $remove = createEl('span', {
       'class': 'remove'
@@ -267,7 +268,9 @@ window.onload = () => {
 
   // ==== get website favIcon ==== //
   function getIcon(info) {
-    const $img = createEl('img');
+    const $img = createEl('img',{
+      'class': 'item-icon'
+    });
 
     const {
       url

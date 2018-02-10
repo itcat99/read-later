@@ -20,7 +20,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --watch --display-modules --sort-modules-by size"
+    "build": "webpack",
+    "watch": "webpack --watch --display-modules --sort-modules-by size",
+    "csscomb": "csscomb ./src/style.scss"
   },
   "repository": {
     "type": "git",
@@ -36,5 +38,8 @@
   "bugs": {
     "url": "https://github.com/itcat99/read-later/issues"
   },
-  "homepage": "https://github.com/itcat99/read-later#readme"
+  "homepage": "https://github.com/itcat99/read-later#readme",
+  "dependencies": {
+    "csscomb": "^4.2.0"
+  }
 }

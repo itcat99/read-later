@@ -28,7 +28,7 @@ function build() {
       title: config.title
     }, bks => {
       bks.length ?
-        (() =>{
+        (() => {
           concatDir(bks)
           resolve(info);
         })() :
@@ -123,11 +123,35 @@ function createMark(title, url) {
     url
   }
 
-  chrome.bookmarks.create(config, () => popMsg('success', 'add a read later post.'))
+  let equal = true;
+  for (let item of postList) {
+    if (item.url === url) {
+      equal = false;
+    }
+  }
+
+  if (!equal) {
+    popMsg('warning', 'you has the same post.');
+    return false;
+  }
+
+  chrome.bookmarks.create(config, data => {
+    updatePostList(info)
+    popMsg('success', 'add a read later post.')
+  })
 }
 
 function removeMark(id) {
-  chrome.bookmarks.remove(id, popMsg('success', 'remove post.'));
+  for (const index of Object.keys(postList)) {
+    if (postList[index].id === id) {
+      postList.splice(index, 1);
+    }
+  }
+
+  chrome.bookmarks.remove(id, () => {
+    updatePostList(info)
+    popMsg('success', 'remove post.')
+  });
 }
 
 // show message
@@ -153,14 +177,7 @@ function addPost() {
         url
       } = tabs[0];
 
-      for (let item of postList) {
-        if (item.url === url) {
-          return false;
-        }
-      }
-
       createMark(title, url);
-
       setbadge();
     } else {
       throw 'add post ERROR';
@@ -191,4 +208,7 @@ function update(type, data) {
 function clearPost() {
   chrome.bookmarks.removeTree(info.id);
   chrome.runtime.reload();
+
+  info = {};
+  postList = [];
 }
