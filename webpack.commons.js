@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
   entry: {
@@ -27,7 +26,7 @@ module.exports = {
         use: [{
             loader: "css-loader",
             options: {
-              // minimize: true,
+              minimize: true,
               modules: true,
               importLoaders: 1,
               localIdentName: '[name]__[local]___[hash:base64:5]'
@@ -44,7 +43,6 @@ module.exports = {
   resolve: {
     extensions: ['.json', '.js', '.jsx', '.scss']
   },
-  // devtool: 'source-map',
   plugins: [
     new webpack
     .optimize
@@ -53,6 +51,5 @@ module.exports = {
       filename: 'commons.js'
     }),
     new ExtractTextPlugin('style.css', {allChunks: true})
-    // new UglifyJsPlugin(),
   ]
-};
+}

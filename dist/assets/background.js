@@ -1,6 +1,6 @@
 webpackJsonp([1],{
 
-/***/ 150:
+/***/ 152:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17,8 +17,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 var info = {};
 var postList = [];
+var folderName = _config2.default.title;
 
-build().then(function (result) {
+build(folderName).then(function (result) {
   info = result;
   updatePostList(result);
   setbadge();
@@ -30,19 +31,19 @@ listener();
 /*
  * Core
  */
-function build() {
+function build(title) {
   // *************************** //
   // Maybe optimization here     //
   // *************************** //
   return new Promise(function (resolve, reject) {
     chrome.bookmarks.search({
-      title: _config2.default.title
+      title: title
     }, function (bks) {
       bks.length ? function () {
         concatDir(bks);
         resolve(info);
       }() : chrome.bookmarks.create({
-        title: _config2.default.title
+        title: title
       }, function (result) {
         resolve(result);
       });
@@ -52,11 +53,7 @@ function build() {
 
 // create a rightclick menu
 function createContxtMenus() {
-  chrome.contextMenus.create({
-    title: 'read later',
-    contexts: ['page'],
-    onclick: addPost
-  });
+  chrome.contextMenus.create({ title: 'read later', contexts: ['page'], onclick: addPost });
 }
 
 function listener() {
@@ -114,9 +111,7 @@ function concatDir(bks) {
   bks.forEach(function (bk) {
     chrome.bookmarks.getChildren(bk.id, function (result) {
       result.forEach(function (item) {
-        chrome.bookmarks.move(item.id, {
-          parentId: destinationId
-        });
+        chrome.bookmarks.move(item.id, { parentId: destinationId });
       });
 
       chrome.bookmarks.remove(bk.id);
@@ -185,12 +180,7 @@ function removeMark(id) {
 
 // show message
 function popMsg(title, message) {
-  chrome.notifications.create({
-    iconUrl: './icons/icon_128.png',
-    type: 'basic',
-    title: title,
-    message: message
-  });
+  chrome.notifications.create({ iconUrl: './icons/icon_128.png', type: 'basic', title: title, message: message });
 }
 
 function addPost() {
@@ -225,13 +215,28 @@ function update(type, data) {
   }
 
   if (type === 'get_data') {
-    chrome.runtime.sendMessage({
-      type: 'return_data',
-      data: info
-    });
+    chrome.runtime.sendMessage({ type: 'return_data', data: info });
+  }
+
+  if (type === 'get_folderName') {
+    chrome.runtime.sendMessage({ type: 'return_folderName', data: folderName });
+  }
+
+  if (type === 'reset_settings' || type === 'save_settings') {
+    updateSettings(type, data);
   }
 
   setbadge();
+}
+
+function updateSettings(type, data) {
+  folderName = type === 'reset_settings' ? _config2.default.title : data;
+
+  build(folderName).then(function (result) {
+    info = result;
+    updatePostList(result);
+    setbadge();
+  });
 }
 
 function clearPost() {
@@ -244,4 +249,4 @@ function clearPost() {
 
 /***/ })
 
-},[150]);
+},[152]);

@@ -5,8 +5,9 @@ import config from './config';
  */
 let info = {};
 let postList = [];
+let folderName = config.title;
 
-build().then(result => {
+build(folderName).then(result => {
   info = result;
   updatePostList(result);
   setbadge()
@@ -15,85 +16,101 @@ build().then(result => {
 createContxtMenus();
 listener();
 
-
 /*
  * Core
  */
-function build() {
+function build(title) {
   // *************************** //
   // Maybe optimization here     //
   // *************************** //
   return new Promise((resolve, reject) => {
-    chrome.bookmarks.search({
-      title: config.title
-    }, bks => {
-      bks.length ?
-        (() => {
-          concatDir(bks)
-          resolve(info);
-        })() :
-        chrome.bookmarks.create({
-          title: config.title
-        }, result => {
-          resolve(result)
-        })
-    })
+    chrome
+      .bookmarks
+      .search({
+        title
+      }, bks => {
+        bks.length
+          ? (() => {
+            concatDir(bks)
+            resolve(info);
+          })()
+          : chrome
+            .bookmarks
+            .create({
+              title
+            }, result => {
+              resolve(result)
+            })
+      })
   })
 }
 
 // create a rightclick menu
 function createContxtMenus() {
-  chrome.contextMenus.create({
-    title: 'read later',
-    contexts: ['page'],
-    onclick: addPost
-  })
+  chrome
+    .contextMenus
+    .create({title: 'read later', contexts: ['page'], onclick: addPost})
 }
 
 function listener() {
-  chrome.runtime.onMessage.addListener(details => {
-    const {
-      type,
-      data
-    } = details;
-    update(type, data)
-  })
+  chrome
+    .runtime
+    .onMessage
+    .addListener(details => {
+      const {type, data} = details;
+      update(type, data)
+    })
 
   // listener Command
-  chrome.commands.onCommand.addListener(commands => {
-    if (commands === 'add-new-post') {
-      addPost();
-    }
-  })
+  chrome
+    .commands
+    .onCommand
+    .addListener(commands => {
+      if (commands === 'add-new-post') {
+        addPost();
+      }
+    })
 };
 
 /*
  * Methods
  */
 function updatePostList(info) {
-  chrome.bookmarks.getChildren(info.id, result => {
-    postList = result;
-  })
+  chrome
+    .bookmarks
+    .getChildren(info.id, result => {
+      postList = result;
+    })
 }
 // ==== set popup badge ==== //
 function setbadge() {
-  chrome.bookmarks.getChildren(info.id, result => {
-    let count;
+  chrome
+    .bookmarks
+    .getChildren(info.id, result => {
+      let count;
 
-    count = result ? result.length : 0;
-    chrome.browserAction.setBadgeText({
-      text: count > 99 ? `+${count}` : `${count}`
-    });
-  })
+      count = result
+        ? result.length
+        : 0;
+      chrome
+        .browserAction
+        .setBadgeText({
+          text: count > 99
+            ? `+${count}`
+            : `${count}`
+        });
+    })
 }
 
 function createDir() {
   return new Promise((resolve, reject) => {
-    chrome.bookmarks.create({
-      title: config.title
-    }, result => {
-      resolve(result)
-    })
+    chrome
+      .bookmarks
+      .create({
+        title: config.title
+      }, result => {
+        resolve(result)
+      })
   })
 }
 
@@ -104,15 +121,19 @@ function concatDir(bks) {
   bks.shift();
 
   bks.forEach(bk => {
-    chrome.bookmarks.getChildren(bk.id, result => {
-      result.forEach(item => {
-        chrome.bookmarks.move(item.id, {
-          parentId: destinationId
-        });
-      })
+    chrome
+      .bookmarks
+      .getChildren(bk.id, result => {
+        result.forEach(item => {
+          chrome
+            .bookmarks
+            .move(item.id, {parentId: destinationId});
+        })
 
-      chrome.bookmarks.remove(bk.id)
-    })
+        chrome
+          .bookmarks
+          .remove(bk.id)
+      })
   })
 }
 
@@ -135,10 +156,12 @@ function createMark(title, url) {
     return false;
   }
 
-  chrome.bookmarks.create(config, data => {
-    updatePostList(info)
-    popMsg('success', 'add a read later post.')
-  })
+  chrome
+    .bookmarks
+    .create(config, data => {
+      updatePostList(info)
+      popMsg('success', 'add a read later post.')
+    })
 }
 
 function removeMark(id) {
@@ -148,20 +171,19 @@ function removeMark(id) {
     }
   })
 
-  chrome.bookmarks.remove(id, () => {
-    updatePostList(info)
-    popMsg('success', 'remove post.')
-  });
+  chrome
+    .bookmarks
+    .remove(id, () => {
+      updatePostList(info)
+      popMsg('success', 'remove post.')
+    });
 }
 
 // show message
 function popMsg(title, message) {
-  chrome.notifications.create({
-    iconUrl: './icons/icon_128.png',
-    type: 'basic',
-    title,
-    message
-  })
+  chrome
+    .notifications
+    .create({iconUrl: './icons/icon_128.png', type: 'basic', title, message})
 }
 
 function addPost() {
@@ -170,19 +192,18 @@ function addPost() {
     currentWindow: true
   }
 
-  chrome.tabs.query(config, tabs => {
-    if (tabs.length === 1) {
-      const {
-        title,
-        url
-      } = tabs[0];
+  chrome
+    .tabs
+    .query(config, tabs => {
+      if (tabs.length === 1) {
+        const {title, url} = tabs[0];
 
-      createMark(title, url);
-      setbadge();
-    } else {
-      throw 'add post ERROR';
-    }
-  })
+        createMark(title, url);
+        setbadge();
+      } else {
+        throw 'add post ERROR';
+      }
+    })
 }
 
 // ==== run event callback ==== //
@@ -196,18 +217,43 @@ function update(type, data) {
   }
 
   if (type === 'get_data') {
-    chrome.runtime.sendMessage({
-      type: 'return_data',
-      data: info
-    })
+    chrome
+      .runtime
+      .sendMessage({type: 'return_data', data: info})
+  }
+
+  if(type === 'get_folderName'){
+    chrome
+      .runtime
+      .sendMessage({type: 'return_folderName', data: folderName})
+  }
+
+  if (type === 'reset_settings' || type === 'save_settings') {
+    updateSettings(type, data)
   }
 
   setbadge();
 }
 
+function updateSettings(type, data) {
+  folderName = type === 'reset_settings'
+    ? config.title
+    : data;
+
+  build(folderName).then(result => {
+    info = result;
+    updatePostList(result);
+    setbadge()
+  })
+}
+
 function clearPost() {
-  chrome.bookmarks.removeTree(info.id);
-  chrome.runtime.reload();
+  chrome
+    .bookmarks
+    .removeTree(info.id);
+  chrome
+    .runtime
+    .reload();
 
   info = {};
   postList = [];

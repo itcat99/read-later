@@ -21,8 +21,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
-    "watch": "webpack --watch --display-modules --sort-modules-by size",
+    "build": "webpack --config webpack.prod.js",
+    "watch": "webpack --config webpack.dev.js --watch --display-modules --sort-modules-by size",
     "csscomb": "csscomb ./src/style.scss"
   },
   "repository": {
