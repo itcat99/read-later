@@ -1,46 +1,16 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="./assets/style.css">
+
+  <title>read later - React</title>
 </head>
-
 <body>
-  <header>
-    <div class="info">
-      <h1 class="title">Read Later</h1>
-      <span class="version"></span>
-    </div>
-    <div class="contcat">
-      <a target="_blank" href="https://github.com/itcat99/read-later">
-        <span class="git"></span>
-      </a>
-      <a target="_blank" href="mailto:boiping2010@gmail.com">
-        <span class="email"></span>
-      </a>
-    </div>
-    <div class="search">
-      <input type="text" placeholder="please search...">
-      <span class="remove"></span>
-    </div>
-  </header>
-  <main>
-    <div class="empty">
-      <p> Empty list. </p>
-      <p>you have 2 ways to add post. </p>
-      <p>1. click context menu 'read later'. </p>
-      <p>2. 'Ctrl + Shift + M'. </p>
-    </div>
-    <div id="list">
-      <div class="scroll">
-        <span class="scroll-handle"></span>
-      </div>
-      <ul></ul>
-    </div>
-    <button id="clear">Clear</button>
-  </main>
-
+  <div id="main"></div>
   <script src="./assets/commons.js"></script>
   <script src="./assets/pop.js"></script>
 </body>
-
 </html>

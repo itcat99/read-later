@@ -1,0 +1,58 @@
+@import '../../_vars.scss';
+.header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: $header-padding;
+  border-bottom: $border;
+  &Info {
+    display: flex;
+    align-items: baseline;
+    flex-grow: 1;
+    width: 100%;
+    &Title {
+      margin: $info-margin;
+      margin-right: $info-margin-right;
+      font-size: $info-font-size;
+      line-height: $info-line-height;
+      color: $info-font-color;
+    }
+  }
+  &Contact {
+    // width: 100%;
+    flex-grow: 1;
+    margin-top: $concat-margin-top;
+    >a {
+      text-decoration: none;
+      margin-right: $concat-margin-right;
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}
+
+:local {
+  .git,
+  .email {
+    display: inline-block;
+    min-width: 16px;
+    height: 16px;
+    background-repeat: no-repeat !important;
+    background-size: 100% !important;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 300ms;
+    &:hover {
+      opacity: 1;
+      transition: opacity 300ms;
+    }
+  }
+  .git {
+    background: url('../../icons/github.svg');
+  }
+  .email {
+    background: url('../../icons/email.svg');
+  }
+}

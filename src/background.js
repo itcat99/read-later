@@ -142,11 +142,11 @@ function createMark(title, url) {
 }
 
 function removeMark(id) {
-  for (const index of Object.keys(postList)) {
-    if (postList[index].id === id) {
+  postList.forEach((post, index) => {
+    if (post.id === id) {
       postList.splice(index, 1);
     }
-  }
+  })
 
   chrome.bookmarks.remove(id, () => {
     updatePostList(info)

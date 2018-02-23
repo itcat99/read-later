@@ -5,7 +5,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
   entry: {
-    pop: path.join(__dirname, 'src', 'pop'),
+    'pop': path.join(__dirname, 'src', 'pop'),
     background: path.join(__dirname, 'src', 'background')
   },
   output: {
@@ -14,46 +14,45 @@ module.exports = {
   },
   module: {
     rules: [{
-      test: /.js?$/,
-      include: [
-        path.resolve(__dirname, 'src')
-      ],
-      exclude: [
-        path.resolve(__dirname, 'node_modules')
-      ],
+      test: /(.js|.jsx)?$/,
+      include: [path.resolve(__dirname, 'src')],
+      exclude: [path.resolve(__dirname, 'node_modules')],
       loader: 'babel-loader'
     }, {
       test: /.scss?$/,
-      include: [
-        path.resolve(__dirname, 'src')
-      ],
-      exclude: [
-        path.resolve(__dirname, 'node_modules')
-      ],
+      include: [path.resolve(__dirname, 'src')],
+      exclude: [path.resolve(__dirname, 'node_modules')],
       use: ExtractTextPlugin.extract({
         fallback: "style-loader",
         use: [{
-          loader: "css-loader",
-          options: {
-            minimize: true
-          }
-        }, "sass-loader"]
+            loader: "css-loader",
+            options: {
+              // minimize: true,
+              modules: true,
+              importLoaders: 1,
+              localIdentName: '[name]__[local]___[hash:base64:5]'
+            }
+          },
+          "sass-loader"
+        ]
       })
-    }, {
+    },{
       test: /\.svg/,
       loader: 'svg-url-loader'
     }]
   },
   resolve: {
-    extensions: ['.json', '.js', '.scss']
+    extensions: ['.json', '.js', '.jsx', '.scss']
   },
   // devtool: 'source-map',
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin({
+    new webpack
+    .optimize
+    .CommonsChunkPlugin({
       name: 'commons',
       filename: 'commons.js'
     }),
-    new UglifyJsPlugin(),
-    new ExtractTextPlugin('style.css')
+    new ExtractTextPlugin('style.css', {allChunks: true})
+    // new UglifyJsPlugin(),
   ]
 };

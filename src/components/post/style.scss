@@ -1,0 +1,76 @@
+@import '../../_vars.scss';
+.core {
+  position: relative;
+  display: flex;
+  height: $item-height;
+  align-items: center;
+  font-size: $font-size;
+  background: $bg-color;
+  opacity: 1;
+  padding: $item-padding;
+  transition: background 200ms;
+  &::before {
+    position: absolute;
+    content: '';
+    display: block;
+    height: 100%;
+    width: $item-prefix-width;
+    top: 0;
+    left: 0;
+    background-color: $item-prefix-bg-color;
+    opacity: 0;
+    transition: opacity 400ms;
+  }
+  &Icon {
+    height: 100%;
+    margin-right: $icon-margin-right;
+    min-width: $icon-width-min;
+  }
+  &:hover {
+    background: $item-bg-hover;
+    transition: background 400ms;
+    &::before {
+      opacity: 1;
+      transition: opacity 400ms;
+    }
+    .coreRemove {
+      transition: opacity 500ms;
+      opacity: .5;
+    }
+  }
+  &Link {
+    flex-grow: 1;
+    margin-right: $link-margin-right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: none;
+    color: $font-color;
+    font-size: $link-font-size;
+    &:focus {
+      outline: none;
+      color: $link-font-color-hover;
+    }
+    &:active {
+      color: $link-font-color-active;
+    }
+  }
+  &Remove {
+    min-width: 14px;
+    height: 14px;
+    background: url('../../icons/close.svg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 500ms;
+    &:hover {
+      opacity: 1;
+      transition: opacity 500ms;
+    }
+  }
+
+  &Hidden{
+    display: none;
+  }
+}

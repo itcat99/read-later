@@ -1,1 +1,247 @@
-webpackJsonp([1],{3:function(e,t,o){"use strict";var r,n=o(0),a=(r=n)&&r.__esModule?r:{default:r};var i={},c=[];function s(e){chrome.bookmarks.getChildren(e.id,function(e){c=e})}function u(){chrome.bookmarks.getChildren(i.id,function(e){var t;t=e?e.length:0,chrome.browserAction.setBadgeText({text:99<t?"+"+t:""+t})})}function m(e,t){chrome.notifications.create({iconUrl:"./icons/icon_128.png",type:"basic",title:e,message:t})}function d(){chrome.tabs.query({active:!0,currentWindow:!0},function(e){if(1!==e.length)throw"add post ERROR";var t=e[0];(function(e,t){var o={parentId:i.id,title:e,url:t},r=!0,n=!0,a=!1,u=void 0;try{for(var d,l=c[Symbol.iterator]();!(n=(d=l.next()).done);n=!0)d.value.url===t&&(r=!1)}catch(e){a=!0,u=e}finally{try{!n&&l.return&&l.return()}finally{if(a)throw u}}r?chrome.bookmarks.create(o,function(){s(i),m("success","add a read later post.")}):m("warning","you has the same post.")})(t.title,t.url),u()})}new Promise(function(e){chrome.bookmarks.search({title:a.default.title},function(t){t.length?(function(e){var t=e[0].id;i=Object.assign({},e[0]),e.shift(),e.forEach(function(e){chrome.bookmarks.getChildren(e.id,function(o){o.forEach(function(e){chrome.bookmarks.move(e.id,{parentId:t})}),chrome.bookmarks.remove(e.id)})})}(t),e(i)):chrome.bookmarks.create({title:a.default.title},function(t){e(t)})})}).then(function(e){i=e,s(e),u()}),chrome.contextMenus.create({title:"read later",contexts:["page"],onclick:d}),chrome.runtime.onMessage.addListener(function(e){var t=e.type,o=e.data;!function(e,t){"remove"===e&&function(e){var t=!0,o=!1,r=void 0;try{for(var n,a,u=Object.keys(c)[Symbol.iterator]();!(t=(n=u.next()).done);t=!0)a=n.value,c[a].id===e&&c.splice(a,1)}catch(e){o=!0,r=e}finally{try{!t&&u.return&&u.return()}finally{if(o)throw r}}chrome.bookmarks.remove(e,function(){s(i),m("success","remove post.")})}(t),"clear"===e&&(chrome.bookmarks.removeTree(i.id),chrome.runtime.reload(),i={},c=[]),"get_data"===e&&chrome.runtime.sendMessage({type:"return_data",data:i}),u()}(t,o)}),chrome.commands.onCommand.addListener(function(e){"add-new-post"===e&&d()})}},[3]);
+webpackJsonp([1],{
+
+/***/ 150:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _config = __webpack_require__(44);
+
+var _config2 = _interopRequireDefault(_config);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/*
+ *  initializtion
+ */
+var info = {};
+var postList = [];
+
+build().then(function (result) {
+  info = result;
+  updatePostList(result);
+  setbadge();
+});
+
+createContxtMenus();
+listener();
+
+/*
+ * Core
+ */
+function build() {
+  // *************************** //
+  // Maybe optimization here     //
+  // *************************** //
+  return new Promise(function (resolve, reject) {
+    chrome.bookmarks.search({
+      title: _config2.default.title
+    }, function (bks) {
+      bks.length ? function () {
+        concatDir(bks);
+        resolve(info);
+      }() : chrome.bookmarks.create({
+        title: _config2.default.title
+      }, function (result) {
+        resolve(result);
+      });
+    });
+  });
+}
+
+// create a rightclick menu
+function createContxtMenus() {
+  chrome.contextMenus.create({
+    title: 'read later',
+    contexts: ['page'],
+    onclick: addPost
+  });
+}
+
+function listener() {
+  chrome.runtime.onMessage.addListener(function (details) {
+    var type = details.type,
+        data = details.data;
+
+    update(type, data);
+  });
+
+  // listener Command
+  chrome.commands.onCommand.addListener(function (commands) {
+    if (commands === 'add-new-post') {
+      addPost();
+    }
+  });
+};
+
+/*
+ * Methods
+ */
+function updatePostList(info) {
+  chrome.bookmarks.getChildren(info.id, function (result) {
+    postList = result;
+  });
+}
+// ==== set popup badge ==== //
+function setbadge() {
+  chrome.bookmarks.getChildren(info.id, function (result) {
+    var count = void 0;
+
+    count = result ? result.length : 0;
+    chrome.browserAction.setBadgeText({
+      text: count > 99 ? '+' + count : '' + count
+    });
+  });
+}
+
+function createDir() {
+  return new Promise(function (resolve, reject) {
+    chrome.bookmarks.create({
+      title: _config2.default.title
+    }, function (result) {
+      resolve(result);
+    });
+  });
+}
+
+function concatDir(bks) {
+  var destinationId = bks[0].id;
+  info = Object.assign({}, bks[0]);
+
+  bks.shift();
+
+  bks.forEach(function (bk) {
+    chrome.bookmarks.getChildren(bk.id, function (result) {
+      result.forEach(function (item) {
+        chrome.bookmarks.move(item.id, {
+          parentId: destinationId
+        });
+      });
+
+      chrome.bookmarks.remove(bk.id);
+    });
+  });
+}
+
+function createMark(title, url) {
+  var config = {
+    parentId: info.id,
+    title: title,
+    url: url
+  };
+
+  var equal = true;
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = postList[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var item = _step.value;
+
+      if (item.url === url) {
+        equal = false;
+      }
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+
+  if (!equal) {
+    popMsg('warning', 'you has the same post.');
+    return false;
+  }
+
+  chrome.bookmarks.create(config, function (data) {
+    updatePostList(info);
+    popMsg('success', 'add a read later post.');
+  });
+}
+
+function removeMark(id) {
+  postList.forEach(function (post, index) {
+    if (post.id === id) {
+      postList.splice(index, 1);
+    }
+  });
+
+  chrome.bookmarks.remove(id, function () {
+    updatePostList(info);
+    popMsg('success', 'remove post.');
+  });
+}
+
+// show message
+function popMsg(title, message) {
+  chrome.notifications.create({
+    iconUrl: './icons/icon_128.png',
+    type: 'basic',
+    title: title,
+    message: message
+  });
+}
+
+function addPost() {
+  var config = {
+    active: true,
+    currentWindow: true
+  };
+
+  chrome.tabs.query(config, function (tabs) {
+    if (tabs.length === 1) {
+      var _tabs$ = tabs[0],
+          title = _tabs$.title,
+          url = _tabs$.url;
+
+
+      createMark(title, url);
+      setbadge();
+    } else {
+      throw 'add post ERROR';
+    }
+  });
+}
+
+// ==== run event callback ==== //
+function update(type, data) {
+  if (type === 'remove') {
+    removeMark(data);
+  }
+
+  if (type === 'clear') {
+    clearPost();
+  }
+
+  if (type === 'get_data') {
+    chrome.runtime.sendMessage({
+      type: 'return_data',
+      data: info
+    });
+  }
+
+  setbadge();
+}
+
+function clearPost() {
+  chrome.bookmarks.removeTree(info.id);
+  chrome.runtime.reload();
+
+  info = {};
+  postList = [];
+}
+
+/***/ })
+
+},[150]);
