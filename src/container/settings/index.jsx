@@ -4,6 +4,9 @@ import React, {Component} from 'react'
 /* import config */
 import config from '../../config'
 
+/* import component */
+import SettingsItem from '../../components/settingsItem'
+
 /* core */
 class Settings extends Component {
   constructor(props) {
@@ -14,10 +17,9 @@ class Settings extends Component {
   }
 
   save() {
-    this.folderName = this.folderNameInput.value;
     this
       .props
-      .updateSetting("save", this.folderName)
+      .updateSetting("save", this.tempSettings)
 
     this
       .props
@@ -25,14 +27,14 @@ class Settings extends Component {
   }
 
   reset() {
-    this.folderNameInput.value = config.title;
+    this.tempSettings = Object.assign({}, config);
     this
       .props
-      .updateSetting("reset")
+      .updateSetting("reset", this.tempSettings)
   }
 
   cancel() {
-    this.folderNameInput.value = this.folderName;
+    this.tempSettings = Object.assign({}, this.props.settings);
     this
       .props
       .updateSetting("cancel")
@@ -41,42 +43,42 @@ class Settings extends Component {
       .closeSettingsPanel()
   }
 
-  componentDidMount() {
-    chrome
-      .runtime
-      .sendMessage({type: 'get_folderName'});
-    chrome
-      .runtime
-      .onMessage
-      .addListener(result => {
-        const {type, data} = result;
+  getItems() {
+    const items = []
 
-        if (type === 'return_folderName') {
-          this.folderName = data;
-          this.folderNameInput.value = this.folderName;
-        }
-      })
+    for (let _key of Object.keys(this.tempSettings)) {
+      items
+        .push(<SettingsItem
+          key={_key}
+          name={_key}
+          value={this.tempSettings[_key]}
+          title={_key
+          .replace('_', ' ')
+          .trim()}
+          change={this.change.bind(this)
+          } />)
+    }
+
+    return items;
   }
 
+  change(data){
+    this.tempSettings = Object.assign({}, this.tempSettings, data);
+  }
+  
   render() {
+    this.tempSettings = Object.assign({}, this.props.settings);
+    this.items = this.getItems();
+    
     return (
       <section
         className={this.props.isOpen
         ? `${this.style.settings} ${this.style.open}`
         : this.style.settings}>
         <header>Settings</header>
-        <div className={this.style.list}>
-          <span className={this.style.item}>
-            <label htmlFor="folderName">folder name:</label>
-            <input
-              type="text"
-              name="folderName"
-              id="folderName"
-              ref={el => {
-              this.folderNameInput = el;
-            }}/>
-          </span>
-        </div>
+        <ul className={this.style.list}>
+          {this.items}
+        </ul>
         <div className={this.style.actions}>
           <button className={this.style.reset} onClick={() => this.reset()}>reset</button>
           <button className={this.style.save} onClick={() => this.save()}>save</button>

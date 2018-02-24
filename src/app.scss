@@ -1,8 +1,8 @@
 @import './_vars.scss';
 // display scrollbar
-::-webkit-scrollbar {
-  display: none;
-}
+// ::-webkit-scrollbar {
+//   display: none;
+// }
 
 .core{
   display: flex;
@@ -17,5 +17,11 @@
 :global {
   body{
     margin: $panel-margin;
+  }
+
+  ul{
+    padding: 0;
+    list-style: none;
+    margin: 0;
   }
 }

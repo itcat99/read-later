@@ -1,7 +1,12 @@
 @import '../../_vars.scss';
-.core {
-  display: flex;
+
+.wrap{
   flex-grow: 1;
+  overflow-x: hidden;
+}
+
+.list {
+  display: flex;
   padding: 0;
   list-style: none;
   flex-flow: column;

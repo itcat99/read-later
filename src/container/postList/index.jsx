@@ -43,9 +43,11 @@ class PostList extends Component {
     this.posts = this.getPosts()
 
     return (
-      <ul className={this.style.core}>
-        {this.posts}
-      </ul>
+      <div className={this.style.wrap}>
+        <ul className={this.style.list}>
+          {this.posts}
+        </ul>
+      </div>
     )
   }
 }

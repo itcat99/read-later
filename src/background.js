@@ -5,7 +5,7 @@ import config from './config';
  */
 let info = {};
 let postList = [];
-const settings = config;
+let settings = config;
 let folderName = settings.title;
 
 build(folderName).then(result => {
@@ -222,12 +222,6 @@ function update(type, data) {
       .sendMessage({type: 'return_data', data: info})
   }
 
-  if (type === 'get_folderName') {
-    chrome
-      .runtime
-      .sendMessage({type: 'return_folderName', data: folderName})
-  }
-
   if (type === 'get_settings') {
     chrome
       .runtime
@@ -242,19 +236,21 @@ function update(type, data) {
 }
 
 function updateSettings(type, data) {
-  folderName = type === 'reset_settings'
-    ? config.title
-    : data;
+  /* update bookmark folder name */
+  let updateFolderName;
 
-  // update bookmark folder name
-  chrome
-    .bookmarks
-    .update(info.id, {title: folderName}, () => {
-      // update setting
-      settings.title = folderName;
+  if(data && data.title !== folderName){
+    updateFolderName = true;
+  }
 
-      console.log(settings)
-    })
+  settings = type === 'reset_settings'? config: data;
+  if(updateFolderName){
+    folderName = settings.title
+
+    chrome
+      .bookmarks
+      .update(info.id, {title: folderName})
+  }
 }
 
 function clearPost() {

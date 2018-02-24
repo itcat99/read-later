@@ -5,11 +5,11 @@
   flex-flow: column;
   flex-grow: 1;
   padding: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
+  // overflow-y: auto;
+  // overflow-x: hidden;
 
   position: relative;
-  margin-bottom: $list-margin-bottom;
+  // margin-bottom: $list-margin-bottom;
   flex-grow: 1;
   max-height: $list-height-max;
   overflow: hidden;

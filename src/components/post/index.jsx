@@ -15,6 +15,7 @@ class Post extends Component {
   setIcon(){
     setTimeout(() => {
       if(!this.complete){
+        // ^(https|http)?:\/\/.*\/
         this.el.setAttribute('src', this.props.settings.img_default);
       }
     }, this.props.settings.img_timeout)
