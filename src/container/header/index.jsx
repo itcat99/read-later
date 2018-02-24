@@ -19,6 +19,10 @@ class Header extends Component{
     return chrome.runtime.getManifest().version;
   }
 
+  openSettingsPanel(){
+    this.props.openSettingsPanel();
+  }
+
   render(){
     const {title, search} = this.props;
 
@@ -29,6 +33,8 @@ class Header extends Component{
           <h1 className={this.style.headerInfoTitle}>{title}</h1>
           <span>{this.getVersion()}</span>
         </div>
+        {/* setting btn */}
+        <span className={this.style.settings} title="settings" onClick={() => this.openSettingsPanel()}></span>
 
         {/* contcat */}
         <div className={this.style.headerContact}>

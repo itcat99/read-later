@@ -5,7 +5,8 @@ import config from './config';
  */
 let info = {};
 let postList = [];
-let folderName = config.title;
+const settings = config;
+let folderName = settings.title;
 
 build(folderName).then(result => {
   info = result;
@@ -20,8 +21,7 @@ listener();
  * Core
  */
 function build(title) {
-  // *************************** //
-  // Maybe optimization here     //
+  // *************************** // Maybe optimization here     //
   // *************************** //
   return new Promise((resolve, reject) => {
     chrome
@@ -107,7 +107,7 @@ function createDir() {
     chrome
       .bookmarks
       .create({
-        title: config.title
+        title: settings.title
       }, result => {
         resolve(result)
       })
@@ -222,10 +222,16 @@ function update(type, data) {
       .sendMessage({type: 'return_data', data: info})
   }
 
-  if(type === 'get_folderName'){
+  if (type === 'get_folderName') {
     chrome
       .runtime
       .sendMessage({type: 'return_folderName', data: folderName})
+  }
+
+  if (type === 'get_settings') {
+    chrome
+      .runtime
+      .sendMessage({type: 'return_settings', data: settings})
   }
 
   if (type === 'reset_settings' || type === 'save_settings') {
@@ -240,11 +246,15 @@ function updateSettings(type, data) {
     ? config.title
     : data;
 
-  build(folderName).then(result => {
-    info = result;
-    updatePostList(result);
-    setbadge()
-  })
+  // update bookmark folder name
+  chrome
+    .bookmarks
+    .update(info.id, {title: folderName}, () => {
+      // update setting
+      settings.title = folderName;
+
+      console.log(settings)
+    })
 }
 
 function clearPost() {

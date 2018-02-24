@@ -5,8 +5,6 @@ import Header from './container/header'
 import Preview from './container/preview'
 import Settings from './container/settings'
 
-/* import config */
-import config from './config'
 /* import styles */
 import style from './app.scss'
 
@@ -19,11 +17,12 @@ class App extends Component {
     this.style = style;
 
     this.state = {
-      posts: []
+      posts: [],
+      settings: {},
+      settingsPanelOpen: false
     }
   }
-
-  componentWillMount() {
+  componentDidMount(){
     let posts = [];
     let that = this;
     // ==== get post list data ==== //
@@ -42,6 +41,35 @@ class App extends Component {
           posts = await this.getList(data);
           that.setState({ posts })
         }
+      })
+  }
+  componentWillMount() {
+    // let posts = [];
+    let that = this;
+    // ==== get post list data ==== //
+    // chrome
+    //   .runtime
+    //   .sendMessage({ type: 'get_data' });
+    // ==== get settings ==== //
+    chrome
+      .runtime
+      .sendMessage({type: 'get_settings'});
+
+    // ==== create post list item on HTML ==== //
+    chrome
+      .runtime
+      .onMessage
+      .addListener(async details => {
+        const { type, data } = details;
+
+        if(type === 'return_settings'){
+          that.setState({settings: data})
+        }
+
+        // if (type === 'return_data') {
+        //   posts = await this.getList(data);
+        //   that.setState({ posts })
+        // }
       })
   }
 
@@ -73,11 +101,11 @@ class App extends Component {
   }
 
   getIcon(url) {
-    return `${config['favicon_api']}${url.replace(/^(https|http):\/\//, '')}`;
+    return `${this.state.settings['favicon_api']}${url.replace(/^(https|http):\/\//, '')}`;
   }
 
   updateState(posts) {
-    this.setState(Object.assign({}, this.state, { posts }));
+    // this.setState(Object.assign({}, this.state, { posts }));
   }
 
   search(val) {
@@ -121,12 +149,16 @@ class App extends Component {
     }
   }
 
+  toggleSettingsPanel(){
+    this.setState({settingsPanelOpen: !this.state.settingsPanelOpen})
+  }
+
   render() {
     return (
       <div className={this.style.core}>
-        <Header title={this.name} search={this.search.bind(this)} />
-        <Preview posts={this.state.posts} updateState={this.updateState.bind(this)} clear={this.clear.bind(this)} />
-        <Settings updateSetting={this.updateSetting.bind(this)} />
+        <Header title={this.name} search={this.search.bind(this)} openSettingsPanel={this.toggleSettingsPanel.bind(this)} />
+        <Preview posts={this.state.posts} updateState={this.updateState.bind(this)} clear={this.clear.bind(this)} settings={this.state.settings} />
+        <Settings updateSetting={this.updateSetting.bind(this)} settings={this.state.settings} isOpen={this.state.settingsPanelOpen} closeSettingsPanel={this.toggleSettingsPanel.bind(this)} />
       </div>
     )
   }

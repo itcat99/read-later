@@ -20,10 +20,10 @@ class PostList extends Component {
 
   getPosts() {
     return this
-      .props
-      .posts
-      .map(post => {
-        const {imgsrc, title, url, id, show} = post;
+    .props
+    .posts
+    .map(post => {
+      const {imgsrc, title, url, id, show} = post;
 
         return (<Post
           imgsrc={imgsrc}
@@ -32,6 +32,7 @@ class PostList extends Component {
           key={id}
           id={id}
           show={show}
+          settings={this.props.settings}
           remove={this
           .remove
           .bind(this)}/>)

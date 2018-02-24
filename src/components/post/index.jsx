@@ -2,7 +2,7 @@ import style from './style.scss'
 
 import React, {Component} from 'react'
 
-import config from '../../config';
+// import config from '../../config';
 
 class Post extends Component {
   constructor(props) {
@@ -15,13 +15,15 @@ class Post extends Component {
   setIcon(){
     setTimeout(() => {
       if(!this.complete){
-        this.el.setAttribute('src', config.img_default);
+        this.el.setAttribute('src', this.props.settings.img_default);
       }
-    }, config.img_timeout)
+    }, this.props.settings.img_timeout)
   }
 
   initLoad(el){
-    this.el = el;
+    if(el){
+      this.el = el;
+    }
     this.complete = this.el.complete;
   }
 

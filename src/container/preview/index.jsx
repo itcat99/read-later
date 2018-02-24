@@ -40,6 +40,7 @@ class Preview extends Component {
         <section className={this.style.core}>
           <PostList
             posts={this.posts}
+            settings={this.props.settings}
             remove={this
             .removePost
             .bind(this)}/>
