@@ -1,4 +1,8 @@
 # read-later
+
+![license](https://img.shields.io/badge/license-MIT-blue.svg)
+![version](https://img.shields.io/badge/version-0.3.1-brightgreen.svg)
+
 A chrome extension to saving links for later reading.
 
 ---
