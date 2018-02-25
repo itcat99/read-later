@@ -21,5 +21,6 @@ A chrome extension to saving links for later reading.
 - [x] add `Search` action.
 - [x] **use bookmarks management list items, remove chrome.storage.sync.**
 
+- [ ] support keyboard.
 - [ ] add `Tag` action.
 - [ ] add `Star` action.

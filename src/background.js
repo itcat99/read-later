@@ -6,6 +6,7 @@ import config from './config';
 let info = {};
 let postList = [];
 let settings = config;
+
 let folderName = settings.title;
 
 build(folderName).then(result => {
@@ -21,8 +22,9 @@ listener();
  * Core
  */
 function build(title) {
-  // *************************** // Maybe optimization here     //
-  // *************************** //
+  /*****************************
+   * Maybe optimization here   *
+   *****************************/
   return new Promise((resolve, reject) => {
     chrome
       .bookmarks
@@ -81,9 +83,18 @@ function updatePostList(info) {
     .getChildren(info.id, result => {
       postList = result;
     })
+
+  setbadge();
 }
 // ==== set popup badge ==== //
 function setbadge() {
+  if (!info.id) {
+    chrome
+      .browserAction
+      .setBadgeText({text: `0`})
+    return false;
+  }
+
   chrome
     .bookmarks
     .getChildren(info.id, result => {
@@ -231,20 +242,20 @@ function update(type, data) {
   if (type === 'reset_settings' || type === 'save_settings') {
     updateSettings(type, data)
   }
-
-  setbadge();
 }
 
 function updateSettings(type, data) {
   /* update bookmark folder name */
   let updateFolderName;
 
-  if(data && data.title !== folderName){
+  if (data && data.title !== folderName) {
     updateFolderName = true;
   }
 
-  settings = type === 'reset_settings'? config: data;
-  if(updateFolderName){
+  settings = type === 'reset_settings'
+    ? config
+    : data;
+  if (updateFolderName) {
     folderName = settings.title
 
     chrome
@@ -257,10 +268,10 @@ function clearPost() {
   chrome
     .bookmarks
     .removeTree(info.id);
-  chrome
-    .runtime
-    .reload();
 
-  info = {};
-  postList = [];
+  build(folderName).then(result => {
+    info = result;
+    updatePostList(result);
+    setbadge()
+  })
 }

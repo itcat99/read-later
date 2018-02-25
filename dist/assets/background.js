@@ -1,1 +1,267 @@
-webpackJsonp([1],{154:function(e,t,o){"use strict";var r,n=o(69),i=(r=n)&&r.__esModule?r:{default:r};var a,c={},s=[],m=i.default,u=m.title;function d(e){chrome.bookmarks.getChildren(e.id,function(e){s=e})}function f(){chrome.bookmarks.getChildren(c.id,function(e){var t;t=e?e.length:0,chrome.browserAction.setBadgeText({text:t>99?"+"+t:""+t})})}function h(e,t){chrome.notifications.create({iconUrl:"./icons/icon_128.png",type:"basic",title:e,message:t})}function l(){chrome.tabs.query({active:!0,currentWindow:!0},function(e){if(1!==e.length)throw"add post ERROR";var t=e[0];!function(e,t){var o={parentId:c.id,title:e,url:t},r=!0,n=!0,i=!1,a=void 0;try{for(var m,u=s[Symbol.iterator]();!(n=(m=u.next()).done);n=!0)m.value.url===t&&(r=!1)}catch(e){i=!0,a=e}finally{try{!n&&u.return&&u.return()}finally{if(i)throw a}}if(!r)return h("warning","you has the same post."),!1;chrome.bookmarks.create(o,function(e){d(c),h("success","add a read later post.")})}(t.title,t.url),f()})}(a=u,new Promise(function(e,t){chrome.bookmarks.search({title:a},function(t){t.length?(function(e){var t=e[0].id;c=Object.assign({},e[0]),e.shift(),e.forEach(function(e){chrome.bookmarks.getChildren(e.id,function(o){o.forEach(function(e){chrome.bookmarks.move(e.id,{parentId:t})}),chrome.bookmarks.remove(e.id)})})}(t),e(c)):chrome.bookmarks.create({title:a},function(t){e(t)})})})).then(function(e){c=e,d(e),f()}),chrome.contextMenus.create({title:"read later",contexts:["page"],onclick:l}),chrome.runtime.onMessage.addListener(function(e){var t=e.type,o=e.data;!function(e,t){var o;"remove"===e&&(o=t,s.forEach(function(e,t){e.id===o&&s.splice(t,1)}),chrome.bookmarks.remove(o,function(){d(c),h("success","remove post.")})),"clear"===e&&(chrome.bookmarks.removeTree(c.id),chrome.runtime.reload(),c={},s=[]),"get_data"===e&&chrome.runtime.sendMessage({type:"return_data",data:c}),"get_settings"===e&&chrome.runtime.sendMessage({type:"return_settings",data:m}),"reset_settings"!==e&&"save_settings"!==e||function(e,t){var o=void 0;t&&t.title!==u&&(o=!0),m="reset_settings"===e?i.default:t,o&&(u=m.title,chrome.bookmarks.update(c.id,{title:u}))}(e,t),f()}(t,o)}),chrome.commands.onCommand.addListener(function(e){"add-new-post"===e&&l()})}},[154]);
+webpackJsonp([1],{
+
+/***/ 154:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _config = __webpack_require__(69);
+
+var _config2 = _interopRequireDefault(_config);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/*
+ *  initializtion
+ */
+var info = {};
+var postList = [];
+var settings = _config2.default;
+
+var folderName = settings.title;
+
+build(folderName).then(function (result) {
+  info = result;
+  updatePostList(result);
+  setbadge();
+});
+
+createContxtMenus();
+listener();
+
+/*
+ * Core
+ */
+function build(title) {
+  /*****************************
+   * Maybe optimization here   *
+   *****************************/
+  return new Promise(function (resolve, reject) {
+    chrome.bookmarks.search({
+      title: title
+    }, function (bks) {
+      bks.length ? function () {
+        concatDir(bks);
+        resolve(info);
+      }() : chrome.bookmarks.create({
+        title: title
+      }, function (result) {
+        resolve(result);
+      });
+    });
+  });
+}
+
+// create a rightclick menu
+function createContxtMenus() {
+  chrome.contextMenus.create({ title: 'read later', contexts: ['page'], onclick: addPost });
+}
+
+function listener() {
+  chrome.runtime.onMessage.addListener(function (details) {
+    var type = details.type,
+        data = details.data;
+
+    update(type, data);
+  });
+
+  // listener Command
+  chrome.commands.onCommand.addListener(function (commands) {
+    if (commands === 'add-new-post') {
+      addPost();
+    }
+  });
+};
+
+/*
+ * Methods
+ */
+function updatePostList(info) {
+  chrome.bookmarks.getChildren(info.id, function (result) {
+    postList = result;
+  });
+
+  setbadge();
+}
+// ==== set popup badge ==== //
+function setbadge() {
+  if (!info.id) {
+    chrome.browserAction.setBadgeText({ text: '0' });
+    return false;
+  }
+
+  chrome.bookmarks.getChildren(info.id, function (result) {
+    var count = void 0;
+
+    count = result ? result.length : 0;
+    chrome.browserAction.setBadgeText({
+      text: count > 99 ? '+' + count : '' + count
+    });
+  });
+}
+
+function createDir() {
+  return new Promise(function (resolve, reject) {
+    chrome.bookmarks.create({
+      title: settings.title
+    }, function (result) {
+      resolve(result);
+    });
+  });
+}
+
+function concatDir(bks) {
+  var destinationId = bks[0].id;
+  info = Object.assign({}, bks[0]);
+
+  bks.shift();
+
+  bks.forEach(function (bk) {
+    chrome.bookmarks.getChildren(bk.id, function (result) {
+      result.forEach(function (item) {
+        chrome.bookmarks.move(item.id, { parentId: destinationId });
+      });
+
+      chrome.bookmarks.remove(bk.id);
+    });
+  });
+}
+
+function createMark(title, url) {
+  var config = {
+    parentId: info.id,
+    title: title,
+    url: url
+  };
+
+  var equal = true;
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = postList[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var item = _step.value;
+
+      if (item.url === url) {
+        equal = false;
+      }
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+
+  if (!equal) {
+    popMsg('warning', 'you has the same post.');
+    return false;
+  }
+
+  chrome.bookmarks.create(config, function (data) {
+    updatePostList(info);
+    popMsg('success', 'add a read later post.');
+  });
+}
+
+function removeMark(id) {
+  postList.forEach(function (post, index) {
+    if (post.id === id) {
+      postList.splice(index, 1);
+    }
+  });
+
+  chrome.bookmarks.remove(id, function () {
+    updatePostList(info);
+    popMsg('success', 'remove post.');
+  });
+}
+
+// show message
+function popMsg(title, message) {
+  chrome.notifications.create({ iconUrl: './icons/icon_128.png', type: 'basic', title: title, message: message });
+}
+
+function addPost() {
+  var config = {
+    active: true,
+    currentWindow: true
+  };
+
+  chrome.tabs.query(config, function (tabs) {
+    if (tabs.length === 1) {
+      var _tabs$ = tabs[0],
+          title = _tabs$.title,
+          url = _tabs$.url;
+
+
+      createMark(title, url);
+      setbadge();
+    } else {
+      throw 'add post ERROR';
+    }
+  });
+}
+
+// ==== run event callback ==== //
+function update(type, data) {
+  if (type === 'remove') {
+    removeMark(data);
+  }
+
+  if (type === 'clear') {
+    clearPost();
+  }
+
+  if (type === 'get_data') {
+    chrome.runtime.sendMessage({ type: 'return_data', data: info });
+  }
+
+  if (type === 'get_settings') {
+    chrome.runtime.sendMessage({ type: 'return_settings', data: settings });
+  }
+
+  if (type === 'reset_settings' || type === 'save_settings') {
+    updateSettings(type, data);
+  }
+}
+
+function updateSettings(type, data) {
+  /* update bookmark folder name */
+  var updateFolderName = void 0;
+
+  if (data && data.title !== folderName) {
+    updateFolderName = true;
+  }
+
+  settings = type === 'reset_settings' ? _config2.default : data;
+  if (updateFolderName) {
+    folderName = settings.title;
+
+    chrome.bookmarks.update(info.id, { title: folderName });
+  }
+}
+
+function clearPost() {
+  chrome.bookmarks.removeTree(info.id);
+
+  build(folderName).then(function (result) {
+    info = result;
+    updatePostList(result);
+    setbadge();
+  });
+}
+
+/***/ })
+
+},[154]);

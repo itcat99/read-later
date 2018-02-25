@@ -1,9 +1,10 @@
 {
   "manifest_version": 2,
 
-  "name": "read later",
-  "description": "This extension save pages when you want read later.",
-  "version": "0.2.1",
+  "name": "Read Later",
+  "short_name": "read later",
+  "description": "This extension save pages when you want to read later.",
+  "version": "0.3.1",
 
   "browser_action": {
     "default_icon": "./icons/icon_48.png",
