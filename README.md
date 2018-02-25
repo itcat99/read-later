@@ -1,4 +1,4 @@
-# read-later
+# Read Later
 
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 ![version](https://img.shields.io/badge/version-0.3.1-brightgreen.svg)
@@ -7,9 +7,9 @@ A chrome extension to saving links for later reading.
 
 ---
 
-# how to use
+# How to use
 
-## Local
+## local
 1. clone this to your disk => `git clone https://github.com/itcat99/read-later.git`.
 2. input `chrome://extensions` in chrome browser.
 3. click `Load unpacked extension...` on the top left.
