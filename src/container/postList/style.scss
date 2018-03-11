@@ -3,6 +3,7 @@
 .wrap{
   flex-grow: 1;
   overflow-x: hidden;
+  height: $list-height-max;
 }
 
 .list {
