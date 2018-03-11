@@ -43,13 +43,23 @@ module.exports = {
   resolve: {
     extensions: ['.json', '.js', '.jsx', '.scss']
   },
-  plugins: [
-    new webpack
-    .optimize
-    .CommonsChunkPlugin({
+  optimization: {
+    splitChunks: {
       name: 'commons',
-      filename: 'commons.js'
-    }),
+      cacheGroups:{
+        vendor:{
+          name: 'commons'
+        }
+      }
+    }
+  },
+  plugins: [
+    // new webpack
+    // .optimize
+    // .CommonsChunkPlugin({
+    //   name: 'commons',
+    //   filename: 'commons.js'
+    // }),
     new ExtractTextPlugin('style.css', {allChunks: true})
   ]
 }
