@@ -15,6 +15,8 @@ build(folderName).then(result => {
   setbadge()
 })
 
+chrome.browserAction.setBadgeBackgroundColor({color:'#4779ED'})
+
 createContxtMenus();
 listener();
 
