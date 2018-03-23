@@ -1,9 +1,15 @@
 # Read Later
 
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
-![version](https://img.shields.io/badge/version-0.3.1-brightgreen.svg)
+![version](https://img.shields.io/badge/version-v0.3.4-brightgreen.svg)
 
 A chrome extension to saving links for later reading.
+
+---
+
+![read-later](https://github.com/itcat99/read-later/blob/react/dist/icons/icon_48.png?raw=true)
+
+> The icon is provided by [Zeeman](https://dribbble.com/Zeeman)
 
 ---
 
