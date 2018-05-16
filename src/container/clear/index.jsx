@@ -1,24 +1,24 @@
-import style from './style.scss'
+import style from './style.scss';
 
-import React, {
-  Component
-} from 'react'
+import React, { Component } from 'react';
 
-class Clear extends Component{
-  constructor(props){
+class Clear extends Component {
+  constructor(props) {
     super(props);
 
     this.style = style;
   }
 
-  clear(){
+  clear() {
     this.props.clear();
   }
 
-  render(){
+  render() {
     return (
-      <button className={this.style.core} onClick={() => this.clear()}>Clear</button>
-    )
+      <button className={this.style.core} onClick={() => this.clear()}>
+        Clear
+      </button>
+    );
   }
 }
 

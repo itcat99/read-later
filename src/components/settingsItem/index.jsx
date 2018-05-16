@@ -1,6 +1,6 @@
-import style from './style.scss'
+import style from './style.scss';
 
-import React, {Component} from 'react'
+import React, { Component } from 'react';
 
 class SettingsItem extends Component {
   constructor(props) {
@@ -9,26 +9,22 @@ class SettingsItem extends Component {
     this.style = style;
   }
 
-  input(){
+  input() {
     const data = {};
     data[this.props.name] = this.$input.value;
-    this.props.change(data)
+    this.props.change(data);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.$input.value = this.props.value;
   }
 
-  componentDidUpdate(){
+  componentDidUpdate() {
     this.$input.value = this.props.value;
   }
 
   render() {
-    const {
-      title,
-      name,
-      changeinput
-    } = this.props;
+    const { title, name } = this.props;
 
     return (
       <li className={this.style.settingsItem}>
@@ -38,11 +34,12 @@ class SettingsItem extends Component {
           name={name}
           id={name}
           ref={el => {
-          this.$input = el;
-        }}
-          onInput={() => this.input()} />
+            this.$input = el;
+          }}
+          onInput={() => this.input()}
+        />
       </li>
-    )
+    );
   }
 }
 
