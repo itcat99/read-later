@@ -1,10 +1,10 @@
-import style from './style.scss'
+import style from './style.scss';
 
-import React, {Component} from 'react'
+import React, { Component } from 'react';
 /* import components */
-import PostList from '../postList'
-import Clear from '../clear'
-import Empty from '../empty'
+import PostList from '../postList';
+import Clear from '../clear';
+import Empty from '../empty';
 
 /* main */
 class Preview extends Component {
@@ -19,17 +19,17 @@ class Preview extends Component {
       if (post.id === id) {
         this.posts.splice(index, 1);
       }
-    })
+    });
 
-    chrome
-      .runtime
-      .sendMessage({
+    chrome.runtime.sendMessage(
+      {
         type: 'remove',
-        data: id
-      }, () => {
+        data: id,
+      },
+      () => {
         this.props.updateState(this.posts);
-      });
-
+      },
+    );
   }
 
   render() {
@@ -41,16 +41,14 @@ class Preview extends Component {
           <PostList
             posts={this.posts}
             settings={this.props.settings}
-            remove={this
-            .removePost
-            .bind(this)}/>
+            remove={this.removePost.bind(this)}
+          />
 
-          <Clear clear={this.props.clear}/>
+          <Clear clear={this.props.clear} />
         </section>
-      )
-    } else {
-      return (<Empty/>)
+      );
     }
+    return <Empty />;
   }
 }
 

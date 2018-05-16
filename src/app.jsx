@@ -1,153 +1,147 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react';
 
 /* import components */
-import Header from './container/header'
-import Preview from './container/preview'
-import Settings from './container/settings'
+import Header from './container/header';
+import Preview from './container/preview';
+import Settings from './container/settings';
 
 /* import styles */
-import style from './app.scss'
+import style from './app.scss';
 
 /* main */
 class App extends Component {
   constructor(props) {
     super(props);
 
-    this.name = "Read Later";
+    this.name = 'Read Later';
     this.style = style;
 
     this.state = {
       posts: [],
       settings: {},
-      settingsPanelOpen: false
-    }
+      settingsPanelOpen: false,
+    };
   }
-  componentDidMount() {
-    let posts = [];
-    let that = this;
-    // ==== get post list data ==== //
-    chrome
-      .runtime
-      .sendMessage({type: 'get_data'});
 
-    // ==== create post list item on HTML ==== //
-    chrome
-      .runtime
-      .onMessage
-      .addListener(async details => {
-        const {type, data} = details;
-
-        if (type === 'return_data') {
-          posts = await this.getList(data);
-          that.setState({posts})
-        }
-      })
-  }
   componentWillMount() {
     // let posts = [];
-    let that = this;
+    const that = this;
     // ==== get post list data ==== // chrome   .runtime   .sendMessage({ type:
     // 'get_data' }); ==== get settings ==== //
-    chrome
-      .runtime
-      .sendMessage({type: 'get_settings'});
+    chrome.runtime.sendMessage({ type: 'get_settings' });
 
     // ==== create post list item on HTML ==== //
-    chrome
-      .runtime
-      .onMessage
-      .addListener(async details => {
-        const {type, data} = details;
+    chrome.runtime.onMessage.addListener(async details => {
+      const { type, data } = details;
 
-        if (type === 'return_settings') {
-          that.setState({settings: data})
-        }
+      if (type === 'return_settings') {
+        that.setState({ settings: data });
+      }
 
-        // if (type === 'return_data') {   posts = await this.getList(data);
-        // that.setState({ posts }) }
-      })
+      // if (type === 'return_data') {   posts = await this.getList(data);
+      // that.setState({ posts }) }
+    });
+  }
+
+  componentDidMount() {
+    let posts = [];
+    const that = this;
+    // ==== get post list data ==== //
+    chrome.runtime.sendMessage({ type: 'get_data' });
+
+    // ==== create post list item on HTML ==== //
+    chrome.runtime.onMessage.addListener(async details => {
+      const { type, data } = details;
+
+      if (type === 'return_data') {
+        posts = await this.getList(data);
+        that.setState({ posts });
+      }
+    });
   }
 
   getList(data) {
     return new Promise((resolve, reject) => {
-      chrome
-        .bookmarks
-        .getChildren(data.id, result => {
-          if (!result.length) {
-            reject();
-          }
+      chrome.bookmarks.getChildren(data.id, result => {
+        if (!result.length) {
+          reject();
+        }
 
-          const posts = [];
+        const posts = [];
 
-          result.forEach(bk => {
-            this.addPost(bk, posts);
-          })
+        result.forEach(bk => {
+          this.addPost(bk, posts);
+        });
 
-          resolve(posts);
-        })
-    })
-  }
-
-  addPost(details, postList) {
-    const {url, id, title} = details;
-    const imgsrc = this.getIcon(url);
-
-    postList.push({url, id, title, imgsrc, show: true});
+        resolve(posts);
+      });
+    });
   }
 
   getIcon(url) {
     const src = this.state.settings.favicon_api
-      ? `${this.state.settings['favicon_api']}${url.replace(/^(https|http):\/\//, '')}`
-      : `${url.match(/(^[a-zA-z]+:\/\/).*?\//)[0]}/favicon.ico`
+      ? `${this.state.settings.favicon_api}${url.replace(
+          /^(https|http):\/\//,
+          '',
+        )}`
+      : `${url.match(/(^[a-zA-z]+:\/\/).*?\//)[0]}/favicon.ico`;
 
     return src;
   }
 
-  updateState(posts) {
-    this.setState({posts});
+  addPost(details, postList) {
+    const { url, id, title } = details;
+    const imgsrc = this.getIcon(url);
+
+    postList.push({
+      url,
+      id,
+      title,
+      imgsrc,
+      show: true,
+    });
   }
 
-  search(val) {
-    const posts = this.state.posts;
+  updateState(posts) {
+    this.setState({ posts });
+  }
 
-    posts.forEach(post => {
-      const title = post
-        .title
-        .toLowerCase();
+  search = val => {
+    const { posts } = this.state;
+
+    posts.forEach(itemPost => {
+      const title = itemPost.title.toLowerCase();
 
       if (title.indexOf(val.toLowerCase()) < 0) {
-        post.show = false;
+        itemPost.show = false;
       } else {
-        post.show = true;
+        itemPost.show = true;
       }
-    })
+    });
 
-    this.setState(Object.assign({}, this.state, {posts}));
-  }
+    this.setState(Object.assign({}, this.state, { posts }));
+  };
 
   clear() {
-    chrome
-      .runtime
-      .sendMessage({
-        type: 'clear'
-      }, () => {
-        this.setState({posts: []})
-      })
+    chrome.runtime.sendMessage(
+      {
+        type: 'clear',
+      },
+      () => {
+        this.setState({ posts: [] });
+      },
+    );
   }
 
   updateSetting(type, data) {
     switch (type) {
       case 'reset':
-        chrome
-          .runtime
-          .sendMessage({type: 'reset_settings'});
-        this.setState({settings: data});
+        chrome.runtime.sendMessage({ type: 'reset_settings' });
+        this.setState({ settings: data });
         break;
       case 'save':
-        chrome
-          .runtime
-          .sendMessage({type: 'save_settings', data});
-        this.setState({settings: data});
+        chrome.runtime.sendMessage({ type: 'save_settings', data });
+        this.setState({ settings: data });
         break;
       default:
         break;
@@ -156,8 +150,8 @@ class App extends Component {
 
   toggleSettingsPanel() {
     this.setState({
-      settingsPanelOpen: !this.state.settingsPanelOpen
-    })
+      settingsPanelOpen: !this.state.settingsPanelOpen,
+    });
   }
 
   render() {
@@ -165,32 +159,23 @@ class App extends Component {
       <div className={this.style.core}>
         <Header
           title={this.name}
-          search={this
-          .search
-          .bind(this)}
-          openSettingsPanel={this
-          .toggleSettingsPanel
-          .bind(this)}/>
+          search={this.search.bind(this)}
+          openSettingsPanel={this.toggleSettingsPanel.bind(this)}
+        />
         <Preview
           posts={this.state.posts}
-          updateState={this
-          .updateState
-          .bind(this)}
-          clear={this
-          .clear
-          .bind(this)}
-          settings={this.state.settings}/>
+          updateState={this.updateState.bind(this)}
+          clear={this.clear.bind(this)}
+          settings={this.state.settings}
+        />
         <Settings
-          updateSetting={this
-          .updateSetting
-          .bind(this)}
+          updateSetting={this.updateSetting.bind(this)}
           settings={this.state.settings}
           isOpen={this.state.settingsPanelOpen}
-          closeSettingsPanel={this
-          .toggleSettingsPanel
-          .bind(this)}/>
+          closeSettingsPanel={this.toggleSettingsPanel.bind(this)}
+        />
       </div>
-    )
+    );
   }
 }
 

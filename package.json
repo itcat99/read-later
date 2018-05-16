@@ -5,26 +5,43 @@
   "main": "index.js",
   "devDependencies": {
     "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.2",
     "babel-loader": "^7.1.2",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-minify": "^0.3.0",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^0.28.10",
+    "eslint": "^4.19.1",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-prettier": "^2.6.0",
+    "eslint-plugin-react": "^7.8.1",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "node-sass": "^4.7.2",
+    "prettier": "1.12.1",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.20.1",
     "svg-url-loader": "^2.3.1",
     "uglifyjs-webpack-plugin": "^1.1.8",
     "webpack": "^4.0.0-beta.3",
-    "webpack-cli": "^2.0.11"
+    "webpack-cli": "^2.0.11",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.1.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.prod.js",
     "dev": "webpack --config webpack.dev.js --watch --display-modules --sort-modules-by size",
-    "csscomb": "csscomb ./src/style.scss"
+    "csscomb": "csscomb ./src/style.scss",
+    "format:js": "eslint --fix --color ./src",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "yarn run format:js -- ",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
@@ -44,6 +61,7 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "csscomb": "^4.2.0",
+    "prop-types": "^15.6.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
   }

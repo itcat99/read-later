@@ -1,6 +1,6 @@
-import style from './style.scss'
+import style from './style.scss';
 
-import React, {Component} from 'react'
+import React, { Component } from 'react';
 
 class Search extends Component {
   constructor(props) {
@@ -14,18 +14,18 @@ class Search extends Component {
 
     clearTimeout(input);
 
-      input = setTimeout(() => {
-        const value = this.input.value;
+    input = setTimeout(() => {
+      const value = this.input.value;
 
-        this.searching(value);
-      }, 300);
+      this.searching(value);
+    }, 300);
   }
 
-  searching(val){
+  searching(val) {
     this.props.search(val);
   }
 
-  clear(){
+  clear() {
     this.input.value = '';
     this.props.search('');
   }
@@ -38,11 +38,12 @@ class Search extends Component {
           placeholder="please search..."
           onInput={() => this.search()}
           ref={input => {
-          this.input = input
-        }}/>
-        <span className={this.style.coreRemove} onClick={() => this.clear()}></span>
+            this.input = input;
+          }}
+        />
+        <span className={this.style.coreRemove} onClick={() => this.clear()} />
       </div>
-    )
+    );
   }
 }
 

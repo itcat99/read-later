@@ -1,180 +1,128 @@
 import config from './config';
+import bookmarks from './utils';
 
-/*
- *  initializtion
- */
 let info = {};
 let postList = [];
 let settings = config;
 
 let folderName = settings.title;
 
-build(folderName).then(result => {
-  info = result;
-  updatePostList(result);
-  setbadge()
-})
-
-chrome.browserAction.setBadgeBackgroundColor({color:'#4779ED'})
-
-createContxtMenus();
-listener();
-
-/*
- * Core
- */
-function build(title) {
-  /*****************************
-   * Maybe optimization here   *
-   *****************************/
-  return new Promise((resolve, reject) => {
-    chrome
-      .bookmarks
-      .search({
-        title
-      }, bks => {
-        bks.length
-          ? (() => {
-            concatDir(bks)
-            resolve(info);
-          })()
-          : chrome
-            .bookmarks
-            .create({
-              title
-            }, result => {
-              resolve(result)
-            })
-      })
-  })
-}
-
-// create a rightclick menu
-function createContxtMenus() {
-  chrome
-    .contextMenus
-    .create({title: 'read later', contexts: ['page'], onclick: addPost})
-}
-
-function listener() {
-  chrome
-    .runtime
-    .onMessage
-    .addListener(details => {
-      const {type, data} = details;
-      update(type, data)
-    })
-
-  // listener Command
-  chrome
-    .commands
-    .onCommand
-    .addListener(commands => {
-      if (commands === 'add-new-post') {
-        addPost();
-      }
-    })
-};
+chrome.browserAction.setPopup({ popup: './popup.html' });
 
 /*
  * Methods
  */
-function updatePostList(info) {
-  chrome
-    .bookmarks
-    .getChildren(info.id, result => {
-      postList = result;
-    })
-
-  setbadge();
+// ==== set popup badge ==== // show message
+function popMsg(title, message) {
+  chrome.notifications.create({
+    iconUrl: './icons/icon_128.png',
+    type: 'basic',
+    title,
+    message,
+  });
 }
-// ==== set popup badge ==== //
+
 function setbadge() {
   if (!info.id) {
-    chrome
-      .browserAction
-      .setBadgeText({text: `0`})
+    chrome.browserAction.setBadgeText({ text: '0' });
     return false;
   }
 
-  chrome
-    .bookmarks
-    .getChildren(info.id, result => {
-      let count;
+  return bookmarks('getChildren', info.id).then(result => {
+    const count = result ? result.length : 0;
 
-      count = result
-        ? result.length
-        : 0;
-      chrome
-        .browserAction
-        .setBadgeText({
-          text: count > 99
-            ? `+${count}`
-            : `${count}`
-        });
-    })
+    chrome.browserAction.setBadgeText({
+      text: count > 99 ? `+${count}` : `${count}`,
+    });
+  });
 }
 
-function createDir() {
-  return new Promise((resolve, reject) => {
-    chrome
-      .bookmarks
-      .create({
-        title: settings.title
-      }, result => {
-        resolve(result)
-      })
-  })
-}
-
-function concatDir(bks) {
-  const destinationId = bks[0].id;
-  info = Object.assign({}, bks[0]);
-
-  bks.shift();
-
-  bks.forEach(bk => {
-    chrome
-      .bookmarks
-      .getChildren(bk.id, result => {
-        result.forEach(item => {
-          chrome
-            .bookmarks
-            .move(item.id, {parentId: destinationId});
-        })
-
-        chrome
-          .bookmarks
-          .remove(bk.id)
-      })
-  })
+function updatePostList() {
+  bookmarks('getChildren', info.id).then(result => {
+    postList = result;
+    setbadge();
+  });
 }
 
 function createMark(title, url) {
-  const config = {
+  const createMarkConfig = {
     parentId: info.id,
     title,
-    url
-  }
+    url,
+  };
 
   let equal = true;
-  for (let item of postList) {
+  postList.forEach(item => {
     if (item.url === url) {
       equal = false;
     }
-  }
+  });
 
   if (!equal) {
     popMsg('warning', 'you has the same post.');
     return false;
   }
 
-  chrome
-    .bookmarks
-    .create(config, data => {
-      updatePostList(info)
-      popMsg('success', 'add a read later post.')
-    })
+  return bookmarks('create', createMarkConfig).then(() => {
+    updatePostList();
+    popMsg('success', 'add a read later post.');
+  });
+}
+
+function concatDir(bks) {
+  const destinationId = bks[0].id;
+  info = Object.assign({}, bks[0]);
+  bks.shift();
+
+  bks.forEach(bk => {
+    bookmarks('getChildren', bk.id)
+      .then(result => {
+        result.forEach(item => {
+          bookmarks('move', item.id, { parentId: destinationId });
+        });
+      })
+      .then(() => bookmarks('remove', bk.id));
+  });
+}
+
+function addPost() {
+  const addPostConfig = {
+    active: true,
+    currentWindow: true,
+  };
+
+  chrome.tabs.query(addPostConfig, tabs => {
+    if (tabs.length === 1) {
+      const { title, url } = tabs[0];
+
+      createMark(title, url);
+      setbadge();
+    } else {
+      throw new Error('add post ERROR');
+    }
+  });
+}
+
+// ==== run event callback ==== //
+function updateSettings(type, data) {
+  /* update bookmark folder name */
+  let updateFolderName;
+
+  if (data && data.title !== folderName) {
+    updateFolderName = true;
+  }
+
+  settings = type === 'reset_settings' ? config : data;
+  if (updateFolderName) {
+    folderName = settings.title;
+
+    bookmarks('update', info.id, {
+      title: folderName,
+    });
+    // chrome
+    //   .bookmarks
+    //   .update(info.id, { title: folderName });
+  }
 }
 
 function removeMark(id) {
@@ -182,44 +130,43 @@ function removeMark(id) {
     if (post.id === id) {
       postList.splice(index, 1);
     }
-  })
+  });
 
-  chrome
-    .bookmarks
-    .remove(id, () => {
-      updatePostList(info)
-      popMsg('success', 'remove post.')
+  bookmarks('remove', id).then(() => {
+    updatePostList();
+    popMsg('success', 'remove post.');
+  });
+}
+
+function build(title) {
+  return new Promise((resolve, reject) => {
+    bookmarks('search', { title })
+      .then(bks => {
+        if (bks.length) {
+          concatDir(bks);
+          resolve(info);
+        } else {
+          bookmarks('create', { title }).then(result => {
+            resolve(result);
+          });
+        }
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+}
+
+function clearPost() {
+  bookmarks('removeTree', info.id)
+    .then(() => build(folderName))
+    .then(result => {
+      info = result;
+      updatePostList();
+      setbadge();
     });
 }
 
-// show message
-function popMsg(title, message) {
-  chrome
-    .notifications
-    .create({iconUrl: './icons/icon_128.png', type: 'basic', title, message})
-}
-
-function addPost() {
-  const config = {
-    active: true,
-    currentWindow: true
-  }
-
-  chrome
-    .tabs
-    .query(config, tabs => {
-      if (tabs.length === 1) {
-        const {title, url} = tabs[0];
-
-        createMark(title, url);
-        setbadge();
-      } else {
-        throw 'add post ERROR';
-      }
-    })
-}
-
-// ==== run event callback ==== //
 function update(type, data) {
   if (type === 'remove') {
     removeMark(data);
@@ -230,50 +177,52 @@ function update(type, data) {
   }
 
   if (type === 'get_data') {
-    chrome
-      .runtime
-      .sendMessage({type: 'return_data', data: info})
+    chrome.runtime.sendMessage({ type: 'return_data', data: info });
   }
 
   if (type === 'get_settings') {
-    chrome
-      .runtime
-      .sendMessage({type: 'return_settings', data: settings})
+    chrome.runtime.sendMessage({ type: 'return_settings', data: settings });
   }
 
   if (type === 'reset_settings' || type === 'save_settings') {
-    updateSettings(type, data)
+    updateSettings(type, data);
   }
 }
 
-function updateSettings(type, data) {
-  /* update bookmark folder name */
-  let updateFolderName;
-
-  if (data && data.title !== folderName) {
-    updateFolderName = true;
-  }
-
-  settings = type === 'reset_settings'
-    ? config
-    : data;
-  if (updateFolderName) {
-    folderName = settings.title
-
-    chrome
-      .bookmarks
-      .update(info.id, {title: folderName})
-  }
+// create a rightclick menu
+function createContxtMenus() {
+  chrome.contextMenus.create({
+    title: 'read later',
+    contexts: ['page'],
+    onclick: addPost,
+  });
 }
 
-function clearPost() {
-  chrome
-    .bookmarks
-    .removeTree(info.id);
+function listener() {
+  chrome.runtime.onMessage.addListener(details => {
+    const { type, data } = details;
+    update(type, data);
+  });
 
-  build(folderName).then(result => {
-    info = result;
-    updatePostList(result);
-    setbadge()
-  })
+  // listener Command
+  chrome.commands.onCommand.addListener(commands => {
+    if (commands === 'add-new-post') {
+      addPost();
+    }
+  });
 }
+
+/*
+ *  initializtion
+ */
+
+build(folderName).then(result => {
+  info = result;
+  updatePostList();
+  setbadge();
+});
+
+chrome.browserAction.setBadgeBackgroundColor({ color: '#4779ED' });
+
+createContxtMenus();
+listener();

@@ -1,6 +1,7 @@
-import style from './style.scss'
+import style from './style.scss';
+import PropTypes from 'prop-types';
 
-import React, {Component} from 'react'
+import React, { Component } from 'react';
 
 // import config from '../../config';
 
@@ -12,38 +13,57 @@ class Post extends Component {
     this.setIcon();
   }
 
-  setIcon(){
+  setIcon() {
     setTimeout(() => {
-      if(!this.complete){
+      if (!this.complete) {
         // ^(https|http)?:\/\/.*\/
         this.el.setAttribute('src', this.props.settings.img_default);
       }
-    }, this.props.settings.img_timeout)
+    }, this.props.settings.img_timeout);
   }
 
-  initLoad(el){
-    if(el){
+  initLoad(el) {
+    if (el) {
       this.el = el;
     }
     this.complete = this.el.complete;
   }
 
-  loadImg(){
+  loadImg() {
     this.complete = true;
   }
 
   render() {
-    const {imgsrc, title, url, remove, id, show} = this.props;
-    const coreClassName = show? this.style.core: `${this.style.core} ${this.style.coreHidden}`;
+    const { imgsrc, title, url, remove, id, show } = this.props;
+    const coreClassName = show
+      ? this.style.core
+      : `${this.style.core} ${this.style.coreHidden}`;
 
     return (
       <li className={coreClassName}>
-        <img className={this.style.coreIcon} src={imgsrc} alt={title} ref={(el) => this.initLoad(el)} onLoad={() =>this.loadImg()} />
-        <a className={this.style.coreLink} href={url} target="_blank">{title}</a>
-        <span className={this.style.coreRemove} onClick={() => remove(id)}></span>
+        <img
+          className={this.style.coreIcon}
+          src={imgsrc}
+          alt={title}
+          ref={el => this.initLoad(el)}
+          onLoad={() => this.loadImg()}
+        />
+        <a className={this.style.coreLink} href={url} target="_blank">
+          {title}
+        </a>
+        <span
+          className={this.style.coreRemove}
+          onClick={() => remove(id)}
+          onKeyDown={this.onKeyDown}
+          role="remove-button"
+        />
       </li>
-    )
+    );
   }
 }
+
+Post.PropTypes = {
+  imgsrc: PropTypes.string.isRequired,
+};
 
 export default Post;

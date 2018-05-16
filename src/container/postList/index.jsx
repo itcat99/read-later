@@ -1,8 +1,8 @@
-import style from './style.scss'
+import style from './style.scss';
 
-import React, {Component} from 'react'
+import React, { Component } from 'react';
 /* import components */
-import Post from '../../components/post'
+import Post from '../../components/post';
 
 /* main */
 class PostList extends Component {
@@ -13,19 +13,15 @@ class PostList extends Component {
   }
 
   remove(id) {
-    this
-      .props
-      .remove(id);
+    this.props.remove(id);
   }
 
   getPosts() {
-    return this
-    .props
-    .posts
-    .map(post => {
-      const {imgsrc, title, url, id, show} = post;
+    return this.props.posts.map(post => {
+      const { imgsrc, title, url, id, show } = post;
 
-        return (<Post
+      return (
+        <Post
           imgsrc={imgsrc}
           url={url}
           title={title}
@@ -33,22 +29,20 @@ class PostList extends Component {
           id={id}
           show={show}
           settings={this.props.settings}
-          remove={this
-          .remove
-          .bind(this)}/>)
-      })
+          remove={this.remove.bind(this)}
+        />
+      );
+    });
   }
 
   render() {
-    this.posts = this.getPosts()
+    this.posts = this.getPosts();
 
     return (
       <div className={this.style.wrap}>
-        <ul className={this.style.list}>
-          {this.posts}
-        </ul>
+        <ul className={this.style.list}>{this.posts}</ul>
       </div>
-    )
+    );
   }
 }
 

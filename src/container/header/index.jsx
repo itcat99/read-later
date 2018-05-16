@@ -1,30 +1,28 @@
 import style from './style.scss';
 
-import React, {
-  Component
-} from 'react'
+import React, { Component } from 'react';
 
 /* import components */
-import Search from '../../components/search'
+import Search from '../../components/search';
 
 /* main */
-class Header extends Component{
-  constructor(props){
+class Header extends Component {
+  constructor(props) {
     super(props);
 
     this.style = style;
   }
 
-  getVersion(){
+  getVersion() {
     return chrome.runtime.getManifest().version;
   }
 
-  openSettingsPanel(){
+  openSettingsPanel() {
     this.props.openSettingsPanel();
   }
 
-  render(){
-    const {title, search} = this.props;
+  render() {
+    const { title, search } = this.props;
 
     return (
       <header className={this.style.header}>
@@ -34,22 +32,34 @@ class Header extends Component{
           <span>{this.getVersion()}</span>
         </div>
         {/* setting btn */}
-        <span className={this.style.settings} title="settings" onClick={() => this.openSettingsPanel()}></span>
+        <span
+          className={this.style.settings}
+          title="settings"
+          onClick={() => this.openSettingsPanel()}
+        />
 
         {/* contcat */}
         <div className={this.style.headerContact}>
-          <a target="_blank" href="https://github.com/itcat99/read-later">
-            <span className={this.style.git}></span>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://github.com/itcat99/read-later"
+          >
+            <span className={this.style.git} />
           </a>
-          <a target="_blank" href="mailto:boiping2010@gmail.com">
-            <span className={this.style.email}></span>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="mailto:boiping2010@gmail.com"
+          >
+            <span className={this.style.email} />
           </a>
         </div>
 
         {/* search */}
         <Search search={search} />
       </header>
-    )
+    );
   }
 }
 
