@@ -1,10 +1,10 @@
-const commons = require('./webpack.commons')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const commons = require('./webpack.commons');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 // const plugins = [].concat(commons.plugins);
 
 module.exports = Object.assign({}, commons, {
-  "mode": "production",
+  mode: 'production',
   optimization: {
     minimizer: [
       // we specify a custom UglifyJsPlugin here to get source maps in production
@@ -14,10 +14,10 @@ module.exports = Object.assign({}, commons, {
         uglifyOptions: {
           compress: true,
           ecma: 6,
-          mangle: true
+          mangle: true,
         },
-        sourceMap: true
-      })
-    ]
-  }
-})
+        sourceMap: true,
+      }),
+    ],
+  },
+});
