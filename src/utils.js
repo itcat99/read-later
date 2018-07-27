@@ -1,15 +1,11 @@
 export default function bookmarks(type, ...config) {
   return new Promise((resolve, reject) => {
-    chrome.bookmarks[type](...config, bks => {
-      if (type === 'remove' || type === 'removeTree') {
-        resolve();
-      }
-
-      if (bks) {
-        resolve(bks);
-      } else {
-        reject(bks);
-      }
-    });
+    try {
+      chrome.bookmarks[type](...config, result => {
+        resolve(result);
+      });
+    } catch (error) {
+      reject(error);
+    }
   });
 }
