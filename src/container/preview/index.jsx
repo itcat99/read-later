@@ -1,13 +1,16 @@
 import style from './style.scss';
 
 import React, { Component } from 'react';
+
+import Wrapper from '../../Wrapper';
 /* import components */
 import PostList from '../postList';
 import Clear from '../clear';
 import Empty from '../empty';
 
+const { Consumer } = Wrapper;
 /* main */
-class Preview extends Component {
+class Root extends Component {
   constructor(props) {
     super(props);
 
@@ -33,23 +36,30 @@ class Preview extends Component {
   }
 
   render() {
-    this.posts = this.props.posts;
+    const { posts } = this.props;
+    if (!posts || !posts.length) return <Empty />;
 
-    if (this.posts.length) {
-      return (
-        <section className={this.style.core}>
-          <PostList
-            posts={this.posts}
-            settings={this.props.settings}
-            remove={this.removePost.bind(this)}
-          />
+    this.posts = posts;
+    const { settings } = this.props;
+    return (
+      <section className={this.style.core}>
+        <PostList
+          posts={posts}
+          settings={settings}
+          remove={this.removePost.bind(this)}
+        />
 
-          <Clear clear={this.props.clear} />
-        </section>
-      );
-    }
-    return <Empty />;
+        <Clear />
+      </section>
+    );
   }
 }
 
+const Preview = props => (
+  <Consumer>
+    {data => {
+      return <Root {...data} {...props} />;
+    }}
+  </Consumer>
+);
 export default Preview;

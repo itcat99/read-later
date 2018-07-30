@@ -8,6 +8,9 @@ import Settings from './container/settings';
 /* import styles */
 import style from './app.scss';
 
+import Wrapper from './Wrapper';
+
+const { Provider } = Wrapper;
 /* main */
 class App extends Component {
   constructor(props) {
@@ -21,25 +24,23 @@ class App extends Component {
       settings: {},
       settingsPanelOpen: false,
     };
+
+    this.init();
   }
 
-  componentWillMount() {
+  init() {
     // let posts = [];
     const that = this;
-    // ==== get post list data ==== // chrome   .runtime   .sendMessage({ type:
-    // 'get_data' }); ==== get settings ==== //
+    // ==== get settings ==== //
     chrome.runtime.sendMessage({ type: 'get_settings' });
 
     // ==== create post list item on HTML ==== //
-    chrome.runtime.onMessage.addListener(async details => {
+    chrome.runtime.onMessage.addListener(details => {
       const { type, data } = details;
 
       if (type === 'return_settings') {
         that.setState({ settings: data });
       }
-
-      // if (type === 'return_data') {   posts = await this.getList(data);
-      // that.setState({ posts }) }
     });
   }
 
@@ -55,6 +56,7 @@ class App extends Component {
 
       if (type === 'return_data') {
         posts = await this.getList(data);
+
         that.setState({ posts });
       }
     });
@@ -93,13 +95,7 @@ class App extends Component {
     const { url, id, title } = details;
     const imgsrc = this.getIcon(url);
 
-    postList.push({
-      url,
-      id,
-      title,
-      imgsrc,
-      show: true,
-    });
+    postList.push({ url, id, title, imgsrc, show: true });
   }
 
   updateState(posts) {
@@ -155,26 +151,31 @@ class App extends Component {
   }
 
   render() {
+    const config = {
+      posts: this.state.posts,
+      clear: this.clear.bind(this),
+      settings: this.state.settings,
+    };
     return (
-      <div className={this.style.core}>
-        <Header
-          title={this.name}
-          search={this.search.bind(this)}
-          openSettingsPanel={this.toggleSettingsPanel.bind(this)}
-        />
-        <Preview
-          posts={this.state.posts}
-          updateState={this.updateState.bind(this)}
-          clear={this.clear.bind(this)}
-          settings={this.state.settings}
-        />
-        <Settings
-          updateSetting={this.updateSetting.bind(this)}
-          settings={this.state.settings}
-          isOpen={this.state.settingsPanelOpen}
-          closeSettingsPanel={this.toggleSettingsPanel.bind(this)}
-        />
-      </div>
+      <Provider value={config}>
+        <div className={this.style.core}>
+          <Header
+            title={this.name}
+            search={this.search.bind(this)}
+            openSettingsPanel={this.toggleSettingsPanel.bind(this)}
+          />
+          <Preview
+            // posts={this.state.posts}
+            updateState={this.updateState.bind(this)}
+          />
+          <Settings
+            updateSetting={this.updateSetting.bind(this)}
+            settings={this.state.settings}
+            isOpen={this.state.settingsPanelOpen}
+            closeSettingsPanel={this.toggleSettingsPanel.bind(this)}
+          />
+        </div>
+      </Provider>
     );
   }
 }

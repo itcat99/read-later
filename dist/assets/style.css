@@ -10,34 +10,6 @@
 /* post item -> icon */
 /* post item -> link */
 /* clear */
-.app__core___20EMV {
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-  padding: 0;
-  min-height: 300px;
-  max-height: 500px;
-  width: 320px; }
-
-body {
-  margin: 0; }
-
-ul {
-  padding: 0;
-  list-style: none;
-  margin: 0; }
-/* global vars */
-/* panel */
-/* header */
-/* header -> info */
-/* header -> search */
-/* header -> concat */
-/* scroll */
-/* post list */
-/* post item */
-/* post item -> icon */
-/* post item -> link */
-/* clear */
 .style__header___39Dv1 {
   position: relative;
   display: flex;
@@ -252,6 +224,31 @@ ul {
       transition: opacity 500ms; }
   .style__coreHidden___2_mTt {
     display: none; }
+/* global vars */
+/* panel */
+/* header */
+/* header -> info */
+/* header -> search */
+/* header -> concat */
+/* scroll */
+/* post list */
+/* post item */
+/* post item -> icon */
+/* post item -> link */
+/* clear */
+.style__core___9a0rw {
+  border: none;
+  background: #ce4b34;
+  color: #fff;
+  padding: 6px;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 300ms; }
+  .style__core___9a0rw:focus {
+    outline: none; }
+  .style__core___9a0rw:hover {
+    opacity: .8;
+    transition: opacity 300ms; }
 .style__empty___1sWjZ {
   display: flex;
   flex-flow: column;
@@ -296,31 +293,6 @@ ul {
     background-color: #ce4b34; }
   .style__actions___5RJw4 .style__reset___2yBS3 {
     background-color: #4b34ce; }
-/* global vars */
-/* panel */
-/* header */
-/* header -> info */
-/* header -> search */
-/* header -> concat */
-/* scroll */
-/* post list */
-/* post item */
-/* post item -> icon */
-/* post item -> link */
-/* clear */
-.style__core___9a0rw {
-  border: none;
-  background: #ce4b34;
-  color: #fff;
-  padding: 6px;
-  cursor: pointer;
-  opacity: 1;
-  transition: opacity 300ms; }
-  .style__core___9a0rw:focus {
-    outline: none; }
-  .style__core___9a0rw:hover {
-    opacity: .8;
-    transition: opacity 300ms; }
 .style__settingsItem___2L0Fd {
   display: flex;
   margin-bottom: 6px;
@@ -340,3 +312,31 @@ ul {
     .style__settingsItem___2L0Fd input:focus {
       outline: none;
       border-bottom-color: rgba(75, 52, 206, 0.5); }
+/* global vars */
+/* panel */
+/* header */
+/* header -> info */
+/* header -> search */
+/* header -> concat */
+/* scroll */
+/* post list */
+/* post item */
+/* post item -> icon */
+/* post item -> link */
+/* clear */
+.app__core___20EMV {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  padding: 0;
+  min-height: 300px;
+  max-height: 500px;
+  width: 320px; }
+
+body {
+  margin: 0; }
+
+ul {
+  padding: 0;
+  list-style: none;
+  margin: 0; }
