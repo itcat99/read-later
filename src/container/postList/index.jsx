@@ -1,21 +1,14 @@
-import style from './style.scss';
+import { StyledRoot, List } from "./styled";
 
-import React, { Component } from 'react';
+import React, { PureComponent } from "react";
 /* import components */
-import Post from '../../components/post';
+import Post from "../../components/post";
+import Wrapper from "../../Wrapper";
+
+const { Consumer } = Wrapper;
 
 /* main */
-class PostList extends Component {
-  constructor(props) {
-    super(props);
-
-    this.style = style;
-  }
-
-  remove(id) {
-    this.props.remove(id);
-  }
-
+class Root extends PureComponent {
   getPosts() {
     return this.props.posts.map(post => {
       const { imgsrc, title, url, id, show } = post;
@@ -28,8 +21,6 @@ class PostList extends Component {
           key={id}
           id={id}
           show={show}
-          settings={this.props.settings}
-          remove={this.remove.bind(this)}
         />
       );
     });
@@ -39,11 +30,21 @@ class PostList extends Component {
     this.posts = this.getPosts();
 
     return (
-      <div className={this.style.wrap}>
-        <ul className={this.style.list}>{this.posts}</ul>
-      </div>
+      <StyledRoot>
+        <List>{this.posts}</List>
+      </StyledRoot>
     );
   }
 }
+
+const PostList = props => (
+  <Consumer>
+    {data => {
+      const { settings } = data;
+
+      return <Root {...props} settings={settings} />;
+    }}
+  </Consumer>
+);
 
 export default PostList;

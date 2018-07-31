@@ -33,9 +33,7 @@ class SettingsItem extends Component {
           type="text"
           name={name}
           id={name}
-          ref={el => {
-            this.$input = el;
-          }}
+          ref={el => (this.$input = el)}
           onInput={() => this.input()}
         />
       </li>

@@ -1,8 +1,11 @@
 import style from './style.scss';
 
 import React, { Component } from 'react';
+import Wrapper from '../../Wrapper';
 
-class Search extends Component {
+const { Consumer } = Wrapper;
+
+class Root extends Component {
   constructor(props) {
     super(props);
 
@@ -46,5 +49,14 @@ class Search extends Component {
     );
   }
 }
+
+const Search = props => (
+  <Consumer>
+    {data => {
+      const { search } = data;
+      return <Root search={search} {...props} />;
+    }}
+  </Consumer>
+);
 
 export default Search;

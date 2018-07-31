@@ -1,33 +1,36 @@
-import style from './style.scss';
-import PropTypes from 'prop-types';
+import { StyledRoot, RemoveBtn, Link, Icon } from "./styled";
+import PropTypes from "prop-types";
 
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-// import config from '../../config';
+import Wrapper from "../../Wrapper";
+import PreviewWrapper from "../../container/preview/PreviewWrapper";
 
-class Post extends Component {
+const { Consumer } = PreviewWrapper;
+const { Consumer: RootConsumer } = Wrapper;
+
+class Root extends Component {
   constructor(props) {
     super(props);
 
-    this.style = style;
     this.setIcon();
   }
 
-  setIcon() {
+  setIcon = () => {
     setTimeout(() => {
       if (!this.complete) {
         // ^(https|http)?:\/\/.*\/
-        this.el.setAttribute('src', this.props.settings.img_default);
+        this.el.setAttribute("src", this.props.settings.img_default);
       }
     }, this.props.settings.img_timeout);
-  }
+  };
 
-  initLoad(el) {
+  initLoad = el => {
     if (el) {
       this.el = el;
     }
     this.complete = this.el.complete;
-  }
+  };
 
   loadImg() {
     this.complete = true;
@@ -35,35 +38,46 @@ class Post extends Component {
 
   render() {
     const { imgsrc, title, url, remove, id, show } = this.props;
-    const coreClassName = show
-      ? this.style.core
-      : `${this.style.core} ${this.style.coreHidden}`;
-
     return (
-      <li className={coreClassName}>
-        <img
-          className={this.style.coreIcon}
+      <StyledRoot show={show}>
+        <Icon
           src={imgsrc}
           alt={title}
-          ref={el => this.initLoad(el)}
-          onLoad={() => this.loadImg()}
+          ref={this.initLoad}
+          onLoad={this.loadImg}
         />
-        <a className={this.style.coreLink} href={url} target="_blank">
+        <Link href={url} target="_blank" rel="noopener noreferrer">
           {title}
-        </a>
-        <span
-          className={this.style.coreRemove}
+        </Link>
+        <RemoveBtn
           onClick={() => remove(id)}
           onKeyDown={this.onKeyDown}
           role="remove-button"
         />
-      </li>
+      </StyledRoot>
     );
   }
 }
 
-Post.PropTypes = {
-  imgsrc: PropTypes.string.isRequired,
+Root.PropTypes = {
+  imgsrc: PropTypes.string.isRequired
 };
+
+const Post = props => (
+  <RootConsumer>
+    {data => {
+      const { settings } = data;
+      return (
+        <Consumer>
+          {data => {
+            const { removePost: remove } = data;
+
+            return <Root remove={remove} settings={settings} {...props} />;
+          }}
+        </Consumer>
+      );
+    }}
+  </RootConsumer>
+);
 
 export default Post;

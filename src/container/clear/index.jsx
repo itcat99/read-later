@@ -1,5 +1,4 @@
-import style from './style.scss';
-
+import ClearBtn from './styled';
 import React, { Component } from 'react';
 import Wrapper from '../../Wrapper';
 const { Consumer } = Wrapper;
@@ -7,8 +6,6 @@ const { Consumer } = Wrapper;
 class Clear extends Component {
   constructor(props) {
     super(props);
-
-    this.style = style;
   }
 
   clear() {
@@ -21,11 +18,7 @@ class Clear extends Component {
         {data => {
           const { clear } = data;
 
-          return (
-            <button className={this.style.core} onClick={clear}>
-              Clear
-            </button>
-          );
+          return <ClearBtn onClick={clear}>Clear</ClearBtn>;
         }}
       </Consumer>
     );

@@ -1,22 +1,16 @@
-import style from './style.scss';
+import EmptyView from './styled';
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
-class Empty extends Component {
-  constructor(props) {
-    super(props);
-
-    this.style = style;
-  }
-
+class Empty extends PureComponent {
   render() {
     return (
-      <div className={this.style.empty}>
+      <EmptyView>
         <p> {'Empty list.'} </p>
         <p>{'you have 2 ways to add post.'} </p>
         <p>{"1. click context menu 'read later'."} </p>
         <p>{"2. 'Ctrl + Shift + M'."} </p>
-      </div>
+      </EmptyView>
     );
   }
 }

@@ -1,18 +1,23 @@
-import style from './style.scss';
+import {
+  StyledRoot,
+  Info,
+  InfoTitle,
+  GitIcon,
+  EmailIcon,
+  SettingsIcon,
+  Contact
+} from "./styled";
 
-import React, { Component } from 'react';
+import React, { PureComponent } from "react";
 
 /* import components */
-import Search from '../../components/search';
+import Search from "../../components/search";
+import Wrapper from "../../Wrapper";
+
+const { Consumer } = Wrapper;
 
 /* main */
-class Header extends Component {
-  constructor(props) {
-    super(props);
-
-    this.style = style;
-  }
-
+class Root extends PureComponent {
   getVersion() {
     return chrome.runtime.getManifest().version;
   }
@@ -22,45 +27,53 @@ class Header extends Component {
   }
 
   render() {
-    const { title, search } = this.props;
+    const { title } = this.props;
 
     return (
-      <header className={this.style.header}>
+      <StyledRoot>
         {/* info */}
-        <div className={this.style.headerInfo}>
-          <h1 className={this.style.headerInfoTitle}>{title}</h1>
+        <Info>
+          <InfoTitle>{title}</InfoTitle>
           <span>{this.getVersion()}</span>
-        </div>
+        </Info>
         {/* setting btn */}
-        <span
-          className={this.style.settings}
+        <SettingsIcon
           title="settings"
           onClick={() => this.openSettingsPanel()}
         />
 
         {/* contcat */}
-        <div className={this.style.headerContact}>
+        <Contact>
           <a
             target="_blank"
             rel="noopener noreferrer"
             href="https://github.com/itcat99/read-later"
           >
-            <span className={this.style.git} />
+            <GitIcon />
           </a>
           <a
             target="_blank"
             rel="noopener noreferrer"
             href="mailto:boiping2010@gmail.com"
           >
-            <span className={this.style.email} />
+            <EmailIcon />
           </a>
-        </div>
+        </Contact>
 
         {/* search */}
-        <Search search={search} />
-      </header>
+        <Search />
+      </StyledRoot>
     );
   }
 }
 
+const Header = props => (
+  <Consumer>
+    {data => {
+      const { toggleSettingsPanel: openSettingsPanel } = data;
+
+      return <Root openSettingsPanel={openSettingsPanel} {...props} />;
+    }}
+  </Consumer>
+);
 export default Header;

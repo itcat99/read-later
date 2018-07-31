@@ -1,25 +1,9 @@
-@import './_vars.scss';
-// display scrollbar
-// ::-webkit-scrollbar {
-//   display: none;
-// }
-
-.core{
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-  padding: $panel-padding;
-  min-height: $panel-height-min;
-  max-height: $panel-height-max;
-  width: $panel-width;
-}
-
 :global {
-  body{
-    margin: $panel-margin;
+  body {
+    margin: 0;
   }
 
-  ul{
+  ul {
     padding: 0;
     list-style: none;
     margin: 0;
