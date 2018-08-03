@@ -1,4 +1,4 @@
-import style from './style.scss';
+import { StyleRoot, RemoveBtn } from './styled';
 
 import React, { Component } from 'react';
 import Wrapper from '../../Wrapper';
@@ -6,12 +6,6 @@ import Wrapper from '../../Wrapper';
 const { Consumer } = Wrapper;
 
 class Root extends Component {
-  constructor(props) {
-    super(props);
-
-    this.style = style;
-  }
-
   search() {
     let input = null;
 
@@ -35,7 +29,7 @@ class Root extends Component {
 
   render() {
     return (
-      <div className={this.style.core}>
+      <StyleRoot>
         <input
           type="text"
           placeholder="please search..."
@@ -44,8 +38,8 @@ class Root extends Component {
             this.input = input;
           }}
         />
-        <span className={this.style.coreRemove} onClick={() => this.clear()} />
-      </div>
+        <RemoveBtn onClick={() => this.clear()} />
+      </StyleRoot>
     );
   }
 }

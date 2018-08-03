@@ -1,4 +1,4 @@
-import style from './style.scss';
+import { StyleRoot, List, Actions, Btn, ResetBtn, SaveBtn } from './styled';
 import React, { Component } from 'react';
 
 /* import config */
@@ -13,7 +13,6 @@ class Settings extends Component {
     super(props);
 
     this.folderName = config.title;
-    this.style = style;
   }
 
   save() {
@@ -60,25 +59,15 @@ class Settings extends Component {
     this.items = this.getItems();
 
     return (
-      <section
-        className={
-          this.props.isOpen
-            ? `${this.style.settings} ${this.style.open}`
-            : this.style.settings
-        }
-      >
+      <StyleRoot isOpen={this.props.isOpen}>
         <header>Settings</header>
-        <ul className={this.style.list}>{this.items}</ul>
-        <div className={this.style.actions}>
-          <button className={this.style.reset} onClick={() => this.reset()}>
-            reset
-          </button>
-          <button className={this.style.save} onClick={() => this.save()}>
-            save
-          </button>
-          <button onClick={() => this.cancel()}>cancel</button>
-        </div>
-      </section>
+        <List>{this.items}</List>
+        <Actions>
+          <ResetBtn onClick={() => this.reset()}>reset</ResetBtn>
+          <SaveBtn onClick={() => this.save()}>save</SaveBtn>
+          <Btn onClick={() => this.cancel()}>cancel</Btn>
+        </Actions>
+      </StyleRoot>
     );
   }
 }

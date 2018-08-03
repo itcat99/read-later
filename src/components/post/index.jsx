@@ -1,26 +1,20 @@
-import { StyledRoot, RemoveBtn, Link, Icon } from "./styled";
-import PropTypes from "prop-types";
+import { StyledRoot, RemoveBtn, Link, Icon } from './styled';
+import PropTypes from 'prop-types';
 
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import Wrapper from "../../Wrapper";
-import PreviewWrapper from "../../container/preview/PreviewWrapper";
+import Wrapper from '../../Wrapper';
+import PreviewWrapper from '../../container/preview/PreviewWrapper';
 
 const { Consumer } = PreviewWrapper;
 const { Consumer: RootConsumer } = Wrapper;
 
 class Root extends Component {
-  constructor(props) {
-    super(props);
-
-    this.setIcon();
-  }
-
   setIcon = () => {
     setTimeout(() => {
       if (!this.complete) {
         // ^(https|http)?:\/\/.*\/
-        this.el.setAttribute("src", this.props.settings.img_default);
+        this.el.setAttribute('src', this.props.settings.img_default);
       }
     }, this.props.settings.img_timeout);
   };
@@ -34,6 +28,10 @@ class Root extends Component {
 
   loadImg() {
     this.complete = true;
+  }
+
+  componentDidUpdate() {
+    this.setIcon();
   }
 
   render() {
@@ -60,7 +58,7 @@ class Root extends Component {
 }
 
 Root.PropTypes = {
-  imgsrc: PropTypes.string.isRequired
+  imgsrc: PropTypes.string.isRequired,
 };
 
 const Post = props => (

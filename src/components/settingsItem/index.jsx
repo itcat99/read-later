@@ -1,14 +1,8 @@
-import style from './style.scss';
+import { StyleRoot } from './styled';
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
-class SettingsItem extends Component {
-  constructor(props) {
-    super(props);
-
-    this.style = style;
-  }
-
+class SettingsItem extends PureComponent {
   input() {
     const data = {};
     data[this.props.name] = this.$input.value;
@@ -27,7 +21,7 @@ class SettingsItem extends Component {
     const { title, name } = this.props;
 
     return (
-      <li className={this.style.settingsItem}>
+      <StyleRoot>
         <label htmlFor={name}>{title}: </label>
         <input
           type="text"
@@ -36,7 +30,7 @@ class SettingsItem extends Component {
           ref={el => (this.$input = el)}
           onInput={() => this.input()}
         />
-      </li>
+      </StyleRoot>
     );
   }
 }

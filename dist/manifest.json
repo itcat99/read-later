@@ -12,7 +12,7 @@
     "default_title": "read later"
   },
   "background": {
-    "scripts": ["./assets/commons.js","./assets/background.js"]
+    "scripts": ["./assets/vendor.js","./assets/background.js"]
   },
   "permissions": [
     "tabs",
