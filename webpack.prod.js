@@ -1,23 +1,56 @@
-const commons = require('./webpack.commons');
+const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-// const plugins = [].concat(commons.plugins);
-
-module.exports = Object.assign({}, commons, {
+module.exports = {
   mode: 'production',
+  entry: {
+    pop: path.join(__dirname, 'src', 'pop'),
+    background: path.join(__dirname, 'src', 'background'),
+  },
+  output: {
+    filename: '[name].js',
+    path: path.resolve(__dirname, 'dist', 'assets'),
+  },
+  module: {
+    rules: [
+      {
+        test: /(.js|.jsx)?$/,
+        include: [path.resolve(__dirname, 'src')],
+        loader: 'babel-loader',
+      },
+      {
+        test: /.scss?$/,
+        include: [path.resolve(__dirname, 'src')],
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+      },
+      {
+        test: /\.svg/,
+        loader: 'svg-url-loader',
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['.json', '.js', '.jsx', '.scss'],
+  },
   optimization: {
+    splitChunks: {
+      name: 'vendor',
+      chunks: 'all',
+    },
     minimizer: [
-      // we specify a custom UglifyJsPlugin here to get source maps in production
       new UglifyJsPlugin({
         cache: true,
         parallel: true,
-        uglifyOptions: {
-          compress: true,
-          ecma: 6,
-          mangle: true,
-        },
-        sourceMap: true,
+        sourceMap: true, // set to true if you want JS source maps
       }),
+      new OptimizeCSSAssetsPlugin(),
     ],
   },
-});
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+    }),
+  ],
+};
