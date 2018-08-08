@@ -1,7 +1,7 @@
 import { StyledRoot, RemoveBtn, Link, Icon } from './styled';
 import PropTypes from 'prop-types';
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import Wrapper from '../../Wrapper';
 import PreviewWrapper from '../../container/preview/PreviewWrapper';
@@ -9,28 +9,28 @@ import PreviewWrapper from '../../container/preview/PreviewWrapper';
 const { Consumer } = PreviewWrapper;
 const { Consumer: RootConsumer } = Wrapper;
 
-class Root extends Component {
+class Root extends PureComponent {
   setIcon = () => {
     setTimeout(() => {
       if (!this.complete) {
         // ^(https|http)?:\/\/.*\/
-        this.el.setAttribute('src', this.props.settings.img_default);
+        this.$icon.setAttribute('src', this.props.settings.img_default);
       }
     }, this.props.settings.img_timeout);
   };
 
   initLoad = el => {
-    if (el) {
-      this.el = el;
-    }
-    this.complete = this.el.complete;
+    if (!el) return false;
+
+    this.$icon = el;
+    this.complete = this.$icon.complete;
   };
 
-  loadImg() {
+  loadImg = () => {
     this.complete = true;
-  }
+  };
 
-  componentDidUpdate() {
+  componentDidMount() {
     this.setIcon();
   }
 
@@ -41,7 +41,7 @@ class Root extends Component {
         <Icon
           src={imgsrc}
           alt={title}
-          ref={this.initLoad}
+          innerRef={this.initLoad}
           onLoad={this.loadImg}
         />
         <Link href={url} target="_blank" rel="noopener noreferrer">

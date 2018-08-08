@@ -1,17 +1,9 @@
 import ClearBtn from './styled';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Wrapper from '../../Wrapper';
 const { Consumer } = Wrapper;
 
-class Clear extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  clear() {
-    this.props.clear();
-  }
-
+class Clear extends PureComponent {
   render() {
     return (
       <Consumer>

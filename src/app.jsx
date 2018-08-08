@@ -1,15 +1,14 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 /* import components */
-import Header from "./container/header";
-import Preview from "./container/preview";
-import Settings from "./container/settings";
+import Header from './components/header';
+import Preview from './container/preview';
+import Settings from './container/settings';
 
 /* import styles */
-import "./app.scss";
-import StyledRoot from "./styled";
+import StyledRoot from './styled';
 
-import Wrapper from "./Wrapper";
+import Wrapper from './Wrapper';
 
 const { Provider } = Wrapper;
 /* main */
@@ -17,13 +16,13 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.name = "Read Later";
+    this.name = 'Read Later';
     // this.style = style;
 
     this.state = {
       posts: [],
       settings: {},
-      settingsPanelOpen: false
+      settingsPanelOpen: false,
     };
 
     this.init();
@@ -33,13 +32,13 @@ class App extends Component {
     // let posts = [];
     const that = this;
     // ==== get settings ==== //
-    chrome.runtime.sendMessage({ type: "get_settings" });
+    chrome.runtime.sendMessage({ type: 'get_settings' });
 
     // ==== create post list item on HTML ==== //
     chrome.runtime.onMessage.addListener(details => {
       const { type, data } = details;
 
-      if (type === "return_settings") {
+      if (type === 'return_settings') {
         that.setState({ settings: data });
       }
     });
@@ -49,13 +48,13 @@ class App extends Component {
     let posts = [];
     const that = this;
     // ==== get post list data ==== //
-    chrome.runtime.sendMessage({ type: "get_data" });
+    chrome.runtime.sendMessage({ type: 'get_data' });
 
     // ==== create post list item on HTML ==== //
     chrome.runtime.onMessage.addListener(async details => {
       const { type, data } = details;
 
-      if (type === "return_data") {
+      if (type === 'return_data') {
         posts = await this.getList(data);
 
         that.setState({ posts });
@@ -85,7 +84,7 @@ class App extends Component {
     const src = this.state.settings.favicon_api
       ? `${this.state.settings.favicon_api}${url.replace(
           /^(https|http):\/\//,
-          ""
+          '',
         )}`
       : `${url.match(/(^[a-zA-z]+:\/\/).*?\//)[0]}/favicon.ico`;
 
@@ -122,22 +121,22 @@ class App extends Component {
   clear() {
     chrome.runtime.sendMessage(
       {
-        type: "clear"
+        type: 'clear',
       },
       () => {
         this.setState({ posts: [] });
-      }
+      },
     );
   }
 
   updateSetting = (type, data) => {
     switch (type) {
-      case "reset":
-        chrome.runtime.sendMessage({ type: "reset_settings" });
+      case 'reset':
+        chrome.runtime.sendMessage({ type: 'reset_settings' });
         this.setState({ settings: data });
         break;
-      case "save":
-        chrome.runtime.sendMessage({ type: "save_settings", data });
+      case 'save':
+        chrome.runtime.sendMessage({ type: 'save_settings', data });
         this.setState({ settings: data });
         break;
       default:
@@ -147,17 +146,18 @@ class App extends Component {
 
   toggleSettingsPanel = () => {
     this.setState({
-      settingsPanelOpen: !this.state.settingsPanelOpen
+      settingsPanelOpen: !this.state.settingsPanelOpen,
     });
   };
 
   render() {
+    console.log('render: ', this.state.posts);
     const config = {
       posts: this.state.posts,
       clear: this.clear.bind(this),
       settings: this.state.settings,
       search: this.search,
-      toggleSettingsPanel: this.toggleSettingsPanel
+      toggleSettingsPanel: this.toggleSettingsPanel,
     };
     return (
       <Provider value={config}>

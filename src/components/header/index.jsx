@@ -5,14 +5,14 @@ import {
   GitIcon,
   EmailIcon,
   SettingsIcon,
-  Contact
-} from "./styled";
+  Contact,
+} from './styled';
 
-import React, { PureComponent } from "react";
+import React, { PureComponent } from 'react';
 
 /* import components */
-import Search from "../../components/search";
-import Wrapper from "../../Wrapper";
+import Search from '../../components/search';
+import Wrapper from '../../Wrapper';
 
 const { Consumer } = Wrapper;
 

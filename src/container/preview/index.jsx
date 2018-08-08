@@ -1,13 +1,13 @@
-import StyledRoot from "./styled";
+import StyledRoot from './styled';
 
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 /* import components */
-import Wrapper from "../../Wrapper";
-import PreviewWrapper from "./PreviewWrapper";
-import PostList from "../postList";
-import Clear from "../clear";
-import Empty from "../empty";
+import Wrapper from '../../Wrapper';
+import PreviewWrapper from './PreviewWrapper';
+import PostList from '../../components/postList';
+import Clear from '../../components/clear';
+import Empty from '../../components/empty';
 
 const { Consumer } = Wrapper;
 const { Provider } = PreviewWrapper;
@@ -22,12 +22,12 @@ class Root extends Component {
 
     chrome.runtime.sendMessage(
       {
-        type: "remove",
-        data: id
+        type: 'remove',
+        data: id,
       },
       () => {
         this.props.updateState(this.posts);
-      }
+      },
     );
   };
 
