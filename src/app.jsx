@@ -23,6 +23,7 @@ class App extends Component {
       posts: [],
       settings: {},
       settingsPanelOpen: false,
+      maskShow: false,
     };
 
     this.init();
@@ -118,16 +119,24 @@ class App extends Component {
     this.setState(Object.assign({}, this.state, { posts }));
   };
 
-  clear() {
+  preClear = () => {
+    this.setState({ maskShow: true });
+  };
+
+  cancelClear = () => {
+    this.setState({ maskShow: false });
+  };
+
+  clear = () => {
     chrome.runtime.sendMessage(
       {
         type: 'clear',
       },
       () => {
-        this.setState({ posts: [] });
+        this.setState({ posts: [], maskShow: false });
       },
     );
-  }
+  };
 
   updateSetting = (type, data) => {
     switch (type) {
@@ -151,18 +160,19 @@ class App extends Component {
   };
 
   render() {
-    console.log('render: ', this.state.posts);
     const config = {
       posts: this.state.posts,
-      clear: this.clear.bind(this),
+      preClear: this.preClear,
+      clear: this.clear,
+      cancelClear: this.cancelClear,
       settings: this.state.settings,
       search: this.search,
       toggleSettingsPanel: this.toggleSettingsPanel,
+      maskShow: this.state.maskShow,
     };
     return (
       <Provider value={config}>
         <StyledRoot>
-          {/* <div className={this.style.core}> */}
           <Header title={this.name} />
           <Preview updateState={this.updateState} />
           <Settings

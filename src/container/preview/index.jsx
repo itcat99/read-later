@@ -8,6 +8,7 @@ import PreviewWrapper from './PreviewWrapper';
 import PostList from '../../components/postList';
 import Clear from '../../components/clear';
 import Empty from '../../components/empty';
+import Mask from '../../components/mask';
 
 const { Consumer } = Wrapper;
 const { Provider } = PreviewWrapper;
@@ -38,6 +39,7 @@ class Root extends Component {
     this.posts = posts;
     return (
       <StyledRoot>
+        <Mask />
         <Provider value={{ removePost: this.removePost }}>
           <PostList posts={posts} />
         </Provider>

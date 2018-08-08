@@ -8,9 +8,9 @@ class Clear extends PureComponent {
     return (
       <Consumer>
         {data => {
-          const { clear } = data;
+          const { preClear } = data;
 
-          return <ClearBtn onClick={clear}>Clear</ClearBtn>;
+          return <ClearBtn onClick={preClear}>Clear</ClearBtn>;
         }}
       </Consumer>
     );

@@ -1,9 +1,9 @@
-import { StyledRoot, List } from './styled';
+import { StyledRoot, List } from "./styled";
 
-import React, { Component } from 'react';
+import React, { Component } from "react";
 /* import components */
-import Post from '../post';
-import Wrapper from '../../Wrapper';
+import Post from "../post";
+import Wrapper from "../../Wrapper";
 
 const { Consumer } = Wrapper;
 

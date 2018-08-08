@@ -86,9 +86,9 @@ async function clearPost() {
   try {
     for (let i in postList) {
       await bookmarks('remove', postList[i].id);
-      postList = [];
-      setbadge();
     }
+    postList = [];
+    setbadge();
   } catch (error) {
     throw new Error(error);
   }

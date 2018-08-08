@@ -1,6 +1,6 @@
 {
   "name": "read-later",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "a chrome extension .",
   "main": "index.js",
   "scripts": {
@@ -14,8 +14,9 @@
   },
   "lint-staged": {
     "src/**/*.js": [
-      "yarn run format:js -- ",
-      "git add"
+      "yarn format:js",
+      "yarn build",
+      "git add ."
     ]
   },
   "repository": {
