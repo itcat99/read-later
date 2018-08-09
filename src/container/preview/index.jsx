@@ -1,4 +1,4 @@
-import StyledRoot from './styled';
+import StyledRoot, { ControlBar } from './styled';
 
 import React, { Component } from 'react';
 
@@ -9,6 +9,7 @@ import PostList from '../../components/postList';
 import Clear from '../../components/clear';
 import Empty from '../../components/empty';
 import Mask from '../../components/mask';
+import Download from '../../components/download';
 
 const { Consumer } = Wrapper;
 const { Provider } = PreviewWrapper;
@@ -43,8 +44,10 @@ class Root extends Component {
         <Provider value={{ removePost: this.removePost }}>
           <PostList posts={posts} />
         </Provider>
-
-        <Clear />
+        <ControlBar>
+          <Clear />
+          <Download />
+        </ControlBar>
       </StyledRoot>
     );
   }

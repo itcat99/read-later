@@ -222,6 +222,7 @@ function update(type, data) {
   }
 
   info = Object.assign({}, info, folderInfo);
+
   await updatePostList();
   chrome.browserAction.setBadgeBackgroundColor({
     color: '#4779ED',

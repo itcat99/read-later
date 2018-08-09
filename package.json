@@ -1,6 +1,6 @@
 {
   "name": "read-later",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "a chrome extension .",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,6 @@
   "lint-staged": {
     "src/**/*.js": [
       "yarn format:js",
-      "yarn build",
       "git add ."
     ]
   },
@@ -47,6 +46,7 @@
     "babel-eslint": "^8.2.6",
     "babel-loader": "^7.1.5",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-minify": "^0.4.3",

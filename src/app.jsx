@@ -93,10 +93,10 @@ class App extends Component {
   }
 
   addPost(details, postList) {
-    const { url, id, title } = details;
+    const { url, id, title, ...rest } = details;
     const imgsrc = this.getIcon(url);
 
-    postList.push({ url, id, title, imgsrc, show: true });
+    postList.push({ url, id, title, imgsrc, show: true, ...rest });
   }
 
   updateState = posts => {

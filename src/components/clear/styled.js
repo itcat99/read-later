@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 
 const ClearBtn = styled.button`
+  flex-grow: 5;
   border: none;
   background: rgb(206, 75, 52);
   color: #fff;
-  padding: 6px;
+  padding: 4px;
   cursor: pointer;
   opacity: 1;
   transition: opacity 300ms;

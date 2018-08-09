@@ -1,5 +1,12 @@
 import styled from 'styled-components';
 
+export const ControlBar = styled.section`
+  display: flex;
+  flex-wrap: nowrap;
+  height: 26px;
+  width: 100%;
+`;
+
 export default styled.section`
   display: flex;
   flex-flow: column;
