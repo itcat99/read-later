@@ -1,13 +1,12 @@
+import React, { PureComponent } from 'react';
 import { StyleRoot } from './styled';
 
-import React, { PureComponent } from 'react';
-
 class SettingsItem extends PureComponent {
-  input() {
+  input = () => {
     const data = {};
     data[this.props.name] = this.$input.value;
     this.props.change(data);
-  }
+  };
 
   componentDidMount() {
     this.$input.value = this.props.value;
@@ -28,7 +27,7 @@ class SettingsItem extends PureComponent {
           name={name}
           id={name}
           ref={el => (this.$input = el)}
-          onInput={() => this.input()}
+          onInput={this.input}
         />
       </StyleRoot>
     );

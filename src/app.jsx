@@ -1,191 +1,215 @@
-import React, { Component } from 'react';
-
-/* import components */
-import Header from './components/header';
-import Preview from './container/preview';
-import Settings from './container/settings';
-
-/* import styles */
+import React, { PureComponent } from 'react';
 import StyledRoot from './styled';
 
-import Wrapper from './Wrapper';
+import Header from './container/Header';
+import Main from './container/Main';
+import Footer from './container/Footer';
+import Mask from './container/Mask';
+import Settings from './container/Settings';
 
-const { Provider } = Wrapper;
-/* main */
-class App extends Component {
-  constructor(props) {
-    super(props);
-
-    this.name = 'Read Later';
-    // this.style = style;
-
-    this.state = {
-      posts: [],
-      settings: {},
-      settingsPanelOpen: false,
-      maskShow: false,
-    };
-
-    this.init();
-  }
-
-  init() {
-    // let posts = [];
-    const that = this;
-    // ==== get settings ==== //
-    chrome.runtime.sendMessage({ type: 'get_settings' });
-
-    // ==== create post list item on HTML ==== //
-    chrome.runtime.onMessage.addListener(details => {
-      const { type, data } = details;
-
-      if (type === 'return_settings') {
-        that.setState({ settings: data });
-      }
-    });
-  }
-
-  componentDidMount() {
-    let posts = [];
-    const that = this;
-    // ==== get post list data ==== //
-    chrome.runtime.sendMessage({ type: 'get_data' });
-
-    // ==== create post list item on HTML ==== //
-    chrome.runtime.onMessage.addListener(async details => {
-      const { type, data } = details;
-
-      if (type === 'return_data') {
-        posts = await this.getList(data);
-
-        that.setState({ posts });
-      }
-    });
-  }
-
-  getList(data) {
-    return new Promise((resolve, reject) => {
-      chrome.bookmarks.getChildren(data.id, result => {
-        if (!result.length) {
-          reject();
-        }
-
-        const posts = [];
-
-        result.forEach(bk => {
-          this.addPost(bk, posts);
-        });
-
-        resolve(posts);
-      });
-    });
-  }
-
-  getIcon(url) {
-    const src = this.state.settings.favicon_api
-      ? `${this.state.settings.favicon_api}${url.replace(
-          /^(https|http):\/\//,
-          '',
-        )}`
-      : `${url.match(/(^[a-zA-z]+:\/\/).*?\//)[0]}/favicon.ico`;
-
-    return src;
-  }
-
-  addPost(details, postList) {
-    const { url, id, title, ...rest } = details;
-    const imgsrc = this.getIcon(url);
-
-    postList.push({ url, id, title, imgsrc, show: true, ...rest });
-  }
-
-  updateState = posts => {
-    this.setState({ posts });
-  };
-
-  search = val => {
-    const { posts } = this.state;
-
-    posts.forEach(itemPost => {
-      const title = itemPost.title.toLowerCase();
-
-      if (title.indexOf(val.toLowerCase()) < 0) {
-        itemPost.show = false;
-      } else {
-        itemPost.show = true;
-      }
-    });
-
-    this.setState(Object.assign({}, this.state, { posts }));
-  };
-
-  preClear = () => {
-    this.setState({ maskShow: true });
-  };
-
-  cancelClear = () => {
-    this.setState({ maskShow: false });
-  };
-
-  clear = () => {
-    chrome.runtime.sendMessage(
-      {
-        type: 'clear',
-      },
-      () => {
-        this.setState({ posts: [], maskShow: false });
-      },
-    );
-  };
-
-  updateSetting = (type, data) => {
-    switch (type) {
-      case 'reset':
-        chrome.runtime.sendMessage({ type: 'reset_settings' });
-        this.setState({ settings: data });
-        break;
-      case 'save':
-        chrome.runtime.sendMessage({ type: 'save_settings', data });
-        this.setState({ settings: data });
-        break;
-      default:
-        break;
-    }
-  };
-
-  toggleSettingsPanel = () => {
-    this.setState({
-      settingsPanelOpen: !this.state.settingsPanelOpen,
-    });
-  };
-
+class App extends PureComponent {
   render() {
-    const config = {
-      posts: this.state.posts,
-      preClear: this.preClear,
-      clear: this.clear,
-      cancelClear: this.cancelClear,
-      settings: this.state.settings,
-      search: this.search,
-      toggleSettingsPanel: this.toggleSettingsPanel,
-      maskShow: this.state.maskShow,
-    };
     return (
-      <Provider value={config}>
-        <StyledRoot>
-          <Header title={this.name} />
-          <Preview updateState={this.updateState} />
-          <Settings
-            updateSetting={this.updateSetting}
-            settings={this.state.settings}
-            isOpen={this.state.settingsPanelOpen}
-            closeSettingsPanel={this.toggleSettingsPanel}
-          />
-        </StyledRoot>
-        {/* </div> */}
-      </Provider>
+      <StyledRoot>
+        <Settings />
+        <Mask />
+        <Header />
+        <Main />
+        <Footer />
+      </StyledRoot>
     );
   }
 }
 
 export default App;
+// import React, { Component } from 'react';
+
+// /* import components */
+// import Header from './components/header';
+// import Preview from './container/preview';
+// import Settings from './container/settings';
+
+// /* import styles */
+// import StyledRoot from './styled';
+
+// import Wrapper from './Wrapper';
+
+// const { Provider } = Wrapper;
+// /* main */
+// class App extends Component {
+//   constructor(props) {
+//     super(props);
+
+//     this.name = 'Read Later';
+//     // this.style = style;
+
+//     this.state = {
+//       posts: [],
+//       settings: {},
+//       settingsPanelOpen: false,
+//       maskShow: false,
+//     };
+
+//     this.init();
+//   }
+
+//   init() {
+//     // let posts = [];
+//     const that = this;
+//     // ==== get settings ==== //
+//     chrome.runtime.sendMessage({ type: 'get_settings' });
+
+//     // ==== create post list item on HTML ==== //
+//     chrome.runtime.onMessage.addListener(details => {
+//       const { type, data } = details;
+
+//       if (type === 'return_settings') {
+//         that.setState({ settings: data });
+//       }
+//     });
+//   }
+
+//   componentDidMount() {
+//     let posts = [];
+//     const that = this;
+//     // ==== get post list data ==== //
+//     chrome.runtime.sendMessage({ type: 'get_data' });
+
+//     // ==== create post list item on HTML ==== //
+//     chrome.runtime.onMessage.addListener(async details => {
+//       const { type, data } = details;
+
+//       if (type === 'return_data') {
+//         posts = await this.getList(data);
+
+//         that.setState({ posts });
+//       }
+//     });
+//   }
+
+//   getList(data) {
+//     return new Promise((resolve, reject) => {
+//       chrome.bookmarks.getChildren(data.id, result => {
+//         if (!result.length) {
+//           reject();
+//         }
+
+//         const posts = [];
+
+//         result.forEach(bk => {
+//           this.addPost(bk, posts);
+//         });
+
+//         resolve(posts);
+//       });
+//     });
+//   }
+
+//   getIcon(url) {
+//     const src = this.state.settings.favicon_api
+//       ? `${this.state.settings.favicon_api}${url.replace(
+//           /^(https|http):\/\//,
+//           '',
+//         )}`
+//       : `${url.match(/(^[a-zA-z]+:\/\/).*?\//)[0]}/favicon.ico`;
+
+//     return src;
+//   }
+
+//   addPost(details, postList) {
+//     const { url, id, title, ...rest } = details;
+//     const imgsrc = this.getIcon(url);
+
+//     postList.push({ url, id, title, imgsrc, show: true, ...rest });
+//   }
+
+//   updateState = posts => {
+//     this.setState({ posts });
+//   };
+
+//   search = val => {
+//     const { posts } = this.state;
+
+//     posts.forEach(itemPost => {
+//       const title = itemPost.title.toLowerCase();
+
+//       if (title.indexOf(val.toLowerCase()) < 0) {
+//         itemPost.show = false;
+//       } else {
+//         itemPost.show = true;
+//       }
+//     });
+
+//     this.setState(Object.assign({}, this.state, { posts }));
+//   };
+
+//   preClear = () => {
+//     this.setState({ maskShow: true });
+//   };
+
+//   cancelClear = () => {
+//     this.setState({ maskShow: false });
+//   };
+
+//   clear = () => {
+//     chrome.runtime.sendMessage(
+//       {
+//         type: 'clear',
+//       },
+//       () => {
+//         this.setState({ posts: [], maskShow: false });
+//       },
+//     );
+//   };
+
+//   updateSetting = (type, data) => {
+//     switch (type) {
+//       case 'reset':
+//         chrome.runtime.sendMessage({ type: 'reset_settings' });
+//         this.setState({ settings: data });
+//         break;
+//       case 'save':
+//         chrome.runtime.sendMessage({ type: 'save_settings', data });
+//         this.setState({ settings: data });
+//         break;
+//       default:
+//         break;
+//     }
+//   };
+
+//   toggleSettingsPanel = () => {
+//     this.setState({
+//       settingsPanelOpen: !this.state.settingsPanelOpen,
+//     });
+//   };
+
+//   render() {
+//     const config = {
+//       posts: this.state.posts,
+//       preClear: this.preClear,
+//       clear: this.clear,
+//       cancelClear: this.cancelClear,
+//       settings: this.state.settings,
+//       search: this.search,
+//       toggleSettingsPanel: this.toggleSettingsPanel,
+//       maskShow: this.state.maskShow,
+//     };
+//     return (
+//       <Provider value={config}>
+//         <StyledRoot>
+//           <Header title={this.name} />
+//           <Preview updateState={this.updateState} />
+//           <Settings
+//             updateSetting={this.updateSetting}
+//             settings={this.state.settings}
+//             isOpen={this.state.settingsPanelOpen}
+//             closeSettingsPanel={this.toggleSettingsPanel}
+//           />
+//         </StyledRoot>
+//         {/* </div> */}
+//       </Provider>
+//     );
+//   }
+// }
+
+// export default App;

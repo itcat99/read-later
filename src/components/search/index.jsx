@@ -1,31 +1,36 @@
 import { StyleRoot, RemoveBtn } from './styled';
+import React, { PureComponent } from 'react';
+// import Wrapper from '../../Wrapper';
 
-import React, { Component } from 'react';
-import Wrapper from '../../Wrapper';
+// const { Consumer } = Wrapper;
 
-const { Consumer } = Wrapper;
+class Search extends PureComponent {
+  constructor(props) {
+    super(props);
 
-class Root extends Component {
-  search() {
-    let input = null;
-
-    clearTimeout(input);
-
-    input = setTimeout(() => {
+    this.inputTimeout = null;
+  }
+  search = () => {
+    clearTimeout(this.inputTimeout);
+    this.inputTimeout = setTimeout(() => {
       const value = this.input.value;
+      const { search } = this.props;
 
-      this.searching(value);
+      search && search(value);
+      // this.searching(value);
     }, 300);
-  }
+  };
 
-  searching(val) {
-    this.props.search(val);
-  }
+  // searching(val) {
+  //   this.props.search(val);
+  // }
 
-  clear() {
+  clear = () => {
+    const { search } = this.props;
     this.input.value = '';
-    this.props.search('');
-  }
+    search && search('');
+    // this.props.search('');
+  };
 
   render() {
     return (
@@ -33,7 +38,7 @@ class Root extends Component {
         <input
           type="text"
           placeholder="please search..."
-          onInput={() => this.search()}
+          onInput={this.search}
           ref={input => {
             this.input = input;
           }}
@@ -44,13 +49,13 @@ class Root extends Component {
   }
 }
 
-const Search = props => (
-  <Consumer>
-    {data => {
-      const { search } = data;
-      return <Root search={search} {...props} />;
-    }}
-  </Consumer>
-);
+// const Search = props => (
+//   <Consumer>
+//     {data => {
+//       const { search } = data;
+//       return <Root search={search} {...props} />;
+//     }}
+//   </Consumer>
+// );
 
 export default Search;

@@ -1,13 +1,12 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
+import Wrapper from '../../Wrapper';
 import { StyleRoot } from './styled';
 
-class Download extends PureComponent {
+const { Consumer } = Wrapper;
+
+class Root extends Component {
   getNetscapeBookmarkFormat = () => {
-    // const { posts, settings } = this.props;
-    const { posts } = this.props;
-    const settings = {
-      title: '__read_later__',
-    };
+    const { posts, settings } = this.props;
 
     let list = '';
 
@@ -45,4 +44,11 @@ class Download extends PureComponent {
   }
 }
 
+const Download = props => (
+  <Consumer>
+    {data => {
+      return <Root {...props} {...data} />;
+    }}
+  </Consumer>
+);
 export default Download;

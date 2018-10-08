@@ -1,5 +1,7 @@
 import { StyleRoot, List, Actions, Btn, ResetBtn, SaveBtn } from './styled';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import actions from '../../actions';
 
 /* import config */
 import config from '../../config';
@@ -9,38 +11,40 @@ import SettingsItem from '../../components/settingsItem';
 
 /* core */
 class Settings extends Component {
-  constructor(props) {
-    super(props);
+  save = () => {
+    const { updateSettings, updateSettingsPanel } = this.props;
+    this.settings = this.tempSettings;
 
-    this.folderName = config.title;
-  }
+    updateSettings &&
+      updateSettingsPanel &&
+      updateSettings(this.settings) &&
+      updateSettingsPanel(false);
+  };
 
-  save() {
-    this.props.updateSetting('save', this.tempSettings);
+  reset = () => {
+    const { updateSettings, updateSettingsPanel } = this.props;
 
-    this.props.closeSettingsPanel();
-  }
+    updateSettings &&
+      updateSettingsPanel &&
+      updateSettings(config) &&
+      updateSettingsPanel(false);
+  };
 
-  reset() {
-    this.tempSettings = Object.assign({}, config);
-    this.props.updateSetting('reset', this.tempSettings);
-  }
+  cancel = () => {
+    const { updateSettingsPanel } = this.props;
 
-  cancel() {
-    this.tempSettings = Object.assign({}, this.props.settings);
-    this.props.updateSetting('cancel');
-    this.props.closeSettingsPanel();
-  }
+    updateSettingsPanel && updateSettingsPanel(false);
+  };
 
   getItems() {
     const items = [];
 
-    for (let _key of Object.keys(this.tempSettings)) {
+    for (let _key of Object.keys(this.settings)) {
       items.push(
         <SettingsItem
           key={_key}
           name={_key}
-          value={this.tempSettings[_key]}
+          value={this.settings[_key]}
           title={_key.replace('_', ' ').trim()}
           change={this.change.bind(this)}
         />,
@@ -51,25 +55,41 @@ class Settings extends Component {
   }
 
   change(data) {
-    this.tempSettings = Object.assign({}, this.tempSettings, data);
+    this.tempSettings = Object.assign({}, this.settings, data);
   }
 
   render() {
-    this.tempSettings = Object.assign({}, this.props.settings);
+    const { open, settings } = this.props;
+    this.settings = Object.assign({}, config, settings);
+
     this.items = this.getItems();
 
     return (
-      <StyleRoot isOpen={this.props.isOpen}>
+      <StyleRoot isOpen={open}>
         <header>Settings</header>
         <List>{this.items}</List>
         <Actions>
-          <ResetBtn onClick={() => this.reset()}>reset</ResetBtn>
-          <SaveBtn onClick={() => this.save()}>save</SaveBtn>
-          <Btn onClick={() => this.cancel()}>cancel</Btn>
+          <ResetBtn onClick={this.reset}>reset</ResetBtn>
+          <SaveBtn onClick={this.save}>save</SaveBtn>
+          <Btn onClick={this.cancel}>cancel</Btn>
         </Actions>
       </StyleRoot>
     );
   }
 }
 
-export default Settings;
+const mapStateToProps = state => {
+  return {
+    open: state.settings.state,
+    settings: state.settings.data,
+  };
+};
+const mapDispatchToProps = {
+  updateSettingsPanel: actions.updateSettingsPanel,
+  updateSettings: actions.updateSettings,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Settings);
