@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 
 module.exports = {
   mode: 'development',
@@ -20,29 +19,19 @@ module.exports = {
         loader: 'babel-loader',
       },
       {
-        test: /.scss?$/,
-        include: [path.resolve(__dirname, 'src')],
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-      },
-      {
         test: /\.svg/,
         loader: 'svg-url-loader',
       },
     ],
   },
   resolve: {
-    extensions: ['.json', '.js', '.jsx', '.scss'],
+    extensions: ['.json', '.js', '.jsx'],
   },
   optimization: {
     splitChunks: {
       name: 'vendor',
       chunks: 'all',
     },
+    noEmitOnErrors: true,
   },
-  plugins: [
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.SourceMapDevToolPlugin({
-      include: path.resolve(__dirname, 'src'),
-    }),
-  ],
 };

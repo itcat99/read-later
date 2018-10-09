@@ -1,13 +1,7 @@
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-const plugins = [
-  new MiniCssExtractPlugin({
-    filename: '[name].css',
-  }),
-];
+const plugins = [];
 
 if (process.env.GET_INFO) {
   const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
@@ -33,18 +27,13 @@ module.exports = {
         loader: 'babel-loader',
       },
       {
-        test: /.scss?$/,
-        include: [path.resolve(__dirname, 'src')],
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
-      },
-      {
         test: /\.svg/,
         loader: 'svg-url-loader',
       },
     ],
   },
   resolve: {
-    extensions: ['.json', '.js', '.jsx', '.scss'],
+    extensions: ['.json', '.js', '.jsx'],
   },
   optimization: {
     splitChunks: {
@@ -57,7 +46,6 @@ module.exports = {
         parallel: true,
         sourceMap: false,
       }),
-      new OptimizeCSSAssetsPlugin(),
     ],
   },
   plugins,
