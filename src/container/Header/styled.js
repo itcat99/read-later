@@ -41,15 +41,15 @@ const IconBase = styled.span`
   }
 `;
 
-export const GitIcon = IconBase.extend`
+export const GitIcon = styled(IconBase)`
   background: url('../icons/github.svg');
 `;
 
-export const EmailIcon = IconBase.extend`
+export const EmailIcon = styled(IconBase)`
   background: url('../icons/email.svg');
 `;
 
-export const SettingsIcon = IconBase.extend`
+export const SettingsIcon = styled(IconBase)`
   background: url('../icons/settings.svg');
 `;
 

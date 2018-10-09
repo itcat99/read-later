@@ -8,9 +8,12 @@ import actions from '../../actions';
 
 class Main extends PureComponent {
   getPosts() {
-    let { posts, remove } = this.props;
+    let { posts, removePost, settings } = this.props;
+    const { img_default: defaultImg, img_timeout: timeout } = settings;
+
     return posts.map(post => {
-      const { imgsrc, title, url, id, show = true } = post;
+      const { title, url, id, show = true } = post;
+      const imgsrc = this.getIcon(url);
 
       return (
         <Post
@@ -20,10 +23,28 @@ class Main extends PureComponent {
           key={id}
           id={id}
           show={show}
-          remove={remove}
+          remove={removePost}
+          defaultImg={defaultImg}
+          timeout={timeout}
         />
       );
     });
+  }
+
+  getIcon(url) {
+    const { settings } = this.props;
+    const { favicon_api } = settings;
+    let src;
+
+    try {
+      src = favicon_api
+        ? `${favicon_api}${url.replace(/^(https|http):\/\//, '')}`
+        : `${url.match(/(^[a-zA-z]+:\/\/).*?\//)[0]}/favicon.ico`;
+    } catch (error) {
+      src = `${url}/favicon.ico`;
+    }
+
+    return src;
   }
 
   render() {
@@ -34,16 +55,25 @@ class Main extends PureComponent {
   }
 
   componentDidMount() {
-    const { fetch } = this.props;
+    const { getPosts, getSettings } = this.props;
 
-    fetch && fetch();
+    getPosts && getPosts();
+    getSettings && getSettings();
   }
 }
 
-const mapStateToProps = state => state;
+const mapStateToProps = state => {
+  const { settings, ...rest } = state;
+
+  return {
+    settings: settings.payload,
+    ...rest,
+  };
+};
 const mapDispatchToProps = {
-  remove: actions.remove,
-  fetch: actions.fetch,
+  removePost: actions.removePost,
+  getPosts: actions.getPosts,
+  getSettings: actions.getSettings,
 };
 
 export default connect(

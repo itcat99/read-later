@@ -35,11 +35,11 @@ const Btn = styled.button`
   }
 `;
 
-export const Submit = Btn.extend`
+export const Submit = styled(Btn)`
   background-color: rgb(206, 75, 52);
 `;
 
-export const Cancel = Btn.extend`
+export const Cancel = styled(Btn)`
   background-color: #515151;
 `;
 

@@ -25,12 +25,12 @@ class Header extends PureComponent {
   };
 
   render() {
-    const { title, search } = this.props;
+    const { search } = this.props;
     return (
       <StyledRoot>
         {/* info */}
         <Info>
-          <InfoTitle>{title}</InfoTitle>
+          <InfoTitle>Read Later</InfoTitle>
           <span>{this.getVersion()}</span>
         </Info>
         {/* setting btn */}

@@ -4,7 +4,7 @@
   "name": "Read Later",
   "short_name": "read later",
   "description": "This extension save pages when you want to read later.",
-  "version": "0.3.7",
+  "version": "0.3.8",
 
   "browser_action": {
     "default_icon": "./icons/icon_48.png",

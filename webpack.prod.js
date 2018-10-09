@@ -3,6 +3,18 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
+const plugins = [
+  new MiniCssExtractPlugin({
+    filename: '[name].css',
+  }),
+];
+
+if (process.env.GET_INFO) {
+  const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+    .BundleAnalyzerPlugin;
+  plugins.push(new BundleAnalyzerPlugin());
+}
+
 module.exports = {
   mode: 'production',
   entry: {
@@ -48,9 +60,5 @@ module.exports = {
       new OptimizeCSSAssetsPlugin(),
     ],
   },
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: '[name].css',
-    }),
-  ],
+  plugins,
 };

@@ -7,7 +7,7 @@ import actions from '../../actions';
 import config from '../../config';
 
 /* import component */
-import SettingsItem from '../../components/settingsItem';
+import SettingsItem from '../../components/SettingsItem';
 
 /* core */
 class Settings extends Component {
@@ -81,7 +81,7 @@ class Settings extends Component {
 const mapStateToProps = state => {
   return {
     open: state.settings.state,
-    settings: state.settings.data,
+    settings: state.settings.payload,
   };
 };
 const mapDispatchToProps = {

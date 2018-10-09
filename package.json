@@ -4,9 +4,9 @@
   "description": "a chrome extension .",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "prebuild": "rm -rf ./dist/assets/",
     "build": "webpack --config webpack.prod.js",
+    "build:info": "GET_INFO=true webpack --config webpack.prod.js",
     "dev": "webpack --config webpack.dev.js --watch --display-modules --sort-modules-by size",
     "csscomb": "csscomb ./src/style.scss",
     "format:js": "eslint --fix --color ./src",
@@ -72,6 +72,7 @@
     "svg-url-loader": "^2.3.1",
     "uglifyjs-webpack-plugin": "^1.2.7",
     "webpack": "^4.20.2",
+    "webpack-bundle-analyzer": "^3.0.2",
     "webpack-cli": "^3.1.1"
   }
 }

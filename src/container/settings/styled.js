@@ -42,10 +42,10 @@ export const Actions = styled.div`
   ${Btn};
 `;
 
-export const ResetBtn = Btn.extend`
+export const ResetBtn = styled(Btn)`
   background-color: rgb(75, 52, 206);
 `;
 
-export const SaveBtn = Btn.extend`
+export const SaveBtn = styled(Btn)`
   background-color: rgb(206, 75, 52);
 `;

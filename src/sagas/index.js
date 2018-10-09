@@ -42,7 +42,7 @@ import {
 //     });
 //   });
 // }
-function getPosts() {
+function fetchPosts() {
   return new Promise((resolve, reject) => {
     chrome.runtime.onMessage.addListener(async details => {
       try {
@@ -59,14 +59,14 @@ function getPosts() {
   });
 }
 
-function getSettings() {
+function fetchSettings() {
   return new Promise((resolve, reject) => {
     try {
       chrome.runtime.onMessage.addListener(details => {
-        const { type, data } = details;
+        const { type, payload } = details;
 
         if (type === RETURN_SETTINGS) {
-          resolve(data);
+          resolve(payload);
         }
       });
     } catch (err) {
@@ -75,14 +75,20 @@ function getSettings() {
   });
 }
 
-function* fetchData() {
+function* getPosts() {
   while (true) {
-    yield take('fetch');
+    yield take(GET_POSTS);
     chrome.runtime.sendMessage({ type: GET_POSTS });
-    const data = yield call(getPosts);
+    const data = yield call(fetchPosts);
     yield call(updatePost, data);
+  }
+}
+
+function* getSettings() {
+  while (true) {
+    yield take(GET_SETTINGS);
     chrome.runtime.sendMessage({ type: GET_SETTINGS });
-    const settings = yield call(getSettings);
+    const settings = yield call(fetchSettings);
     yield call(updateSettings, settings);
   }
 }
@@ -95,5 +101,5 @@ function* updateSettings(payload) {
 }
 
 export default function* listener() {
-  yield all([fetchData()]);
+  yield all([getPosts(), getSettings()]);
 }

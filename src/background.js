@@ -36,7 +36,7 @@ class ReadLater {
     if (folders && folders.length) {
       tempInfo = Object.assign({}, await this.concatDir(folders));
     } else {
-      tempInfo = Object.assign({}, await this.createFolder(this.fold));
+      tempInfo = Object.assign({}, await this.createFolder(this.folderName));
     }
 
     this.info = Object.assign({}, this.info, tempInfo);
@@ -182,7 +182,6 @@ class ReadLater {
   }
 
   async removeMark(id) {
-    console.log('remove id: ', id);
     await bookmarks('remove', id);
     this.posts = await this.getPosts(this.info.id);
     this.setBadgeNum(this.info, this.posts);
@@ -194,8 +193,8 @@ class ReadLater {
       for (let i in posts) {
         await bookmarks('remove', posts[i].id);
       }
-      posts = [];
-      this.setBadgeNum(this.info, posts);
+      this.posts = [];
+      this.setBadgeNum(this.info, this.posts);
     } catch (error) {
       throw new Error(error);
     }
@@ -205,10 +204,7 @@ class ReadLater {
     if (type === RESET_SETTINGS) {
       this.config = this.cacheConfig;
     } else {
-      const { title } = payload;
-      if (title !== this.folderName) {
-        this.config = Object.assign({}, this.config, payload);
-      }
+      this.config = Object.assign({}, this.config, payload);
     }
     this.folderName = this.config.title;
     bookmarks('update', info.id, {

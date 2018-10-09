@@ -8,12 +8,12 @@ import Download from '../../components/Download';
 
 class Footer extends PureComponent {
   render() {
-    const { posts, updateMask } = this.props;
+    const { posts, updateMask, settings } = this.props;
 
     return (
       <ControlBar>
         <Clear updateMask={updateMask} />
-        <Download posts={posts} />
+        <Download posts={posts} title={settings.payload.title} />
       </ControlBar>
     );
   }

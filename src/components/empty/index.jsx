@@ -7,9 +7,7 @@ class Empty extends PureComponent {
     return (
       <EmptyView>
         <p> {'Empty list.'} </p>
-        <p>{'you have 2 ways to add post.'} </p>
-        <p>{"1. click context menu 'read later'."} </p>
-        <p>{"2. 'Ctrl + Shift + M'."} </p>
+        <p>{"please click context menu 'read later'."} </p>
       </EmptyView>
     );
   }
