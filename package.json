@@ -1,6 +1,6 @@
 {
   "name": "read-later",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "a chrome extension .",
   "main": "index.js",
   "scripts": {
@@ -34,8 +34,6 @@
   "homepage": "https://github.com/itcat99/read-later#readme",
   "dependencies": {
     "@babel/runtime": "^7.1.2",
-    "classnames": "^2.2.6",
-    "prop-types": "^15.6.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-redux": "^5.0.7",
