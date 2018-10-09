@@ -1,1 +1,2 @@
-export default () => ({ type: 'clear' });
+import { CLEAR } from '../constents';
+export default () => ({ type: CLEAR });

@@ -27,7 +27,7 @@
     "128": "./icons/icon_128.png"
   },
   "commands": {
-    "add-new-post": {
+    "ADD_POST": {
       "suggested_key": {
         "default": "Ctrl+Shift+M",
         "mac": "MacCtrl+Shift+M"

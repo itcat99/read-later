@@ -1,10 +1,12 @@
+import { UPDATE_POSTS, REMOVE_POST, SEARCH, CLEAR } from '../constents';
+
 export default (state = [], action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case 'update':
+    case UPDATE_POSTS:
       return payload;
-    case 'remove': {
+    case REMOVE_POST: {
       const posts = [];
 
       state.forEach(item => {
@@ -12,15 +14,15 @@ export default (state = [], action) => {
           posts.push(item);
         } else {
           chrome.runtime.sendMessage({
-            type: 'remove',
-            data: payload,
+            type: REMOVE_POST,
+            payload,
           });
         }
       });
 
       return posts;
     }
-    case 'search': {
+    case SEARCH: {
       const posts = state.map(item => {
         const title = item.title.toLowerCase();
 
@@ -35,9 +37,9 @@ export default (state = [], action) => {
 
       return posts;
     }
-    case 'clear':
+    case CLEAR:
       chrome.runtime.sendMessage({
-        type: 'clear',
+        type: CLEAR,
       });
       return [];
     default:

@@ -32299,6 +32299,40 @@ __webpack_require__.r(__webpack_exports__);
   img_default: './icons/icon_48.png'
 });
 
+/***/ }),
+
+/***/ "./src/constents.js":
+/*!**************************!*\
+  !*** ./src/constents.js ***!
+  \**************************/
+/*! exports provided: ADD_POST, REMOVE_POST, UPDATE_POSTS, GET_POSTS, RETURN_POSTS, CLEAR, GET_SETTINGS, RETURN_SETTINGS, UPDATE_SETTINGS, RESET_SETTINGS, SEARCH */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_POST", function() { return ADD_POST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_POST", function() { return REMOVE_POST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_POSTS", function() { return UPDATE_POSTS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_POSTS", function() { return GET_POSTS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RETURN_POSTS", function() { return RETURN_POSTS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CLEAR", function() { return CLEAR; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_SETTINGS", function() { return GET_SETTINGS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RETURN_SETTINGS", function() { return RETURN_SETTINGS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_SETTINGS", function() { return UPDATE_SETTINGS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RESET_SETTINGS", function() { return RESET_SETTINGS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SEARCH", function() { return SEARCH; });
+var ADD_POST = 'ADD_POST';
+var REMOVE_POST = 'REMOVE_POST';
+var UPDATE_POSTS = 'UPDATE_POSTS';
+var GET_POSTS = 'GET_POSTS';
+var RETURN_POSTS = 'RETURN_POSTS';
+var CLEAR = 'CLEAR';
+var GET_SETTINGS = 'GET_SETTINGS';
+var RETURN_SETTINGS = 'RETURN_SETTINGS';
+var UPDATE_SETTINGS = 'UPDATE_SETTINGS';
+var RESET_SETTINGS = 'RESET_SETTINGS';
+var SEARCH = 'SEARCH';
+
 /***/ })
 
 }]);

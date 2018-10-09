@@ -1,1 +1,3 @@
-export default key => ({ type: 'search', payload: key });
+import { SEARCH } from '../constents';
+
+export default key => ({ type: SEARCH, payload: key });

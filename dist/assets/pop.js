@@ -426,9 +426,11 @@ var header = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _constents__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constents */ "./src/constents.js");
+
 /* harmony default export */ __webpack_exports__["default"] = (function () {
   return {
-    type: 'clear'
+    type: _constents__WEBPACK_IMPORTED_MODULE_0__["CLEAR"]
   };
 });
 
@@ -465,7 +467,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _fetch__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./fetch */ "./src/actions/fetch.js");
 /* harmony import */ var _clear__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./clear */ "./src/actions/clear.js");
 /* harmony import */ var _updateMask__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./updateMask */ "./src/actions/updateMask.js");
-/* harmony import */ var _updateSettings__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./updateSettings */ "./src/actions/updateSettings.js");
+/* harmony import */ var _updateSettings__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./updateSettings */ "./src/actions/updateSettings.js");
 /* harmony import */ var _updateSettingsPanel__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./updateSettingsPanel */ "./src/actions/updateSettingsPanel.js");
 
 
@@ -480,7 +482,7 @@ __webpack_require__.r(__webpack_exports__);
   remove: _remove__WEBPACK_IMPORTED_MODULE_0__["default"],
   search: _search__WEBPACK_IMPORTED_MODULE_1__["default"],
   updateMask: _updateMask__WEBPACK_IMPORTED_MODULE_4__["default"],
-  updateSettings: _updateSettings__WEBPACK_IMPORTED_MODULE_7__["default"],
+  updateSettings: _updateSettings__WEBPACK_IMPORTED_MODULE_5__["default"],
   updateSettingsPanel: _updateSettingsPanel__WEBPACK_IMPORTED_MODULE_6__["default"]
 });
 
@@ -495,9 +497,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _constents__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constents */ "./src/constents.js");
+
 /* harmony default export */ __webpack_exports__["default"] = (function (id) {
   return {
-    type: 'remove',
+    type: _constents__WEBPACK_IMPORTED_MODULE_0__["REMOVE_POST"],
     payload: id
   };
 });
@@ -513,9 +517,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _constents__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constents */ "./src/constents.js");
+
 /* harmony default export */ __webpack_exports__["default"] = (function (key) {
   return {
-    type: 'search',
+    type: _constents__WEBPACK_IMPORTED_MODULE_0__["SEARCH"],
     payload: key
   };
 });
@@ -549,9 +555,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _constents__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constents */ "./src/constents.js");
+
 /* harmony default export */ __webpack_exports__["default"] = (function (settings) {
   return {
-    type: 'update_settings',
+    type: _constents__WEBPACK_IMPORTED_MODULE_0__["UPDATE_SETTINGS"],
     payload: settings
   };
 });
@@ -1784,7 +1792,6 @@ function (_PureComponent) {
 }(react__WEBPACK_IMPORTED_MODULE_5__["PureComponent"]);
 
 var mapStateToProps = function mapStateToProps(state) {
-  console.log('state:', state);
   return state;
 };
 
@@ -2153,7 +2160,6 @@ function (_Component) {
           open = _this$props3.open,
           settings = _this$props3.settings;
       this.settings = Object.assign({}, _config__WEBPACK_IMPORTED_MODULE_11__["default"], settings);
-      console.log('this settings;', this.settings);
       this.items = this.getItems();
       return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(_styled__WEBPACK_IMPORTED_MODULE_7__["StyleRoot"], {
         isOpen: open
@@ -2386,6 +2392,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _constents__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constents */ "./src/constents.js");
+
 /* harmony default export */ __webpack_exports__["default"] = (function () {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
   var action = arguments.length > 1 ? arguments[1] : undefined;
@@ -2393,10 +2401,10 @@ __webpack_require__.r(__webpack_exports__);
       payload = action.payload;
 
   switch (type) {
-    case 'update':
+    case _constents__WEBPACK_IMPORTED_MODULE_0__["UPDATE_POSTS"]:
       return payload;
 
-    case 'remove':
+    case _constents__WEBPACK_IMPORTED_MODULE_0__["REMOVE_POST"]:
       {
         var posts = [];
         state.forEach(function (item) {
@@ -2404,15 +2412,15 @@ __webpack_require__.r(__webpack_exports__);
             posts.push(item);
           } else {
             chrome.runtime.sendMessage({
-              type: 'remove',
-              data: payload
+              type: _constents__WEBPACK_IMPORTED_MODULE_0__["REMOVE_POST"],
+              payload: payload
             });
           }
         });
         return posts;
       }
 
-    case 'search':
+    case _constents__WEBPACK_IMPORTED_MODULE_0__["SEARCH"]:
       {
         var _posts = state.map(function (item) {
           var title = item.title.toLowerCase();
@@ -2429,9 +2437,9 @@ __webpack_require__.r(__webpack_exports__);
         return _posts;
       }
 
-    case 'clear':
+    case _constents__WEBPACK_IMPORTED_MODULE_0__["CLEAR"]:
       chrome.runtime.sendMessage({
-        type: 'clear'
+        type: _constents__WEBPACK_IMPORTED_MODULE_0__["CLEAR"]
       });
       return [];
 
@@ -2451,6 +2459,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _constents__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constents */ "./src/constents.js");
+
 /* harmony default export */ __webpack_exports__["default"] = (function () {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
     data: {},
@@ -2466,14 +2476,14 @@ __webpack_require__.r(__webpack_exports__);
         state: payload
       });
 
-    case 'update_settings':
+    case _constents__WEBPACK_IMPORTED_MODULE_0__["UPDATE_SETTINGS"]:
       {
         chrome.runtime.sendMessage({
-          type: 'save_settings',
-          data: payload
+          type: _constents__WEBPACK_IMPORTED_MODULE_0__["UPDATE_SETTINGS"],
+          payload: payload
         });
         return Object.assign({}, state, {
-          data: payload
+          payload: payload
         });
       }
 
@@ -2499,6 +2509,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/asyncToGenerator.js");
 /* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var redux_saga_effects__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! redux-saga/effects */ "./node_modules/redux-saga/es/effects.js");
+/* harmony import */ var _constents__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../constents */ "./src/constents.js");
 
 
 
@@ -2515,6 +2526,7 @@ _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(updateSet
 /*#__PURE__*/
 _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(listener);
 
+
  // function getIcon(url) {
 //   const favicon_api = 'http://www.google.com/s2/favicons?domain=';
 //   const src = favicon_api
@@ -2527,23 +2539,21 @@ _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(listener)
 //   const imgsrc = getIcon(url);
 //   postList.push({ url, id, title, imgsrc, show: true, ...rest });
 // }
-
-function getList(data) {
-  return new Promise(function (resolve, reject) {
-    chrome.bookmarks.getChildren(data.id, function (result) {
-      if (!result.length) {
-        reject();
-      } // const posts = [];
-      // console.log('result: ', result);
-      // result.forEach(bk => {
-      //   addPost(bk, posts);
-      // });
-
-
-      resolve(result);
-    });
-  });
-}
+// function getList(data) {
+//   return new Promise((resolve, reject) => {
+//     chrome.bookmarks.getChildren(data.id, result => {
+//       if (!result.length) {
+//         reject();
+//       }
+//       // const posts = [];
+//       // console.log('result: ', result);
+//       // result.forEach(bk => {
+//       //   addPost(bk, posts);
+//       // });
+//       resolve(result);
+//     });
+//   });
+// }
 
 function getPosts() {
   return new Promise(function (resolve, reject) {
@@ -2553,41 +2563,28 @@ function getPosts() {
       var _ref = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(details) {
-        var type, data, posts;
+        var type, payload;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.prev = 0;
-                type = details.type, data = details.data;
+                try {
+                  type = details.type, payload = details.payload;
 
-                if (!(type === 'return_data')) {
-                  _context.next = 7;
-                  break;
+                  if (type === _constents__WEBPACK_IMPORTED_MODULE_3__["RETURN_POSTS"]) {
+                    // const posts = await getList(payload);
+                    resolve(payload);
+                  }
+                } catch (error) {
+                  reject(error);
                 }
 
-                _context.next = 5;
-                return getList(data);
-
-              case 5:
-                posts = _context.sent;
-                resolve(posts);
-
-              case 7:
-                _context.next = 12;
-                break;
-
-              case 9:
-                _context.prev = 9;
-                _context.t0 = _context["catch"](0);
-                reject(_context.t0);
-
-              case 12:
+              case 1:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 9]]);
+        }, _callee, this);
       }));
 
       return function (_x) {
@@ -2604,7 +2601,7 @@ function getSettings() {
         var type = details.type,
             data = details.data;
 
-        if (type === 'return_settings') {
+        if (type === _constents__WEBPACK_IMPORTED_MODULE_3__["RETURN_SETTINGS"]) {
           resolve(data);
         }
       });
@@ -2615,7 +2612,7 @@ function getSettings() {
 }
 
 function fetchData() {
-  var data;
+  var data, settings;
   return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function fetchData$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
@@ -2627,7 +2624,7 @@ function fetchData() {
 
         case 3:
           chrome.runtime.sendMessage({
-            type: 'get_data'
+            type: _constents__WEBPACK_IMPORTED_MODULE_3__["GET_POSTS"]
           });
           _context2.next = 6;
           return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_2__["call"])(getPosts);
@@ -2638,10 +2635,22 @@ function fetchData() {
           return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_2__["call"])(updatePost, data);
 
         case 9:
+          chrome.runtime.sendMessage({
+            type: _constents__WEBPACK_IMPORTED_MODULE_3__["GET_SETTINGS"]
+          });
+          _context2.next = 12;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_2__["call"])(getSettings);
+
+        case 12:
+          settings = _context2.sent;
+          _context2.next = 15;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_2__["call"])(updateSettings, settings);
+
+        case 15:
           _context2.next = 0;
           break;
 
-        case 11:
+        case 17:
         case "end":
           return _context2.stop();
       }
@@ -2656,7 +2665,7 @@ function updatePost(payload) {
         case 0:
           _context3.next = 2;
           return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_2__["put"])({
-            type: 'update',
+            type: _constents__WEBPACK_IMPORTED_MODULE_3__["UPDATE_POSTS"],
             payload: payload
           });
 
@@ -2675,7 +2684,7 @@ function updateSettings(payload) {
         case 0:
           _context4.next = 2;
           return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_2__["put"])({
-            type: 'update_settings',
+            type: _constents__WEBPACK_IMPORTED_MODULE_3__["UPDATE_SETTINGS"],
             payload: payload
           });
 

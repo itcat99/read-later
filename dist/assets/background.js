@@ -167,526 +167,616 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/asyncToGenerator.js");
 /* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./config */ "./src/config.js");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils */ "./src/utils.js");
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./config */ "./src/config.js");
+/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./helpers */ "./src/helpers.js");
+/* harmony import */ var _constents__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./constents */ "./src/constents.js");
+
+
+
 
 
 
 /* eslint no-console:0 */
 
 
-var info = {};
-var postList = [];
-var settings = _config__WEBPACK_IMPORTED_MODULE_2__["default"];
-var folderName = settings.title;
+
+
+var ReadLater =
+/*#__PURE__*/
+function () {
+  function ReadLater(config) {
+    var _this = this;
+
+    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2___default()(this, ReadLater);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_4___default()(this, "addPost", function () {
+      var addPostConfig = {
+        active: true,
+        currentWindow: true
+      };
+      chrome.tabs.query(addPostConfig,
+      /*#__PURE__*/
+      function () {
+        var _ref = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
+        /*#__PURE__*/
+        _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(tabs) {
+          var _tabs$, title, url;
+
+          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  if (!(tabs.length === 1)) {
+                    _context.next = 5;
+                    break;
+                  }
+
+                  _tabs$ = tabs[0], title = _tabs$.title, url = _tabs$.url;
+
+                  _this.createMark(title, url);
+
+                  _context.next = 6;
+                  break;
+
+                case 5:
+                  throw new Error('add post ERROR');
+
+                case 6:
+                case "end":
+                  return _context.stop();
+              }
+            }
+          }, _callee, this);
+        }));
+
+        return function (_x) {
+          return _ref.apply(this, arguments);
+        };
+      }());
+    });
+
+    this.cacheConfig = config;
+    this.config = config;
+    this.folderName = this.config.title;
+    this.info = {};
+    this.posts = [];
+    this.init().then(function () {
+      _this.createContxtMenus();
+
+      _this.listener();
+    });
+  }
+
+  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default()(ReadLater, [{
+    key: "init",
+    value: function () {
+      var _init = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var folders, tempInfo;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return this.getFolder(this.folderName);
+
+              case 2:
+                folders = _context2.sent;
+
+                if (!(folders && folders.length)) {
+                  _context2.next = 12;
+                  break;
+                }
+
+                _context2.t0 = Object;
+                _context2.t1 = {};
+                _context2.next = 8;
+                return this.concatDir(folders);
+
+              case 8:
+                _context2.t2 = _context2.sent;
+                tempInfo = _context2.t0.assign.call(_context2.t0, _context2.t1, _context2.t2);
+                _context2.next = 18;
+                break;
+
+              case 12:
+                _context2.t3 = Object;
+                _context2.t4 = {};
+                _context2.next = 16;
+                return this.createFolder(this.fold);
+
+              case 16:
+                _context2.t5 = _context2.sent;
+                tempInfo = _context2.t3.assign.call(_context2.t3, _context2.t4, _context2.t5);
+
+              case 18:
+                this.info = Object.assign({}, this.info, tempInfo);
+                _context2.next = 21;
+                return this.getPosts(this.info.id);
+
+              case 21:
+                this.posts = _context2.sent;
+                this.setBadgeNum(this.info, this.posts);
+                this.setBadgeColor();
+
+              case 24:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      return function init() {
+        return _init.apply(this, arguments);
+      };
+    }()
+  }, {
+    key: "listener",
+    value: function listener() {
+      var _this2 = this;
+
+      chrome.runtime.onMessage.addListener(function (details) {
+        var type = details.type,
+            payload = details.payload;
+
+        _this2.update(type, payload);
+      }); // listener Command
+
+      chrome.commands.onCommand.addListener(function (commands) {
+        if (commands === _constents__WEBPACK_IMPORTED_MODULE_7__["ADD_POST"]) {
+          _this2.addPost();
+        }
+      });
+    }
+  }, {
+    key: "createMark",
+    value: function () {
+      var _createMark = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(title, url) {
+        var info,
+            posts,
+            createMarkConfig,
+            equal,
+            _args3 = arguments;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                info = _args3.length > 2 && _args3[2] !== undefined ? _args3[2] : this.info;
+                posts = _args3.length > 3 && _args3[3] !== undefined ? _args3[3] : this.posts;
+                createMarkConfig = {
+                  parentId: info.id,
+                  title: title,
+                  url: url
+                };
+                equal = true;
+                posts.forEach(function (item) {
+                  if (item.url === url) {
+                    equal = false;
+                  }
+                });
+
+                if (equal) {
+                  _context3.next = 8;
+                  break;
+                }
+
+                Object(_helpers__WEBPACK_IMPORTED_MODULE_6__["popMsg"])('warning', 'you has the same post.');
+                return _context3.abrupt("return", false);
+
+              case 8:
+                _context3.next = 10;
+                return Object(_helpers__WEBPACK_IMPORTED_MODULE_6__["bookmarks"])('create', createMarkConfig);
+
+              case 10:
+                _context3.next = 12;
+                return this.getPosts(this.info.id);
+
+              case 12:
+                this.posts = _context3.sent;
+                _context3.next = 15;
+                return this.setBadgeNum(this.info, this.posts);
+
+              case 15:
+                Object(_helpers__WEBPACK_IMPORTED_MODULE_6__["popMsg"])('success', 'add a read later post.');
+
+              case 16:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      return function createMark(_x2, _x3) {
+        return _createMark.apply(this, arguments);
+      };
+    }()
+  }, {
+    key: "concatDir",
+    value: function () {
+      var _concatDir = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(folders) {
+        var destinationId, info, i, result, j;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                if (!(folders.length === 1)) {
+                  _context4.next = 2;
+                  break;
+                }
+
+                return _context4.abrupt("return", folders[0]);
+
+              case 2:
+                destinationId = folders[0].id;
+                info = Object.assign({}, folders[0]);
+                folders.shift();
+                _context4.t0 = _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.keys(folders);
+
+              case 6:
+                if ((_context4.t1 = _context4.t0()).done) {
+                  _context4.next = 23;
+                  break;
+                }
+
+                i = _context4.t1.value;
+                _context4.next = 10;
+                return Object(_helpers__WEBPACK_IMPORTED_MODULE_6__["bookmarks"])('getChildren', folders[i].id);
+
+              case 10:
+                result = _context4.sent;
+                _context4.t2 = _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.keys(result);
+
+              case 12:
+                if ((_context4.t3 = _context4.t2()).done) {
+                  _context4.next = 18;
+                  break;
+                }
+
+                j = _context4.t3.value;
+                _context4.next = 16;
+                return Object(_helpers__WEBPACK_IMPORTED_MODULE_6__["bookmarks"])('move', result[j].id, {
+                  parentId: destinationId
+                });
+
+              case 16:
+                _context4.next = 12;
+                break;
+
+              case 18:
+                _context4.next = 20;
+                return Object(_helpers__WEBPACK_IMPORTED_MODULE_6__["bookmarks"])('remove', folders[i].id);
+
+              case 20:
+                return _context4.abrupt("return", info);
+
+              case 23:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      return function concatDir(_x4) {
+        return _concatDir.apply(this, arguments);
+      };
+    }()
+  }, {
+    key: "getPosts",
+    value: function () {
+      var _getPosts = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5(folderId) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.next = 2;
+                return Object(_helpers__WEBPACK_IMPORTED_MODULE_6__["bookmarks"])('getChildren', folderId);
+
+              case 2:
+                return _context5.abrupt("return", _context5.sent);
+
+              case 3:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this);
+      }));
+
+      return function getPosts(_x5) {
+        return _getPosts.apply(this, arguments);
+      };
+    }()
+  }, {
+    key: "getFolder",
+    value: function () {
+      var _getFolder = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6(title) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                _context6.next = 2;
+                return Object(_helpers__WEBPACK_IMPORTED_MODULE_6__["bookmarks"])('search', {
+                  title: title
+                });
+
+              case 2:
+                return _context6.abrupt("return", _context6.sent);
+
+              case 3:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6, this);
+      }));
+
+      return function getFolder(_x6) {
+        return _getFolder.apply(this, arguments);
+      };
+    }()
+  }, {
+    key: "createFolder",
+    value: function () {
+      var _createFolder = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee7(title) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+                _context7.next = 2;
+                return Object(_helpers__WEBPACK_IMPORTED_MODULE_6__["bookmarks"])('create', {
+                  title: title
+                });
+
+              case 2:
+                return _context7.abrupt("return", _context7.sent);
+
+              case 3:
+              case "end":
+                return _context7.stop();
+            }
+          }
+        }, _callee7, this);
+      }));
+
+      return function createFolder(_x7) {
+        return _createFolder.apply(this, arguments);
+      };
+    }()
+  }, {
+    key: "setBadgeNum",
+    value: function setBadgeNum(info, posts) {
+      if (!info.id) {
+        chrome.browserAction.setBadgeText({
+          text: '0'
+        });
+        return false;
+      }
+
+      var count = posts.length;
+      chrome.browserAction.setBadgeText({
+        text: count > 99 ? "+".concat(count) : "".concat(count)
+      });
+    }
+  }, {
+    key: "setBadgeColor",
+    value: function setBadgeColor() {
+      chrome.browserAction.setBadgeBackgroundColor({
+        color: '#4779ED'
+      });
+    }
+  }, {
+    key: "update",
+    value: function update(type, payload) {
+      switch (type) {
+        case _constents__WEBPACK_IMPORTED_MODULE_7__["REMOVE_POST"]:
+          this.removeMark(payload);
+          break;
+
+        case _constents__WEBPACK_IMPORTED_MODULE_7__["CLEAR"]:
+          this.clear();
+          break;
+
+        case _constents__WEBPACK_IMPORTED_MODULE_7__["GET_POSTS"]:
+          Object(_helpers__WEBPACK_IMPORTED_MODULE_6__["sendMsg"])(_constents__WEBPACK_IMPORTED_MODULE_7__["RETURN_POSTS"], this.posts);
+          break;
+
+        case _constents__WEBPACK_IMPORTED_MODULE_7__["GET_SETTINGS"]:
+          Object(_helpers__WEBPACK_IMPORTED_MODULE_6__["sendMsg"])(_constents__WEBPACK_IMPORTED_MODULE_7__["RETURN_SETTINGS"], this.config);
+          break;
+
+        case _constents__WEBPACK_IMPORTED_MODULE_7__["UPDATE_SETTINGS"]:
+        case _constents__WEBPACK_IMPORTED_MODULE_7__["RESET_SETTINGS"]:
+          this.updateSettings(type, payload, this.info);
+          break;
+
+        default:
+          break;
+      }
+    }
+  }, {
+    key: "removeMark",
+    value: function () {
+      var _removeMark = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee8(id) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee8$(_context8) {
+          while (1) {
+            switch (_context8.prev = _context8.next) {
+              case 0:
+                console.log('remove id: ', id);
+                _context8.next = 3;
+                return Object(_helpers__WEBPACK_IMPORTED_MODULE_6__["bookmarks"])('remove', id);
+
+              case 3:
+                _context8.next = 5;
+                return this.getPosts(this.info.id);
+
+              case 5:
+                this.posts = _context8.sent;
+                this.setBadgeNum(this.info, this.posts);
+                Object(_helpers__WEBPACK_IMPORTED_MODULE_6__["popMsg"])('success', 'remove post.');
+
+              case 8:
+              case "end":
+                return _context8.stop();
+            }
+          }
+        }, _callee8, this);
+      }));
+
+      return function removeMark(_x8) {
+        return _removeMark.apply(this, arguments);
+      };
+    }()
+  }, {
+    key: "clear",
+    value: function () {
+      var _clear = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee9() {
+        var posts,
+            i,
+            _args9 = arguments;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee9$(_context9) {
+          while (1) {
+            switch (_context9.prev = _context9.next) {
+              case 0:
+                posts = _args9.length > 0 && _args9[0] !== undefined ? _args9[0] : this.posts;
+                _context9.prev = 1;
+                _context9.t0 = _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.keys(posts);
+
+              case 3:
+                if ((_context9.t1 = _context9.t0()).done) {
+                  _context9.next = 9;
+                  break;
+                }
+
+                i = _context9.t1.value;
+                _context9.next = 7;
+                return Object(_helpers__WEBPACK_IMPORTED_MODULE_6__["bookmarks"])('remove', posts[i].id);
+
+              case 7:
+                _context9.next = 3;
+                break;
+
+              case 9:
+                posts = [];
+                this.setBadgeNum(this.info, posts);
+                _context9.next = 16;
+                break;
+
+              case 13:
+                _context9.prev = 13;
+                _context9.t2 = _context9["catch"](1);
+                throw new Error(_context9.t2);
+
+              case 16:
+              case "end":
+                return _context9.stop();
+            }
+          }
+        }, _callee9, this, [[1, 13]]);
+      }));
+
+      return function clear() {
+        return _clear.apply(this, arguments);
+      };
+    }()
+  }, {
+    key: "updateSettings",
+    value: function () {
+      var _updateSettings = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee10(type, payload) {
+        var info,
+            title,
+            _args10 = arguments;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee10$(_context10) {
+          while (1) {
+            switch (_context10.prev = _context10.next) {
+              case 0:
+                info = _args10.length > 2 && _args10[2] !== undefined ? _args10[2] : this.info;
+
+                if (type === _constents__WEBPACK_IMPORTED_MODULE_7__["RESET_SETTINGS"]) {
+                  this.config = this.cacheConfig;
+                } else {
+                  title = payload.title;
+
+                  if (title !== this.folderName) {
+                    this.config = Object.assign({}, this.config, payload);
+                  }
+                }
+
+                this.folderName = this.config.title;
+                Object(_helpers__WEBPACK_IMPORTED_MODULE_6__["bookmarks"])('update', info.id, {
+                  title: this.folderName
+                });
+
+              case 4:
+              case "end":
+                return _context10.stop();
+            }
+          }
+        }, _callee10, this);
+      }));
+
+      return function updateSettings(_x9, _x10) {
+        return _updateSettings.apply(this, arguments);
+      };
+    }()
+  }, {
+    key: "createContxtMenus",
+    value: function createContxtMenus() {
+      chrome.contextMenus.create({
+        title: 'read later',
+        contexts: ['page'],
+        onclick: this.addPost
+      });
+    }
+  }]);
+
+  return ReadLater;
+}();
+
 chrome.browserAction.setPopup({
   popup: './popup.html'
 });
-
-function getFolder(_x) {
-  return _getFolder.apply(this, arguments);
-}
-
-function _getFolder() {
-  _getFolder = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
-  /*#__PURE__*/
-  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(title) {
-    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
-      while (1) {
-        switch (_context3.prev = _context3.next) {
-          case 0:
-            _context3.next = 2;
-            return Object(_utils__WEBPACK_IMPORTED_MODULE_3__["default"])('search', {
-              title: title
-            });
-
-          case 2:
-            return _context3.abrupt("return", _context3.sent);
-
-          case 3:
-          case "end":
-            return _context3.stop();
-        }
-      }
-    }, _callee3, this);
-  }));
-  return _getFolder.apply(this, arguments);
-}
-
-function createFolder(_x2) {
-  return _createFolder.apply(this, arguments);
-}
-
-function _createFolder() {
-  _createFolder = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
-  /*#__PURE__*/
-  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(title) {
-    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
-      while (1) {
-        switch (_context4.prev = _context4.next) {
-          case 0:
-            _context4.next = 2;
-            return Object(_utils__WEBPACK_IMPORTED_MODULE_3__["default"])('create', {
-              title: title
-            });
-
-          case 2:
-            return _context4.abrupt("return", _context4.sent);
-
-          case 3:
-          case "end":
-            return _context4.stop();
-        }
-      }
-    }, _callee4, this);
-  }));
-  return _createFolder.apply(this, arguments);
-}
-
-function concatDir(_x3) {
-  return _concatDir.apply(this, arguments);
-}
-
-function _concatDir() {
-  _concatDir = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
-  /*#__PURE__*/
-  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5(bks) {
-    var destinationId, info, i, result, j;
-    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
-      while (1) {
-        switch (_context5.prev = _context5.next) {
-          case 0:
-            destinationId = bks[0].id;
-            info = Object.assign({}, bks[0]);
-            bks.shift();
-            _context5.t0 = _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.keys(bks);
-
-          case 4:
-            if ((_context5.t1 = _context5.t0()).done) {
-              _context5.next = 21;
-              break;
-            }
-
-            i = _context5.t1.value;
-            _context5.next = 8;
-            return Object(_utils__WEBPACK_IMPORTED_MODULE_3__["default"])('getChildren', bks[i].id);
-
-          case 8:
-            result = _context5.sent;
-            _context5.t2 = _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.keys(result);
-
-          case 10:
-            if ((_context5.t3 = _context5.t2()).done) {
-              _context5.next = 16;
-              break;
-            }
-
-            j = _context5.t3.value;
-            _context5.next = 14;
-            return Object(_utils__WEBPACK_IMPORTED_MODULE_3__["default"])('move', result[j].id, {
-              parentId: destinationId
-            });
-
-          case 14:
-            _context5.next = 10;
-            break;
-
-          case 16:
-            _context5.next = 18;
-            return Object(_utils__WEBPACK_IMPORTED_MODULE_3__["default"])('remove', bks[i].id);
-
-          case 18:
-            return _context5.abrupt("return", info);
-
-          case 21:
-          case "end":
-            return _context5.stop();
-        }
-      }
-    }, _callee5, this);
-  }));
-  return _concatDir.apply(this, arguments);
-}
-
-function setbadge() {
-  if (!info.id) {
-    chrome.browserAction.setBadgeText({
-      text: '0'
-    });
-    return false;
-  }
-
-  var count = postList.length;
-  chrome.browserAction.setBadgeText({
-    text: count > 99 ? "+".concat(count) : "".concat(count)
-  });
-} // create a rightclick menu
-
-
-function createContxtMenus() {
-  chrome.contextMenus.create({
-    title: 'read later',
-    contexts: ['page'],
-    onclick: addPost
-  });
-}
-
-function listener() {
-  chrome.runtime.onMessage.addListener(function (details) {
-    var type = details.type,
-        data = details.data;
-    update(type, data);
-  }); // listener Command
-
-  chrome.commands.onCommand.addListener(function (commands) {
-    if (commands === 'add-new-post') {
-      addPost();
-    }
-  });
-}
-
-function clearPost() {
-  return _clearPost.apply(this, arguments);
-}
-
-function _clearPost() {
-  _clearPost = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
-  /*#__PURE__*/
-  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6() {
-    var i;
-    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
-      while (1) {
-        switch (_context6.prev = _context6.next) {
-          case 0:
-            _context6.prev = 0;
-            _context6.t0 = _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.keys(postList);
-
-          case 2:
-            if ((_context6.t1 = _context6.t0()).done) {
-              _context6.next = 8;
-              break;
-            }
-
-            i = _context6.t1.value;
-            _context6.next = 6;
-            return Object(_utils__WEBPACK_IMPORTED_MODULE_3__["default"])('remove', postList[i].id);
-
-          case 6:
-            _context6.next = 2;
-            break;
-
-          case 8:
-            postList = [];
-            setbadge();
-            _context6.next = 15;
-            break;
-
-          case 12:
-            _context6.prev = 12;
-            _context6.t2 = _context6["catch"](0);
-            throw new Error(_context6.t2);
-
-          case 15:
-          case "end":
-            return _context6.stop();
-        }
-      }
-    }, _callee6, this, [[0, 12]]);
-  }));
-  return _clearPost.apply(this, arguments);
-}
-
-function removeMark(_x4) {
-  return _removeMark.apply(this, arguments);
-}
-
-function _removeMark() {
-  _removeMark = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
-  /*#__PURE__*/
-  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee7(id) {
-    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee7$(_context7) {
-      while (1) {
-        switch (_context7.prev = _context7.next) {
-          case 0:
-            _context7.next = 2;
-            return Object(_utils__WEBPACK_IMPORTED_MODULE_3__["default"])('remove', id);
-
-          case 2:
-            _context7.next = 4;
-            return updatePostList();
-
-          case 4:
-            // postList = await bookmarks('getChildren', info.id);
-            // setbadge();
-            popMsg('success', 'remove post.');
-
-          case 5:
-          case "end":
-            return _context7.stop();
-        }
-      }
-    }, _callee7, this);
-  }));
-  return _removeMark.apply(this, arguments);
-}
-
-function updateSettings(type, data) {
-  /* update bookmark folder name */
-  var updateFolderName;
-
-  if (data && data.title !== folderName) {
-    updateFolderName = true;
-  }
-
-  settings = type === 'reset_settings' ? _config__WEBPACK_IMPORTED_MODULE_2__["default"] : data;
-
-  if (updateFolderName) {
-    folderName = settings.title;
-    Object(_utils__WEBPACK_IMPORTED_MODULE_3__["default"])('update', info.id, {
-      title: folderName
-    });
-  }
-}
-
-function popMsg(title, message) {
-  chrome.notifications.create({
-    iconUrl: './icons/icon_128.png',
-    type: 'basic',
-    title: title,
-    message: message
-  });
-}
-
-function updatePostList() {
-  return _updatePostList.apply(this, arguments);
-}
-
-function _updatePostList() {
-  _updatePostList = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
-  /*#__PURE__*/
-  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee8() {
-    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee8$(_context8) {
-      while (1) {
-        switch (_context8.prev = _context8.next) {
-          case 0:
-            _context8.next = 2;
-            return Object(_utils__WEBPACK_IMPORTED_MODULE_3__["default"])('getChildren', info.id);
-
-          case 2:
-            postList = _context8.sent;
-            setbadge();
-
-          case 4:
-          case "end":
-            return _context8.stop();
-        }
-      }
-    }, _callee8, this);
-  }));
-  return _updatePostList.apply(this, arguments);
-}
-
-function createMark(_x5, _x6) {
-  return _createMark.apply(this, arguments);
-}
-
-function _createMark() {
-  _createMark = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
-  /*#__PURE__*/
-  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee9(title, url) {
-    var createMarkConfig, equal;
-    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee9$(_context9) {
-      while (1) {
-        switch (_context9.prev = _context9.next) {
-          case 0:
-            createMarkConfig = {
-              parentId: info.id,
-              title: title,
-              url: url
-            };
-            equal = true;
-            postList.forEach(function (item) {
-              if (item.url === url) {
-                equal = false;
-              }
-            });
-
-            if (equal) {
-              _context9.next = 6;
-              break;
-            }
-
-            popMsg('warning', 'you has the same post.');
-            return _context9.abrupt("return", false);
-
-          case 6:
-            _context9.next = 8;
-            return Object(_utils__WEBPACK_IMPORTED_MODULE_3__["default"])('create', createMarkConfig);
-
-          case 8:
-            _context9.next = 10;
-            return updatePostList();
-
-          case 10:
-            popMsg('success', 'add a read later post.');
-
-          case 11:
-          case "end":
-            return _context9.stop();
-        }
-      }
-    }, _callee9, this);
-  }));
-  return _createMark.apply(this, arguments);
-}
-
-function addPost() {
-  var addPostConfig = {
-    active: true,
-    currentWindow: true
-  };
-  chrome.tabs.query(addPostConfig,
-  /*#__PURE__*/
-  function () {
-    var _ref = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
-    /*#__PURE__*/
-    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(tabs) {
-      var _tabs$, title, url;
-
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              if (!(tabs.length === 1)) {
-                _context.next = 6;
-                break;
-              }
-
-              _tabs$ = tabs[0], title = _tabs$.title, url = _tabs$.url;
-              _context.next = 4;
-              return createMark(title, url);
-
-            case 4:
-              _context.next = 7;
-              break;
-
-            case 6:
-              throw new Error('add post ERROR');
-
-            case 7:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee, this);
-    }));
-
-    return function (_x7) {
-      return _ref.apply(this, arguments);
-    };
-  }());
-}
-
-function update(type, data) {
-  if (type === 'remove') {
-    removeMark(data);
-  }
-
-  if (type === 'clear') {
-    clearPost();
-  }
-
-  if (type === 'get_data') {
-    chrome.runtime.sendMessage({
-      type: 'return_data',
-      data: info
-    });
-  }
-
-  if (type === 'get_settings') {
-    chrome.runtime.sendMessage({
-      type: 'return_settings',
-      data: settings
-    });
-  }
-
-  if (type === 'reset_settings' || type === 'save_settings') {
-    updateSettings(type, data);
-  }
-}
-/* MAIN FUNCTION */
-
-
-_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
-/*#__PURE__*/
-_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-  var folders, foldersSize, folderInfo;
-  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
-    while (1) {
-      switch (_context2.prev = _context2.next) {
-        case 0:
-          _context2.next = 2;
-          return getFolder(folderName);
-
-        case 2:
-          folders = _context2.sent;
-          foldersSize = folders.length;
-          _context2.t0 = foldersSize;
-          _context2.next = _context2.t0 === 0 ? 7 : _context2.t0 === 1 ? 11 : 13;
-          break;
-
-        case 7:
-          _context2.next = 9;
-          return createFolder(folderName);
-
-        case 9:
-          folderInfo = _context2.sent;
-          return _context2.abrupt("break", 17);
-
-        case 11:
-          folderInfo = folders[0];
-          return _context2.abrupt("break", 17);
-
-        case 13:
-          _context2.next = 15;
-          return concatDir(folders);
-
-        case 15:
-          folderInfo = _context2.sent;
-          return _context2.abrupt("break", 17);
-
-        case 17:
-          info = Object.assign({}, info, folderInfo);
-          _context2.next = 20;
-          return updatePostList();
-
-        case 20:
-          chrome.browserAction.setBadgeBackgroundColor({
-            color: '#4779ED'
-          });
-          createContxtMenus();
-          listener();
-
-        case 23:
-        case "end":
-          return _context2.stop();
-      }
-    }
-  }, _callee2, this);
-}))();
+new ReadLater(_config__WEBPACK_IMPORTED_MODULE_5__["default"]);
 
 /***/ }),
 
-/***/ "./src/utils.js":
-/*!**********************!*\
-  !*** ./src/utils.js ***!
-  \**********************/
-/*! exports provided: default */
+/***/ "./src/helpers.js":
+/*!************************!*\
+  !*** ./src/helpers.js ***!
+  \************************/
+/*! exports provided: bookmarks, popMsg, sendMsg */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return bookmarks; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bookmarks", function() { return bookmarks; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "popMsg", function() { return popMsg; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendMsg", function() { return sendMsg; });
 function bookmarks(type) {
   for (var _len = arguments.length, config = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
     config[_key - 1] = arguments[_key];
@@ -702,6 +792,20 @@ function bookmarks(type) {
     } catch (error) {
       reject(error);
     }
+  });
+}
+function popMsg(title, message) {
+  chrome.notifications.create({
+    iconUrl: './icons/icon_128.png',
+    type: 'basic',
+    title: title,
+    message: message
+  });
+}
+function sendMsg(type, payload) {
+  chrome.runtime.sendMessage({
+    type: type,
+    payload: payload
   });
 }
 

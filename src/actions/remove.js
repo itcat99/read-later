@@ -1,1 +1,2 @@
-export default id => ({ type: 'remove', payload: id });
+import { REMOVE_POST } from '../constents';
+export default id => ({ type: REMOVE_POST, payload: id });
