@@ -12,6 +12,7 @@
     "default_title": "read later"
   },
   "background": {
+    "persistent": false,
     "scripts": ["./assets/vendor.js", "./assets/background.js"]
   },
   "permissions": [
