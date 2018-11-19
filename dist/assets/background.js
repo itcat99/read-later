@@ -172,6 +172,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
 /* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _chromeApi__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../chromeApi */ "./src/chromeApi/index.js");
+/* harmony import */ var _constents__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../constents */ "./src/constents.js");
 
 
 
@@ -179,9 +180,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /* eslint no-console:0 */
 
-var OTHER_BOOKMARK_FOLDER_ID = '2';
+
+var OTHER_BOOKMARK_FOLDER_ID = "2";
 var DEFALUT_CONFIG = {
-  folder: '__read_later__'
+  folder: "__read_later__"
 };
 
 var ReadLater =
@@ -318,7 +320,7 @@ function () {
 
               case 2:
                 result = _context4.sent;
-                console.log('has folder result: ', result);
+                console.log("has folder result: ", result);
                 return _context4.abrupt("return", result.length > 0);
 
               case 5:
@@ -352,7 +354,7 @@ function () {
       var _this = this;
 
       chrome.runtime.onMessage.addListener(function (msg) {
-        _this.update(msg);
+        _this._updateWithView(msg);
       });
       /* Following is about bookmark's events */
 
@@ -491,6 +493,113 @@ function () {
           }
         }, _callee9, this);
       })));
+      /* with contextMenus */
+
+      chrome.contextMenus.onClicked.addListener(
+      /*#__PURE__*/
+      _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee10() {
+        var checked, result, currentTab;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee10$(_context10) {
+          while (1) {
+            switch (_context10.prev = _context10.next) {
+              case 0:
+                checked = true;
+                _context10.next = 3;
+                return _chromeApi__WEBPACK_IMPORTED_MODULE_4__["tabsApi"].query({
+                  active: true,
+                  currentWindow: true
+                });
+
+              case 3:
+                result = _context10.sent;
+                currentTab = result[0];
+
+                _this.posts.forEach(function (item) {
+                  if (item.url === currentTab.url) {
+                    checked = false;
+                  }
+                });
+
+                if (checked) {
+                  _context10.next = 9;
+                  break;
+                }
+
+                _this._popMsg("error", "has the same post.");
+
+                return _context10.abrupt("return", false);
+
+              case 9:
+                _context10.next = 11;
+                return _chromeApi__WEBPACK_IMPORTED_MODULE_4__["bookmarkApi"].create({
+                  parentId: _this.info.id,
+                  title: currentTab.title,
+                  url: currentTab.url
+                });
+
+              case 11:
+                _this._update();
+
+                _this._popMsg("success", "add a read later post.");
+
+              case 13:
+              case "end":
+                return _context10.stop();
+            }
+          }
+        }, _callee10, this);
+      })));
+    }
+  }, {
+    key: "_updateWithView",
+    value: function _updateWithView(msg) {
+      var _this2 = this;
+
+      var type = msg.type,
+          payload = msg.payload;
+
+      switch (type) {
+        case _constents__WEBPACK_IMPORTED_MODULE_5__["GET_POSTS"]:
+          this._sendMsg({
+            type: _constents__WEBPACK_IMPORTED_MODULE_5__["RETURN_POSTS"],
+            payload: this.posts
+          });
+
+          break;
+
+        case _constents__WEBPACK_IMPORTED_MODULE_5__["REMOVE_POST"]:
+          _chromeApi__WEBPACK_IMPORTED_MODULE_4__["bookmarkApi"].remove(payload).then(
+          /*#__PURE__*/
+          _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
+          /*#__PURE__*/
+          _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee11() {
+            return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee11$(_context11) {
+              while (1) {
+                switch (_context11.prev = _context11.next) {
+                  case 0:
+                    _context11.next = 2;
+                    return _this2._update();
+
+                  case 2:
+                    _this2._sendMsg({
+                      type: _constents__WEBPACK_IMPORTED_MODULE_5__["RETURN_POSTS"],
+                      payload: _this2.posts
+                    });
+
+                  case 3:
+                  case "end":
+                    return _context11.stop();
+                }
+              }
+            }, _callee11, this);
+          })));
+          break;
+
+        default:
+          return;
+      }
     }
   }, {
     key: "_sendMsg",
@@ -503,18 +612,37 @@ function () {
       var num = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
 
       if (num > 99) {
-        num = '99+';
+        num = "99+";
       }
 
       chrome.browserAction.setBadgeText({
-        text: num + ''
+        text: num + ""
+      });
+    }
+  }, {
+    key: "_createContxtMenus",
+    value: function _createContxtMenus() {
+      chrome.contextMenus.create({
+        title: "read later",
+        id: "read-later-contextMenus",
+        contexts: ["page"]
+      });
+    }
+  }, {
+    key: "_popMsg",
+    value: function _popMsg(title, message) {
+      chrome.notifications.create({
+        iconUrl: "./icons/icon_128.png",
+        type: "basic",
+        title: title,
+        message: message
       });
     }
   }, {
     key: "_setBadgeColor",
     value: function _setBadgeColor() {
       chrome.browserAction.setBadgeBackgroundColor({
-        color: '#4779ED'
+        color: "#4779ED"
       });
     }
   }, {
@@ -522,25 +650,25 @@ function () {
     value: function () {
       var _update2 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee10() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee10$(_context10) {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee12() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee12$(_context12) {
           while (1) {
-            switch (_context10.prev = _context10.next) {
+            switch (_context12.prev = _context12.next) {
               case 0:
-                _context10.next = 2;
+                _context12.next = 2;
                 return this._getPosts(this.info.id);
 
               case 2:
-                this.posts = _context10.sent;
+                this.posts = _context12.sent;
 
                 this._setBadgeNum(this.posts.length);
 
               case 4:
               case "end":
-                return _context10.stop();
+                return _context12.stop();
             }
           }
-        }, _callee10, this);
+        }, _callee12, this);
       }));
 
       return function _update() {
@@ -552,45 +680,45 @@ function () {
     value: function () {
       var _run = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee11() {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee13() {
         var folder;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee11$(_context11) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee13$(_context13) {
           while (1) {
-            switch (_context11.prev = _context11.next) {
+            switch (_context13.prev = _context13.next) {
               case 0:
                 folder = this.config.folder;
-                _context11.next = 3;
+                _context13.next = 3;
                 return this._hasFolder(folder);
 
               case 3:
-                if (_context11.sent) {
-                  _context11.next = 6;
+                if (_context13.sent) {
+                  _context13.next = 6;
                   break;
                 }
 
-                _context11.next = 6;
+                _context13.next = 6;
                 return this._createFolder(folder);
 
               case 6:
-                _context11.next = 8;
+                _context13.next = 8;
                 return this._getInfo(folder);
 
               case 8:
-                this.info = _context11.sent;
-                _context11.next = 11;
+                this.info = _context13.sent;
+                _context13.next = 11;
                 return this._update();
 
               case 11:
-                this._setBadgeNum();
+                this._createContxtMenus();
 
                 this._listener();
 
               case 13:
               case "end":
-                return _context11.stop();
+                return _context13.stop();
             }
           }
-        }, _callee11, this);
+        }, _callee13, this);
       }));
 
       return function run() {
@@ -605,149 +733,10 @@ function () {
 chrome.runtime.onInstalled.addListener(function () {
   var app = new ReadLater();
   app.run().then(function () {
-    console.log('> app is running...');
+    console.log("> app is running...");
   }).catch(function (err) {
-    console.error('> app start has Err: ', err);
+    console.error("> app start has Err: ", err);
   });
-});
-
-/***/ }),
-
-/***/ "./src/chromeApi/bookmark.js":
-/*!***********************************!*\
-  !*** ./src/chromeApi/bookmark.js ***!
-  \***********************************/
-/*! exports provided: search, get, getChildren, getTree, create, move, update, remove, removeTree */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "search", function() { return search; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "get", function() { return get; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getChildren", function() { return getChildren; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTree", function() { return getTree; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "create", function() { return create; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "move", function() { return move; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "update", function() { return update; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "remove", function() { return remove; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "removeTree", function() { return removeTree; });
-function generator(type) {
-  for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-    args[_key - 1] = arguments[_key];
-  }
-
-  return new Promise(function (resolve, reject) {
-    try {
-      var _chrome$bookmarks;
-
-      (_chrome$bookmarks = chrome.bookmarks)[type].apply(_chrome$bookmarks, args.concat([function (result) {
-        resolve(result);
-      }]));
-    } catch (error) {
-      reject("> bookmarks [".concat(type, "] Err: ").concat(error));
-    }
-  });
-}
-/**
- * 搜索书签树节点，找出匹配的结果。如果以对象方式指定查询，得到的 BookmarkTreeNodes 匹配所有指定的属性。
- * @param {string | object} query - 可以指定字符串，包含单词和加上引号的短语，用于匹配书签 URL 和标题。也可以指定对象，其中可以指定 query、url 和 title 属性，返回匹配所有指定属性的书签。
- */
-
-
-var search = function search(query) {
-  return generator('search', query);
-};
-/**
- * 获得指定的书签树节点。
- * @param {string | string[]} ids - 一个字符串或多个字符串组成的数组，指定节点的标识符。
- */
-
-var get = function get(ids) {
-  return generator('get', ids);
-};
-/**
- * 获取指定书签树节点的所有子节点
- *
- * @param {string} id - 指定书签节点的id
- */
-
-var getChildren = function getChildren(id) {
-  return generator('getChildren', id);
-};
-/**
- * 获取整个书签树
- */
-
-var getTree = function getTree() {
-  return generator('getTree');
-};
-/**
- * 在指定的上一级文件夹下创建新的书签或文件夹。如果 url 为 null 或者省略，则创建文件夹。
- * @param {object} bookmark
- * @param {string} bookmark.parentId 默认为‘其他书签’ 指定的根目录
- * @param {number} bookmark.index
- * @param {string} bookmark.title
- * @param {string} bookmark.url
- */
-
-var create = function create(bookmark) {
-  return generator('create', bookmark);
-};
-/**
- * 将指定的书签树节点移到指定位置
- * @param {string} from 指定书签的id
- * @param {Object} to 目的地
- * @param {string} to.parentId 目标文件夹id
- * @param {number} to.index
- */
-
-var move = function move(from, to) {
-  return generator('move', from, to);
-};
-/**
- * 更新书签或文件夹的属性。只需要指定您需要更改的属性，未指定的属性不会更改。注意：目前只支持“title”和“url”属性。
- * @param {string} id 要更新的书签或文件夹id
- * @param {object} changes 要更新的内容
- * @param {string} changes.title
- * @param {string} changes.url
- */
-
-var update = function update(id, changes) {
-  return generator('update', id, changes);
-};
-/**
- * 删除书签或者空文件夹。
- * @param {string} id 要删除的书签或文件夹id
- */
-
-var remove = function remove(id) {
-  return generator('remove', id);
-};
-/**
- * 删除整个书签。
- */
-
-var removeTree = function removeTree() {
-  return generator('removeTree');
-};
-
-/***/ }),
-
-/***/ "./src/chromeApi/index.js":
-/*!********************************!*\
-  !*** ./src/chromeApi/index.js ***!
-  \********************************/
-/*! exports provided: bookmarkApi, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bookmarkApi", function() { return bookmarkApi; });
-/* harmony import */ var _bookmark__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bookmark */ "./src/chromeApi/bookmark.js");
-
-var bookmarkApi = _bookmark__WEBPACK_IMPORTED_MODULE_0__;
-/* harmony default export */ __webpack_exports__["default"] = ({
-  bookmark: _bookmark__WEBPACK_IMPORTED_MODULE_0__
 });
 
 /***/ })

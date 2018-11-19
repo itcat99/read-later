@@ -34,7 +34,10 @@
   "homepage": "https://github.com/itcat99/read-later#readme",
   "dependencies": {
     "@babel/runtime": "^7.1.2",
+    "@material-ui/core": "^3.5.1",
+    "@material-ui/icons": "^3.0.1",
     "react": "^16.5.2",
+    "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^16.5.2",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
