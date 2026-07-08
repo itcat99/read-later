@@ -1,25 +1,9 @@
 import type React from 'react';
 import { memo, useMemo } from 'react';
-import styled from 'styled-components';
-import type { Config } from '../../lib/config';
 import { filterPosts, usePostsStore } from '../../stores/postsStore';
 import { useSettingsStore } from '../../stores/settingsStore';
 import Empty from './Empty';
 import Post from './Post';
-
-const StyledRoot = styled.div`
-  flex-grow: 1;
-  overflow-x: hidden;
-  height: 300px;
-`;
-
-const List = styled.ul`
-  display: flex;
-  padding: 0;
-  list-style: none;
-  flex-flow: column;
-  margin: 0;
-`;
 
 const iconCache = new Map<string, string>();
 
@@ -69,9 +53,13 @@ const Main: React.FC = () => {
     [visiblePosts, removePost, settings],
   );
 
-  const content = !posts?.length ? <Empty /> : <List>{renderPosts}</List>;
+  const content = !posts?.length ? (
+    <Empty />
+  ) : (
+    <ul className="flex flex-col p-0 m-0 list-none">{renderPosts}</ul>
+  );
 
-  return <StyledRoot>{content}</StyledRoot>;
+  return <div className="flex-1 overflow-x-hidden h-[300px]">{content}</div>;
 };
 
 export default memo(Main);

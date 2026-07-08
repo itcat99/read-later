@@ -1,8 +1,12 @@
+import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'wxt';
 
 export default defineConfig({
   outDir: 'dist',
   manifestVersion: 3,
+  vite: () => ({
+    plugins: [tailwindcss()],
+  }),
   manifest: {
     name: 'Read Later',
     short_name: 'read later',

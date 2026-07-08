@@ -1,59 +1,7 @@
 import type React from 'react';
 import { memo } from 'react';
-import styled from 'styled-components';
 import { useMaskStore } from '../../stores/maskStore';
 import { usePostsStore } from '../../stores/postsStore';
-
-const StyleRoot = styled.div<{ $show: boolean }>`
-  display: ${(props) => (props.$show ? 'block' : 'none')};
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9999;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.2);
-  text-align: center;
-`;
-
-const Choose = styled.div`
-  width: 100%;
-  height: 100px;
-  line-height: 100px;
-  font-size: 20px;
-  color: #fff;
-  text-align: center;
-`;
-
-const Btn = styled.button`
-  height: 26px;
-  border-radius: 0;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  opacity: 1;
-  transition: opacity 300ms;
-  &:hover {
-    opacity: 0.8;
-    transition: opacity 300ms;
-  }
-`;
-
-const Submit = styled(Btn)`
-  background-color: rgb(206, 75, 52);
-`;
-
-const Cancel = styled(Btn)`
-  background-color: #515151;
-`;
-
-const Alert = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  transform: translate(-50%, -50%);
-`;
 
 const Mask: React.FC = () => {
   const show = useMaskStore((s) => s.show);
@@ -66,13 +14,39 @@ const Mask: React.FC = () => {
   };
 
   return (
-    <StyleRoot $show={show}>
-      <Alert>
-        <Choose>Are you sure?</Choose>
-        <Submit onClick={handleClear}>Sure</Submit>
-        <Cancel onClick={() => setShow(false)}>Cancel</Cancel>
-      </Alert>
-    </StyleRoot>
+    <div
+      className={show ? 'block' : 'hidden'}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        zIndex: 9999,
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(0, 0, 0, 0.3)',
+        textAlign: 'center',
+      }}
+    >
+      <div className="absolute top-1/2 left-1/2 w-full -translate-x-1/2 -translate-y-1/2">
+        <div className="w-full h-[100px] leading-[100px] text-xl text-white text-center">
+          Are you sure?
+        </div>
+        <button
+          type="button"
+          onClick={handleClear}
+          className="h-7 border-none text-white cursor-pointer bg-red-600 hover:opacity-80 transition-opacity duration-300 px-4"
+        >
+          Sure
+        </button>
+        <button
+          type="button"
+          onClick={() => setShow(false)}
+          className="h-7 border-none text-white cursor-pointer bg-gray-600 hover:opacity-80 transition-opacity duration-300 px-4"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
   );
 };
 

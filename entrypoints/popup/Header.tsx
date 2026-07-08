@@ -1,101 +1,62 @@
 import type React from 'react';
 import { memo } from 'react';
-import styled from 'styled-components';
-import { globalVars } from '../../lib/vars';
 import { usePostsStore } from '../../stores/postsStore';
 import { useSettingsStore } from '../../stores/settingsStore';
 import Search from './Search';
 
-const StyledRoot = styled.header`
-  position: relative;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  padding: 6px 12px;
-  border-bottom: ${globalVars.border};
-`;
-
-const Info = styled.div`
-  display: flex;
-  align-items: baseline;
-  flex-grow: 1;
-  width: 100%;
-  flex-basis: calc(100% - 20px);
-`;
-
-const InfoTitle = styled.h1`
-  margin: 0;
-  margin-right: 6px;
-  font-size: 20px;
-  line-height: 30px;
-  color: #4d4d4d;
-`;
-
-const IconBase = styled.span`
-  display: inline-block;
-  min-width: 16px;
-  height: 16px;
-  background-repeat: no-repeat !important;
-  background-size: 100% !important;
-  cursor: pointer;
-  opacity: 0.5;
-  transition: opacity 300ms;
-  &:hover {
-    opacity: 1;
-    transition: opacity 300ms;
-  }
-`;
-
-const GitIcon = styled(IconBase)`
-  background: url('../icons/github.svg');
-`;
-
-const EmailIcon = styled(IconBase)`
-  background: url('../icons/email.svg');
-`;
-
-const SettingsIcon = styled(IconBase)`
-  background: url('../icons/settings.svg');
-`;
-
-const Contact = styled.div`
-  flex-grow: 1;
-  margin-top: 10px;
-  > a {
-    text-decoration: none;
-    margin-right: 4px;
-    &:focus {
-      outline: none;
-    }
-  }
-`;
-
 const Header: React.FC = () => {
   const search = usePostsStore((s) => s.search);
   const setOpen = useSettingsStore((s) => s.setOpen);
-
   const getVersion = () => browser.runtime.getManifest().version;
 
   return (
-    <StyledRoot>
-      <Info>
-        <InfoTitle>Read Later</InfoTitle>
-        <span>{getVersion()}</span>
-      </Info>
+    <header className="relative flex items-center flex-wrap px-3 py-1.5 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex items-baseline flex-grow w-full">
+        <h1 className="m-0 mr-1.5 text-xl leading-7 text-gray-700 dark:text-gray-200 font-semibold">
+          Read Later
+        </h1>
+        <span className="text-xs text-gray-400 dark:text-gray-500">{getVersion()}</span>
+      </div>
 
-      <SettingsIcon title="settings" onClick={() => setOpen(true)} />
+      <button
+        type="button"
+        title="Settings"
+        onClick={() => setOpen(true)}
+        className="inline-block min-w-[16px] h-4 bg-no-repeat bg-center cursor-pointer opacity-50 hover:opacity-100 transition-opacity duration-300"
+        style={{ backgroundImage: "url('../icons/settings.svg')", backgroundSize: '100%' }}
+      />
 
-      <Contact>
-        <a target="_blank" rel="noopener noreferrer" href="https://github.com/itcat99/read-later">
-          <GitIcon />
+      <div className="flex-grow mt-2.5 flex gap-1">
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://github.com/itcat99/read-later"
+          className="inline-block min-w-[16px] h-4 opacity-50 hover:opacity-100 transition-opacity duration-300"
+          style={{
+            backgroundImage: "url('../icons/github.svg')",
+            backgroundSize: '100%',
+            backgroundRepeat: 'no-repeat',
+          }}
+        >
+          <span className="sr-only">GitHub</span>
         </a>
-        <a target="_blank" rel="noopener noreferrer" href="mailto:boiping2010@gmail.com">
-          <EmailIcon />
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="mailto:boiping2010@gmail.com"
+          className="inline-block min-w-[16px] h-4 opacity-50 hover:opacity-100 transition-opacity duration-300"
+          style={{
+            backgroundImage: "url('../icons/email.svg')",
+            backgroundSize: '100%',
+            backgroundRepeat: 'no-repeat',
+          }}
+        >
+          <span className="sr-only">Email</span>
         </a>
-      </Contact>
+      </div>
 
       <Search search={search} />
-    </StyledRoot>
+    </header>
   );
 };
 

@@ -33,16 +33,17 @@
 ## D-002: 技术选型
 
 **日期:** 2026-07-08
-**状态:** 已确认（2026-07-08 更新：反映 M8 迁移后实际状态）
+**状态:** 已确认（2026-07-08 更新：M9 规划 Tailwind CSS + react-icons 替代 styled-components）
 
 | 类别 | 选型 | 版本 |
 |------|------|------|
 | 框架 | React | 19.2.7 |
 | 状态管理 | Zustand | 5.0.14 |
-| 样式 | styled-components | 6.4.3 |
+| 样式 | Tailwind CSS (规划中) | 4 |
+| 图标 | react-icons (规划中) | — |
 | 构建 | WXT (Vite-based) | 0.20.27 |
 | 类型 | TypeScript | (strict mode) |
-| Lint | ESLint + Prettier | 5.6.0 / 1.14.3 |
+| Lint/Format | Biome | 2.5.3 |
 | 包管理 | Bun | (bun.lock) |
 | 运行环境 | Chrome Extension MV3 | — |
 | 存储 | Chrome Bookmark API | — |

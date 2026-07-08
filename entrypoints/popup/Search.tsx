@@ -1,46 +1,5 @@
 import type React from 'react';
 import { memo, useCallback, useRef } from 'react';
-import styled from 'styled-components';
-import { globalVars } from '../../lib/vars';
-
-const RemoveBtn = styled.span`
-  position: absolute;
-  min-width: 14px;
-  height: 14px;
-  opacity: 0;
-  top: 50%;
-  right: 6px;
-  transform: translateY(-50%);
-  transition: opacity 400ms;
-  background: url('../../icons/close.svg');
-  background-repeat: no-repeat;
-  background-size: 100%;
-  cursor: pointer;
-`;
-
-const StyleRoot = styled.div`
-  position: relative;
-  width: 120px;
-  height: 24px;
-  box-sizing: border-box;
-  padding: 2px 6px;
-  border: ${globalVars.border};
-  border-radius: 3px;
-  > input {
-    width: 100%;
-    height: 100%;
-    border: none;
-    padding: 0;
-    &:focus {
-      outline: none;
-    }
-  }
-
-  &:hover ${RemoveBtn} {
-    opacity: 0.5;
-    transition: opacity 400ms;
-  }
-`;
 
 interface SearchProps {
   search: (keyword: string) => void;
@@ -66,10 +25,26 @@ const Search: React.FC<SearchProps> = memo(({ search }) => {
   }, [search]);
 
   return (
-    <StyleRoot>
-      <input type="text" placeholder="please search..." ref={inputRef} onInput={handleInput} />
-      <RemoveBtn onClick={handleClear} />
-    </StyleRoot>
+    <div className="relative w-32 h-6 border border-gray-300 dark:border-gray-600 rounded px-1.5 group">
+      <input
+        type="text"
+        placeholder="search..."
+        ref={inputRef}
+        onInput={handleInput}
+        className="w-full h-full border-none p-0 text-xs bg-transparent text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none"
+      />
+      <button
+        type="button"
+        onClick={handleClear}
+        aria-label="Clear search"
+        className="absolute min-w-[14px] h-[14px] top-1/2 right-1.5 -translate-y-1/2 opacity-0 group-hover:opacity-50 hover:opacity-100 transition-opacity duration-400 border-none bg-transparent cursor-pointer p-0"
+        style={{
+          backgroundImage: "url('../../icons/close.svg')",
+          backgroundSize: '100%',
+          backgroundRepeat: 'no-repeat',
+        }}
+      />
+    </div>
   );
 });
 

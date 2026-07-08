@@ -257,8 +257,35 @@ Redux 状态管理 + Redux-Saga 副作用处理。
 - 框架: WXT 0.20 + Vite
 - 运行时: Chrome Extension Manifest V3
 - UI: React 19 + Function Components + Hooks + TypeScript
-- 样式: styled-components 6
+- 样式: Tailwind CSS 4 + react-icons
 - 状态管理: Zustand 5
 - 存储: Chrome Bookmark API（不变）
 - 包管理: Bun
 - 类型: TypeScript strict mode
+
+---
+
+## M9: UI 现代化重构
+
+将 UI 从 styled-components 迁移到 Tailwind CSS + react-icons，风格简约现代。
+
+- [x] **F9.1 样式系统替换** — Tailwind CSS 替代 styled-components
+  - 验收标准: 安装并配置 `tailwindcss`，移除 `styled-components` 依赖
+  - 验收标准: 所有 10 个 popup 组件用 Tailwind utility class 重写，删除所有 `styled.*` 定义
+  - 验收标准: 构建产物减小（Tailwind tree-shaking 仅保留用到 class，对比 styled-components 运行时开销）
+  - 验收标准: 视觉风格简约现代——更少边框、更多留白、统一圆角、流畅过渡
+
+- [ ] **F9.2 图标系统迁移** — react-icons 替代 SVG 文件
+  - 验收标准: 安装 `react-icons`，删除 `public/icons/` 下 close.svg、email.svg、github.svg、settings.svg（保留 png）
+  - 验收标准: Header/Post/Search/Settings 组件改用 react-icons（`MdClose`/`MdEmail`/`FaGithub`/`MdSettings`）
+  - 验收标准: react-icons tree-shaking 正常，构建产物只含用到的图标
+
+- [ ] **F9.3 暗色模式** — prefers-color-scheme 自动切换
+  - 验收标准: Tailwind `dark:` variant + `prefers-color-scheme` 自动切换亮/暗主题
+  - 验收标准: 暗色模式下文本可读、对比度达标、无刺眼白色背景
+  - 验收标准: 所有组件在暗色模式下观感一致
+
+- [ ] **F9.4 交互细节打磨** — 加载状态、空状态、过渡动画
+  - 验收标准: popup 打开时显示加载骨架屏，数据到达后切换为列表
+  - 验收标准: 空列表/无搜索结果有独立占位提示（图标 + 文案）
+  - 验收标准: 列表项添加/删除有 subtle 过渡动画

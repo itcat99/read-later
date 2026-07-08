@@ -5,6 +5,7 @@ import { RETURN_POSTS, RETURN_SETTINGS } from '../../lib/constants';
 import { usePostsStore } from '../../stores/postsStore';
 import { useSettingsStore } from '../../stores/settingsStore';
 import App from './App';
+import './popup.css';
 
 browser.runtime.onMessage.addListener((msg: Message) => {
   const { type, payload } = msg;

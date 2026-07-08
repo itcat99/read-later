@@ -1,26 +1,5 @@
 import type React from 'react';
 import { memo } from 'react';
-import styled from 'styled-components';
-
-const StyleRoot = styled.a.attrs((props: { $data: string; $download: string }) => ({
-  href: props.$data,
-  download: props.$download,
-}))`
-  text-align: center;
-  flex-grow: 1;
-  display: inline-block;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #fff;
-  text-decoration: none;
-  padding: 4px;
-  &:focus {
-    outline: none;
-  }
-  &:hover {
-    opacity: 0.8;
-    transition: opacity 300ms;
-  }
-`;
 
 interface Post {
   title: string;
@@ -60,9 +39,13 @@ const Download: React.FC<DownloadProps> = memo(({ posts, title }) => {
   const dataUrl = `data:text/html;charset=utf-8,${encodeURIComponent(getNetscapeBookmarkFormat())}`;
 
   return (
-    <StyleRoot $data={dataUrl} $download={filename}>
+    <a
+      href={dataUrl}
+      download={filename}
+      className="text-center flex-1 inline-block bg-gray-700 text-white no-underline px-1 text-sm leading-7 hover:opacity-80 transition-opacity duration-300"
+    >
       export
-    </StyleRoot>
+    </a>
   );
 });
 
