@@ -224,7 +224,7 @@ Redux 状态管理 + Redux-Saga 副作用处理。
   - 验收标准: Chrome Runtime Message 通信模式保留（popup ↔ service worker），消息类型常量不变
   - 验收标准: 删除 `redux`、`react-redux`、`redux-saga` 依赖；删除 `src/actions/`、`src/reducers/`、`src/sagas/`、`src/store.js`
 
-- [ ] **F8.7 TypeScript 类型覆盖** — 为核心模块添加类型定义
+- [x] **F8.7 TypeScript 类型覆盖** — 为核心模块添加类型定义
   - 验收标准: Action types 有完整的 TypeScript 类型（union type 替代 constents.js 字符串常量）
   - 验收标准: Post、Settings、Config 等核心数据结构有 interface/type 定义
   - 验收标准: Reducer 函数有完整的参数和返回值类型
@@ -232,14 +232,14 @@ Redux 状态管理 + Redux-Saga 副作用处理。
 
 ### 阶段 4：构建与质量
 
-- [ ] **F8.8 构建工具链替换** — 移除旧构建系统，WXT 成为唯一构建工具
+- [x] **F8.8 构建工具链替换** — 移除旧构建系统，WXT 成为唯一构建工具
   - 验收标准: 删除 `webpack.dev.js`、`webpack.prod.js`、`.babelrc`
   - 验收标准: 删除旧 `dist/` 目录（WXT 输出到 `.output/` 或配置 outDir 为 `dist/`）
   - 验收标准: `yarn dev` 使用 WXT dev mode（比 Webpack watch 快）
   - 验收标准: `yarn build` 使用 WXT build，产出可发布的 zip
   - 验收标准: Bundle analyzer 通过 WXT 的 `wxt build --analyze` 可用
 
-- [ ] **F8.9 代码质量与 CI** — 更新 Lint/Format 工具链
+- [x] **F8.9 代码质量与 CI** — 更新 Lint/Format 工具链
   - 验收标准: ESLint 配置支持 TypeScript（@typescript-eslint）
   - 验收标准: Prettier 配置支持 `.ts`/`.tsx` 文件
   - 验收标准: `yarn format:js`（或等效命令）能检查新代码
