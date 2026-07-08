@@ -195,7 +195,7 @@ Redux 状态管理 + Redux-Saga 副作用处理。
   - 验收标准: Content Security Policy 适配 MV3 格式
   - 验收标准: Webpack 构建的 `dist/manifest.json` 与 WXT 构建的 `.output/*/manifest.json` 权限无差异
 
-- [ ] **F8.3 入口点迁移** — 将现有 entry 文件适配为 WXT entrypoints 格式
+- [x] **F8.3 入口点迁移** — 将现有 entry 文件适配为 WXT entrypoints 格式
   - 验收标准: `src/background.js` → `entrypoints/background.ts`，使用 `defineBackground()` 包裹
   - 验收标准: `src/pop.js` + `src/app.jsx` → `entrypoints/popup/` (HTML + main.tsx)
   - 验收标准: 使用 `browser` 全局替代 `chrome` API 调用（WXT 提供的 webextension-polyfill）
