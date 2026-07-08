@@ -1,6 +1,6 @@
 # STATE — Read Later
 
-> 最后更新: 2026-07-08 (loop-dev #9: F9.1 Tailwind CSS 迁移完成)
+> 最后更新: 2026-07-08 (loop-dev #10: F9.2 图标修复完成)
 
 ## 模块进度
 
@@ -13,7 +13,7 @@
 | M5: 数据流层 | ✅ 已完成 | 4/4 | Redux + Saga 数据流完整 |
 | M6: 待实现功能 | ❌ 已废弃 | — | F6.1-F6.3 不适合 Bookmark API 存储模型，已删除 |
 | M8: WXT + MV3 框架迁移 | ✅ 已完成 | 11/11 | 全部完成 |
-| M9: UI 现代化重构 | 🔄 进行中 | 1/4 | F9.1 完成，F9.2-F9.4 待完成 |
+| M9: UI 现代化重构 | 🔄 进行中 | 2/4 | F9.1+F9.2 完成，F9.3+F9.4 待完成 |
 
 ## 当前任务
 
@@ -40,3 +40,4 @@
 | 2026-07-08 | loop-dev #8 | ✅ F8.9 完成: Biome 替代 ESLint+Prettier，删除 5 个 eslint 包 + .eslintrc.json，新增 biome.json，verifier 98/100 PASS（6 个已有 warning 非本次引入） |
 | 2026-07-08 | /loop-add | 新增 M9: UI 现代化重构 — Tailwind CSS + react-icons + 暗色模式 + 交互打磨（4 个功能点） |
 | 2026-07-08 | loop-dev #9 | ✅ F9.1 完成: Tailwind CSS 替代 styled-components，10 个组件重写，JS -27kB，verifier 95/100 PASS |
+| 2026-07-08 | loop-dev #10 | ✅ F9.2 完成: react-icons 替代 SVG 文件，图标颜色可控，Post hover 效果 + 左红条可见，全局颜色重设计，verifier 95/100 PASS |

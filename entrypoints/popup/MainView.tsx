@@ -1,4 +1,3 @@
-import type React from 'react';
 import { memo, useMemo } from 'react';
 import { filterPosts, usePostsStore } from '../../stores/postsStore';
 import { useSettingsStore } from '../../stores/settingsStore';
@@ -24,7 +23,7 @@ function getIcon(url: string, faviconApi: string): string {
   return src;
 }
 
-const Main: React.FC = () => {
+const Main = memo(() => {
   const posts = usePostsStore((s) => s.posts);
   const searchKeyword = usePostsStore((s) => s.searchKeyword);
   const removePost = usePostsStore((s) => s.removePost);
@@ -34,32 +33,35 @@ const Main: React.FC = () => {
 
   const renderPosts = useMemo(
     () =>
-      visiblePosts.map((post) => {
-        const { title, url, id } = post;
-        return (
-          <Post
-            key={id}
-            imgsrc={getIcon(url, settings.favicon_api)}
-            url={url}
-            title={title}
-            id={id}
-            show={true}
-            remove={removePost}
-            defaultImg={settings.img_default}
-            timeout={settings.img_timeout}
-          />
-        );
-      }),
+      visiblePosts.map((post) => (
+        <Post
+          key={post.id}
+          imgsrc={getIcon(post.url, settings.favicon_api)}
+          url={post.url}
+          title={post.title}
+          id={post.id}
+          show
+          remove={removePost}
+          defaultImg={settings.img_default}
+          timeout={settings.img_timeout}
+        />
+      )),
     [visiblePosts, removePost, settings],
   );
 
-  const content = !posts?.length ? (
-    <Empty />
-  ) : (
-    <ul className="flex flex-col p-0 m-0 list-none">{renderPosts}</ul>
+  if (!posts.length) {
+    return (
+      <div className="flex-1 overflow-hidden h-[300px]">
+        <Empty />
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex-1 overflow-y-auto overflow-x-hidden h-[300px] bg-white dark:bg-gray-900">
+      <ul className="flex flex-col p-0 m-0 list-none">{renderPosts}</ul>
+    </div>
   );
+});
 
-  return <div className="flex-1 overflow-x-hidden h-[300px]">{content}</div>;
-};
-
-export default memo(Main);
+export default Main;

@@ -1,11 +1,11 @@
-import type React from 'react';
 import { memo, useCallback, useRef } from 'react';
+import { HiXMark } from 'react-icons/hi2';
 
 interface SearchProps {
   search: (keyword: string) => void;
 }
 
-const Search: React.FC<SearchProps> = memo(({ search }) => {
+const Search = memo(({ search }: SearchProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout>>();
 
@@ -25,7 +25,7 @@ const Search: React.FC<SearchProps> = memo(({ search }) => {
   }, [search]);
 
   return (
-    <div className="relative w-32 h-6 border border-gray-300 dark:border-gray-600 rounded px-1.5 group">
+    <div className="relative w-[120px] h-6 border border-gray-300 dark:border-gray-600 rounded px-1.5 py-0.5 group">
       <input
         type="text"
         placeholder="search..."
@@ -37,13 +37,10 @@ const Search: React.FC<SearchProps> = memo(({ search }) => {
         type="button"
         onClick={handleClear}
         aria-label="Clear search"
-        className="absolute min-w-[14px] h-[14px] top-1/2 right-1.5 -translate-y-1/2 opacity-0 group-hover:opacity-50 hover:opacity-100 transition-opacity duration-400 border-none bg-transparent cursor-pointer p-0"
-        style={{
-          backgroundImage: "url('../../icons/close.svg')",
-          backgroundSize: '100%',
-          backgroundRepeat: 'no-repeat',
-        }}
-      />
+        className="absolute top-1/2 right-1 -translate-y-1/2 opacity-0 group-hover:opacity-60 hover:opacity-100 transition-opacity duration-200 border-none bg-transparent cursor-pointer p-0 text-gray-400 dark:text-gray-500"
+      >
+        <HiXMark size={14} />
+      </button>
     </div>
   );
 });

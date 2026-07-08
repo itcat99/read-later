@@ -1,4 +1,3 @@
-import type React from 'react';
 import { memo } from 'react';
 
 interface Post {
@@ -12,7 +11,7 @@ interface DownloadProps {
   title: string;
 }
 
-const Download: React.FC<DownloadProps> = memo(({ posts, title }) => {
+const Download = memo(({ posts, title }: DownloadProps) => {
   const getNetscapeBookmarkFormat = () => {
     let list = '';
     posts.forEach((post) => {
@@ -42,9 +41,9 @@ const Download: React.FC<DownloadProps> = memo(({ posts, title }) => {
     <a
       href={dataUrl}
       download={filename}
-      className="text-center flex-1 inline-block bg-gray-700 text-white no-underline px-1 text-sm leading-7 hover:opacity-80 transition-opacity duration-300"
+      className="flex-1 inline-flex items-center justify-center bg-gray-600 hover:bg-gray-700 text-white no-underline text-xs font-medium transition-colors duration-200"
     >
-      export
+      Export
     </a>
   );
 });

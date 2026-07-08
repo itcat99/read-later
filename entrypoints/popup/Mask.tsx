@@ -1,9 +1,8 @@
-import type React from 'react';
 import { memo } from 'react';
 import { useMaskStore } from '../../stores/maskStore';
 import { usePostsStore } from '../../stores/postsStore';
 
-const Mask: React.FC = () => {
+const Mask = memo(() => {
   const show = useMaskStore((s) => s.show);
   const setShow = useMaskStore((s) => s.setShow);
   const clear = usePostsStore((s) => s.clear);
@@ -13,41 +12,31 @@ const Mask: React.FC = () => {
     setShow(false);
   };
 
+  if (!show) return null;
+
   return (
-    <div
-      className={show ? 'block' : 'hidden'}
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        zIndex: 9999,
-        width: '100%',
-        height: '100%',
-        backgroundColor: 'rgba(0, 0, 0, 0.3)',
-        textAlign: 'center',
-      }}
-    >
-      <div className="absolute top-1/2 left-1/2 w-full -translate-x-1/2 -translate-y-1/2">
-        <div className="w-full h-[100px] leading-[100px] text-xl text-white text-center">
-          Are you sure?
+    <div className="fixed inset-0 z-[9999] bg-black/30 flex items-center justify-center">
+      <div className="text-center">
+        <p className="text-white text-lg mb-4">Are you sure?</p>
+        <div className="flex justify-center gap-2">
+          <button
+            type="button"
+            onClick={handleClear}
+            className="px-5 h-7 border-none text-white text-sm bg-red-500 hover:bg-red-600 cursor-pointer transition-colors duration-200 rounded"
+          >
+            Sure
+          </button>
+          <button
+            type="button"
+            onClick={() => setShow(false)}
+            className="px-5 h-7 border-none text-white text-sm bg-gray-500 hover:bg-gray-600 cursor-pointer transition-colors duration-200 rounded"
+          >
+            Cancel
+          </button>
         </div>
-        <button
-          type="button"
-          onClick={handleClear}
-          className="h-7 border-none text-white cursor-pointer bg-red-600 hover:opacity-80 transition-opacity duration-300 px-4"
-        >
-          Sure
-        </button>
-        <button
-          type="button"
-          onClick={() => setShow(false)}
-          className="h-7 border-none text-white cursor-pointer bg-gray-600 hover:opacity-80 transition-opacity duration-300 px-4"
-        >
-          Cancel
-        </button>
       </div>
     </div>
   );
-};
+});
 
-export default memo(Mask);
+export default Mask;
