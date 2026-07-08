@@ -4,10 +4,13 @@
   "description": "a chrome extension .",
   "main": "index.js",
   "scripts": {
+    "postinstall": "wxt prepare",
+    "dev": "wxt",
+    "build": "wxt build",
+    "dev:old": "webpack --config webpack.dev.js --watch --display-modules --sort-modules-by size",
+    "build:old": "webpack --config webpack.prod.js",
     "prebuild": "rm -rf ./dist/assets/",
-    "build": "webpack --config webpack.prod.js",
     "build:info": "GET_INFO=true webpack --config webpack.prod.js",
-    "dev": "webpack --config webpack.dev.js --watch --display-modules --sort-modules-by size",
     "format:js": "eslint --fix --color ./src",
     "precommit": "lint-staged"
   },
@@ -63,6 +66,7 @@
     "uglifyjs-webpack-plugin": "^1.2.7",
     "webpack": "^4.20.2",
     "webpack-bundle-analyzer": "^3.0.2",
-    "webpack-cli": "^3.1.1"
+    "webpack-cli": "^3.1.1",
+    "wxt": "^0.20.27"
   }
 }

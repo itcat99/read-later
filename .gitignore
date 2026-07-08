@@ -9,3 +9,7 @@ key.pem
 
 # package
 *.zip
+
+# WXT
+.wxt/
+.output/

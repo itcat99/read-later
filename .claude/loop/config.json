@@ -1,0 +1,16 @@
+{
+  "version": "2.0",
+  "project": "read-later",
+  "created": "2026-07-08",
+  "createdBy": "/loop-adopt",
+  "verification": {
+    "build": "yarn build",
+    "lint": "yarn format:js",
+    "test": null,
+    "typecheck": null
+  },
+  "moduleCount": 8,
+  "featureCount": 37,
+  "completedCount": 24,
+  "pendingCount": 13
+}
