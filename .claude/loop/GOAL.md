@@ -187,7 +187,7 @@ Redux 状态管理 + Redux-Saga 副作用处理。
   - 验收标准: TypeScript 配置正确（tsconfig.json extends `.wxt/tsconfig.json`）
   - 验收标准: `postinstall` 脚本包含 `wxt prepare`
 
-- [ ] **F8.2 Manifest V3 配置迁移** — 将 dist/manifest.json 的 MV2 配置转为 MV3
+- [x] **F8.2 Manifest V3 配置迁移** — 将 dist/manifest.json 的 MV2 配置转为 MV3
   - 验收标准: `manifest_version` 从 2 升级到 3
   - 验收标准: `background.scripts` → `background.service_worker`（WXT 自动处理）
   - 验收标准: `browser_action` → `action` API
