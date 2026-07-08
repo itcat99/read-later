@@ -203,21 +203,21 @@ Redux 状态管理 + Redux-Saga 副作用处理。
 
 ### 阶段 2：UI 层迁移
 
-- [ ] **F8.4 React 组件迁移** — Class Component → Function Component + Hooks
+- [x] **F8.4 React 组件迁移** — Class Component → Function Component + Hooks
   - 验收标准: 所有容器组件（Header/Main/Footer/Mask/Settings）改为函数组件 + hooks
   - 验收标准: 所有展示组件（Post/Clear/Search/SettingsItem/Empty/Download）改为函数组件 + hooks
   - 验收标准: `connect(mapStateToProps, mapDispatchToProps)` → `useSelector` + `useDispatch` hooks
   - 验收标准: `PureComponent` → `React.memo` 保持渲染优化
   - 验收标准: UI 行为与迁移前完全一致（打开 popup、搜索、清空、设置面板交互）
 
-- [ ] **F8.5 styled-components 升级** — 更新样式方案
+- [x] **F8.5 styled-components 升级** — 更新样式方案
   - 验收标准: styled-components 升级到最新版本（兼容 React 18+）
   - 验收标准: 所有 styled.js 文件正常工作，popup 视觉与迁移前一致
   - 验收标准: `.innerRef` deprecated API → `ref`（React 16 → 18+ 变更）
 
 ### 阶段 3：数据流层迁移
 
-- [ ] **F8.6 Redux + Saga → Zustand 状态管理迁移** — 用 Zustand 替代 Redux + Redux-Saga
+- [x] **F8.6 Redux + Saga → Zustand 状态管理迁移** — 用 Zustand 替代 Redux + Redux-Saga
   - 验收标准: 安装 `zustand`，创建 `stores/postsStore.ts`、`stores/settingsStore.ts`、`stores/maskStore.ts`
   - 验收标准: posts/settings/mask 三个 state 的行为与迁移前完全一致
   - 验收标准: Saga 的副作用逻辑（GET_POSTS/GET_SETTINGS 的 sendMessage + 等待响应）在 Zustand store 中以 async actions 实现

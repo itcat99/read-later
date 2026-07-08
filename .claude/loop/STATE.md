@@ -1,6 +1,6 @@
 # STATE — Read Later
 
-> 最后更新: 2026-07-08 (loop-dev #3: F8.3 完成)
+> 最后更新: 2026-07-08 (loop-dev #4: F8.4/F8.5/F8.6 完成)
 
 ## 模块进度
 
@@ -12,7 +12,7 @@
 | M4: 后台服务 | ✅ 已完成 | 5/5 | Background script 消息路由完整 |
 | M5: 数据流层 | ✅ 已完成 | 4/4 | Redux + Saga 数据流完整 |
 | M6: 待实现功能 | ⬜ 待开始 | 0/3 | README TODO 中的未完成项 |
-| M8: WXT + MV3 框架迁移 | 🔄 进行中 | 3/10 | F8.1-F8.3 已完成（background 入口），popup 入口在 F8.4 中一起迁移 |
+| M8: WXT + MV3 框架迁移 | 🔄 进行中 | 6/10 | F8.1-F8.6 已完成，F8.7 待开始（阶段3完成） |
 
 ## 当前任务
 
@@ -31,3 +31,4 @@
 | 2026-07-08 | loop-dev #1 | ✅ F8.1 完成: WXT 项目初始化 (bun + wxt + tsconfig + 占位入口)，verifier 97/100 PASS |
 | 2026-07-08 | loop-dev #2 | ✅ F8.2 完成: Manifest V3 配置迁移 (wxt.config.ts 完整 MV3 manifest)，权限一致验证通过 |
 | 2026-07-08 | loop-dev #3 | ✅ F8.3 完成: 入口点迁移 (background.ts + lib/*.ts)，browser.* API + async/await，构建通过 |
+| 2026-07-08 | loop-dev #4 | ✅ F8.4+F8.5+F8.6 完成: React 18 hooks 迁移 + styled-components 6 升级 + Zustand 状态管理，11组件+3stores |
