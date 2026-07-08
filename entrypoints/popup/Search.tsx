@@ -1,7 +1,7 @@
 import type React from 'react';
 import { memo, useCallback, useRef } from 'react';
 import styled from 'styled-components';
-import { globalVars } from '../../lib/_vars';
+import { globalVars } from '../../lib/vars';
 
 const RemoveBtn = styled.span`
   position: absolute;

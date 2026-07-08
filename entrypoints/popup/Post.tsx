@@ -1,7 +1,7 @@
 import type React from 'react';
 import { memo, useCallback, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { globalVars } from '../../lib/_vars';
+import { globalVars } from '../../lib/vars';
 
 const StyledRoot = styled.li<{ $show: boolean }>`
   position: relative;
@@ -59,21 +59,29 @@ const Link = styled.a`
   }
 `;
 
-const RemoveBtn = styled.span`
+const RemoveBtn = styled.button`
   min-width: 14px;
   height: 14px;
   background: url('../icons/close.svg');
   background-repeat: no-repeat;
   background-size: 100%;
+  border: none;
   cursor: pointer;
   opacity: 0;
   transition: opacity 500ms;
+  padding: 0;
   ${StyledRoot}:hover & {
     opacity: 0.5;
     transition: opacity 500ms;
   }
   &:hover {
     opacity: 1;
+  }
+  &:focus-visible {
+    opacity: 1;
+    outline: 2px solid #4d4d4d;
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 `;
 
@@ -92,13 +100,15 @@ const Post: React.FC<PostProps> = memo(
   ({ imgsrc, title, url, id, show, remove, defaultImg, timeout }) => {
     const iconRef = useRef<HTMLImageElement>(null);
     const completeRef = useRef(false);
+    const timerRef = useRef<number | null>(null);
 
     const setIconTimeout = useCallback(() => {
-      setTimeout(() => {
+      const timer = window.setTimeout(() => {
         if (!completeRef.current && iconRef.current) {
           iconRef.current.src = defaultImg;
         }
       }, timeout || 3000);
+      timerRef.current = timer;
     }, [defaultImg, timeout]);
 
     useEffect(() => {
@@ -106,6 +116,13 @@ const Post: React.FC<PostProps> = memo(
         completeRef.current = iconRef.current.complete;
       }
       setIconTimeout();
+
+      return () => {
+        if (timerRef.current !== null) {
+          clearTimeout(timerRef.current);
+          timerRef.current = null;
+        }
+      };
     }, [setIconTimeout]);
 
     const handleLoad = () => {
@@ -115,10 +132,10 @@ const Post: React.FC<PostProps> = memo(
     return (
       <StyledRoot $show={show}>
         <Icon ref={iconRef} src={imgsrc} alt={title} onLoad={handleLoad} />
-        <Link href={url} target="_blank" rel="noopener noreferrer">
+        <Link href={url} target="_blank" rel="noopener noreferrer" title={title}>
           {title}
         </Link>
-        <RemoveBtn onClick={() => remove(id)} />
+        <RemoveBtn onClick={() => remove(id)} aria-label={`Remove ${title}`} />
       </StyledRoot>
     );
   },

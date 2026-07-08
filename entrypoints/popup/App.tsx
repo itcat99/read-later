@@ -1,7 +1,7 @@
 import type React from 'react';
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import { panel } from '../../lib/_vars';
+import { panel } from '../../lib/vars';
 import { usePostsStore } from '../../stores/postsStore';
 import { useSettingsStore } from '../../stores/settingsStore';
 import Footer from './Footer';

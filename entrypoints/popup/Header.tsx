@@ -1,7 +1,7 @@
 import type React from 'react';
 import { memo } from 'react';
 import styled from 'styled-components';
-import { globalVars } from '../../lib/_vars';
+import { globalVars } from '../../lib/vars';
 import { usePostsStore } from '../../stores/postsStore';
 import { useSettingsStore } from '../../stores/settingsStore';
 import Search from './Search';

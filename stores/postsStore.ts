@@ -1,17 +1,17 @@
 import { create } from 'zustand';
-import type { Message } from '../lib/constents';
-import { CLEAR, GET_POSTS, REMOVE_POST } from '../lib/constents';
+import type { Message } from '../lib/constants';
+import { CLEAR, GET_POSTS, REMOVE_POST } from '../lib/constants';
 
-interface Post {
+export interface Post {
   id: string;
   title: string;
   url: string;
-  show: boolean;
   dateAdded?: number;
 }
 
 interface PostsState {
   posts: Post[];
+  searchKeyword: string;
   updatePosts: (posts: Post[]) => void;
   removePost: (id: string) => void;
   clear: () => void;
@@ -21,6 +21,7 @@ interface PostsState {
 
 export const usePostsStore = create<PostsState>((set) => ({
   posts: [],
+  searchKeyword: '',
 
   updatePosts: (posts: Post[]) => {
     set({ posts });
@@ -39,16 +40,16 @@ export const usePostsStore = create<PostsState>((set) => ({
   },
 
   search: (keyword: string) => {
-    const lower = keyword.toLowerCase();
-    set((state) => ({
-      posts: state.posts.map((item) => ({
-        ...item,
-        show: lower ? item.title.toLowerCase().includes(lower) : true,
-      })),
-    }));
+    set({ searchKeyword: keyword });
   },
 
   getPosts: () => {
     browser.runtime.sendMessage({ type: GET_POSTS } as Message);
   },
 }));
+
+export function filterPosts(posts: Post[], keyword: string): Post[] {
+  if (!keyword) return posts;
+  const lower = keyword.toLowerCase();
+  return posts.filter((item) => item.title.toLowerCase().includes(lower));
+}

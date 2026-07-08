@@ -1,6 +1,6 @@
 import type { Config } from '../lib/config';
 import config from '../lib/config';
-import type { Message } from '../lib/constents';
+import type { Message } from '../lib/constants';
 import {
   ADD_POST,
   CLEAR,
@@ -11,7 +11,7 @@ import {
   RETURN_POSTS,
   RETURN_SETTINGS,
   UPDATE_SETTINGS,
-} from '../lib/constents';
+} from '../lib/constants';
 import { bookmarks, popMsg, sendMsg } from '../lib/helpers';
 
 export default defineBackground(() => {
@@ -96,15 +96,13 @@ export default defineBackground(() => {
 
     const destinationId = folders[0].id;
     const info = { ...folders[0] };
-    folders.shift();
 
-    for (const folder of folders) {
-      const children = await bookmarks('getChildren', folder.id);
+    for (let i = 1; i < folders.length; i++) {
+      const children = await bookmarks('getChildren', folders[i].id);
       for (const child of children) {
         await bookmarks('move', child.id, { parentId: destinationId });
       }
-      await bookmarks('remove', folder.id);
-      return info;
+      await bookmarks('remove', folders[i].id);
     }
 
     return info;
@@ -127,13 +125,13 @@ export default defineBackground(() => {
     url: string,
     info: browser.bookmarks.BookmarkTreeNode | null = folderInfo,
     postList: browser.bookmarks.BookmarkTreeNode[] = posts,
-  ): Promise<boolean | undefined> {
-    if (!info) return;
+  ): Promise<void> {
+    if (!info) throw new Error('Folder not initialized');
 
     const isDuplicate = postList.some((item) => item.url === url);
     if (isDuplicate) {
       popMsg('warning', 'you has the same post.');
-      return false;
+      return;
     }
 
     await bookmarks('create', {
@@ -157,16 +155,20 @@ export default defineBackground(() => {
   }
 
   async function clear(postList: browser.bookmarks.BookmarkTreeNode[] = posts): Promise<void> {
-    try {
-      for (const post of postList) {
+    const errors: Error[] = [];
+    for (const post of postList) {
+      try {
         await bookmarks('remove', post.id);
+      } catch (err) {
+        errors.push(err instanceof Error ? err : new Error(String(err)));
       }
-      posts = [];
-      if (folderInfo) {
-        setBadgeNum(folderInfo, posts);
-      }
-    } catch (error) {
-      throw new Error(String(error));
+    }
+    if (errors.length > 0) {
+      throw new Error(`Failed to remove ${errors.length}/${postList.length} posts`);
+    }
+    posts = [];
+    if (folderInfo) {
+      setBadgeNum(folderInfo, posts);
     }
   }
 
@@ -182,8 +184,11 @@ export default defineBackground(() => {
     }
     folderName = currentConfig.title;
 
-    if (info?.id) {
-      bookmarks('update', info.id, { title: folderName });
+    if (info?.id && info.title !== folderName) {
+      await bookmarks('update', info.id, { title: folderName });
+      if (folderInfo) {
+        folderInfo = { ...folderInfo, title: folderName };
+      }
     }
   }
 
@@ -228,5 +233,7 @@ export default defineBackground(() => {
   });
 
   // ---- Initialize ----
-  init();
+  init().catch((err) => {
+    console.error('Read Later: background initialization failed', err);
+  });
 });

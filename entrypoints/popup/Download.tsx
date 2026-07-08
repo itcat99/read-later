@@ -56,8 +56,8 @@ const Download: React.FC<DownloadProps> = memo(({ posts, title }) => {
   };
 
   const d = new Date();
-  const filename = `readLater_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}_${d.getHours()}${d.getMinutes()}${d.getSeconds()}.html`;
-  const dataUrl = `data:text/html;charset=utf-8,${getNetscapeBookmarkFormat()}`;
+  const filename = `readLater_${d.getFullYear()}_${d.getMonth() + 1}_${d.getDate()}_${d.getHours()}${d.getMinutes()}${d.getSeconds()}.html`;
+  const dataUrl = `data:text/html;charset=utf-8,${encodeURIComponent(getNetscapeBookmarkFormat())}`;
 
   return (
     <StyleRoot $data={dataUrl} $download={filename}>

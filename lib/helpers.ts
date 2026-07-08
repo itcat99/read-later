@@ -1,14 +1,32 @@
 import type { BookmarkTreeNode } from 'wxt/browser';
 
-export function bookmarks(type: string, ...config: unknown[]): Promise<BookmarkTreeNode[]> {
+type BookmarkMethod = 'search' | 'create' | 'getChildren' | 'move' | 'update' | 'remove';
+
+export function bookmarks(type: 'search', query: { title: string }): Promise<BookmarkTreeNode[]>;
+export function bookmarks(
+  type: 'create',
+  details: browser.bookmarks.CreateDetails,
+): Promise<BookmarkTreeNode>;
+export function bookmarks(type: 'getChildren', id: string): Promise<BookmarkTreeNode[]>;
+export function bookmarks(
+  type: 'move',
+  id: string,
+  destination: browser.bookmarks.Destination,
+): Promise<BookmarkTreeNode>;
+export function bookmarks(
+  type: 'update',
+  id: string,
+  changes: browser.bookmarks.UpdateChanges,
+): Promise<BookmarkTreeNode>;
+export function bookmarks(type: 'remove', id: string): Promise<void>;
+export function bookmarks(type: BookmarkMethod, ...args: unknown[]): Promise<unknown> {
   return new Promise((resolve, reject) => {
     try {
-      (browser.bookmarks as Record<string, Function>)[type](
-        ...config,
-        (result: BookmarkTreeNode[]) => {
-          resolve(result);
-        },
-      );
+      const api = browser.bookmarks[type] as (...a: unknown[]) => Promise<unknown> | undefined;
+      const callback = (result: unknown) => {
+        resolve(result);
+      };
+      api.call(browser.bookmarks, ...args, callback);
     } catch (error) {
       reject(error);
     }

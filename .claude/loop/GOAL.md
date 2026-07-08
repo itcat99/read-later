@@ -125,18 +125,9 @@ Redux 状态管理 + Redux-Saga 副作用处理。
 
 ---
 
-## M6: 待实现功能（来自 README TODO）
+## M6: 已废弃
 
-从 README.md 的 ToDoList 中提取的未完成项。
-
-- [ ] **F6.1 键盘快捷键增强** — README 标记为未完成的 keyboard support
-  - 验收标准: 在 popup 内支持键盘导航（方向键选择链接，Enter 打开，Delete 删除）
-
-- [ ] **F6.2 Tag 标签功能** — 为链接添加自定义标签
-  - 验收标准: 可为每个链接添加/编辑标签，按标签筛选链接
-
-- [ ] **F6.3 Star 收藏功能** — 为链接添加星标
-  - 验收标准: 可为链接添加/取消星标，支持按星标筛选
+> M6 原为 README TODO 中的 F6.1-F6.3（键盘导航、Tag、Star），经评估不适合 Chrome Bookmark API 存储模型，已删除。
 
 ---
 
