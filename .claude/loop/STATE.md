@@ -12,7 +12,7 @@
 | M4: 后台服务 | ✅ 已完成 | 5/5 | Background script 消息路由完整 |
 | M5: 数据流层 | ✅ 已完成 | 4/4 | Redux + Saga 数据流完整 |
 | M6: 待实现功能 | ⬜ 待开始 | 0/3 | README TODO 中的未完成项 |
-| M8: WXT + MV3 框架迁移 | 🔄 进行中 | 9/10 | F8.1-F8.9 已完成，仅剩 F8.10 回归验证 |
+| M8: WXT + MV3 框架迁移 | ✅ 已完成 | 10/10 | 全部完成，真机测试通过 |
 
 ## 当前任务
 
@@ -33,3 +33,4 @@
 | 2026-07-08 | loop-dev #3 | ✅ F8.3 完成: 入口点迁移 (background.ts + lib/*.ts)，browser.* API + async/await，构建通过 |
 | 2026-07-08 | loop-dev #4 | ✅ F8.4+F8.5+F8.6 完成: React 18 hooks 迁移 + styled-components 6 升级 + Zustand 状态管理，11组件+3stores |
 | 2026-07-08 | loop-dev #5 | ✅ F8.7+F8.8+F8.9 完成: TS类型覆盖 + 移除旧构建系统(webpack/babel/redux) + lint/format更新，依赖 50→14 |
+| 2026-07-08 | loop-dev #6 | ✅ F8.10 完成: 全功能回归验证通过，真机测试各项功能完好 |

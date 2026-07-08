@@ -1,6 +1,3 @@
-> ⚠️ 本文件由 /loop-adopt 自动生成。请审阅并调整模块划分、功能点和验收标准。
-> 确认无误后删除本提示行。
-
 # GOAL — Read Later
 
 ## 项目概述
@@ -245,7 +242,7 @@ Redux 状态管理 + Redux-Saga 副作用处理。
   - 验收标准: `yarn format:js`（或等效命令）能检查新代码
   - 验收标准: precommit hook 更新为检查 `.ts`/`.tsx` 文件
 
-- [ ] **F8.10 全功能回归验证** — 确认所有 M1-M6 功能在迁移后正常
+- [x] **F8.10 全功能回归验证** — 确认所有 M1-M6 功能在迁移后正常
   - 验收标准: M1-F1.1~F1.5 书签 CRUD 全部通过（添加/查看/删除/清空/搜索）
   - 验收标准: M2-F2.1~F2.4 设置面板全部通过（打开/保存/重置/取消）
   - 验收标准: M3 UI 组件全部正常渲染（Header/Main/Footer/Mask）
@@ -256,11 +253,11 @@ Redux 状态管理 + Redux-Saga 副作用处理。
 
 ### 技术约束（迁移后）
 
-- 框架: WXT (latest) + Vite
+- 框架: WXT 0.20 + Vite
 - 运行时: Chrome Extension Manifest V3
-- UI: React 18+ with Hooks + TypeScript
-- 样式: styled-components (latest)
-- 状态管理: 待 F8.6 决策（Redux Toolkit 或轻量替代）
+- UI: React 19 + Function Components + Hooks + TypeScript
+- 样式: styled-components 6
+- 状态管理: Zustand 5
 - 存储: Chrome Bookmark API（不变）
-- 包管理: Bun（用户确认）
+- 包管理: Bun
 - 类型: TypeScript strict mode
