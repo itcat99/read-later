@@ -180,10 +180,10 @@ Redux 状态管理 + Redux-Saga 副作用处理。
 
 ### 阶段 1：基础设施搭建
 
-- [ ] **F8.1 WXT 项目初始化** — 在现有项目中集成 WXT 框架，保持代码共存
+- [x] **F8.1 WXT 项目初始化** — 在现有项目中集成 WXT 框架，保持代码共存
   - 验收标准: `wxt` 安装为 devDependency，`wxt.config.ts` 配置 srcDir 指向新源码目录
-  - 验收标准: `yarn dev` 能启动 WXT dev mode（HMR + 自动打开浏览器加载扩展）
-  - 验收标准: `yarn build` 能通过 WXT 构建产出可用的 Chrome 扩展包
+  - 验收标准: `bun dev` 能启动 WXT dev mode（HMR + 自动打开浏览器加载扩展）
+  - 验收标准: `bun run build` 能通过 WXT 构建产出可用的 Chrome 扩展包
   - 验收标准: TypeScript 配置正确（tsconfig.json extends `.wxt/tsconfig.json`）
   - 验收标准: `postinstall` 脚本包含 `wxt prepare`
 
