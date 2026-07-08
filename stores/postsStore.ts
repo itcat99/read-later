@@ -12,6 +12,7 @@ export interface Post {
 interface PostsState {
   posts: Post[];
   searchKeyword: string;
+  loaded: boolean;
   updatePosts: (posts: Post[]) => void;
   removePost: (id: string) => void;
   clear: () => void;
@@ -22,9 +23,10 @@ interface PostsState {
 export const usePostsStore = create<PostsState>((set) => ({
   posts: [],
   searchKeyword: '',
+  loaded: false,
 
   updatePosts: (posts: Post[]) => {
-    set({ posts });
+    set({ posts, loaded: true });
   },
 
   removePost: (id: string) => {

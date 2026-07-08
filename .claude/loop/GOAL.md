@@ -282,14 +282,14 @@ Redux 状态管理 + Redux-Saga 副作用处理。
   - 验收标准: 安装 `react-icons`，删除 `public/icons/` 下 close.svg、email.svg、github.svg、settings.svg（保留 png）
   - 验收标准: 全局颜色 token 定义在 `popup.css` 中——亮色/暗色两套，所有组件统一引用
 
-- [ ] **F9.3 组件视觉升级 + 暗色模式** — 每个组件精修
+- [x] **F9.3 组件视觉升级 + 暗色模式** — 每个组件精修
   - 验收标准: Post 列表项 hover 时有可见背景色变化（`hover:bg-gray-100 dark:hover:bg-gray-800`）
   - 验收标准: Post 列表项左侧红色竖条 hover 时可见
   - 验收标准: 暗色模式通过 Tailwind `dark:` + `@media (prefers-color-scheme: dark)` 自动切换
   - 验收标准: Footer Clear 按钮风格与 export 按钮协调，Mask 弹窗居中且按钮有间距
   - 验收标准: Settings 面板输入框聚焦有可见边框动画
 
-- [ ] **F9.4 交互细节打磨** — 加载状态、空状态、过渡动画
+- [x] **F9.4 交互细节打磨** — 加载状态、空状态、过渡动画
   - 验收标准: popup 打开时显示加载骨架屏（数据到达前），而非瞬间显示"空列表"
   - 验收标准: 空列表有书签图标 + 提示文案（已实现），无搜索结果有独立提示
   - 验收标准: 列表项添加/删除有 subtle fade 过渡动画
