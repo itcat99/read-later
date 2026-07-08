@@ -2,6 +2,7 @@ import { defineConfig } from 'wxt';
 
 export default defineConfig({
   srcDir: 'src-new',
+  outDir: 'dist',
   manifestVersion: 3,
   manifest: {
     name: 'Read Later',

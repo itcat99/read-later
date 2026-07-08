@@ -12,4 +12,4 @@ key.pem
 
 # WXT
 .wxt/
-.output/
+dist/

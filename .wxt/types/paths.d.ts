@@ -6,6 +6,13 @@ declare module "wxt/browser" {
     | ""
     | "/"
     | "/background.js"
+    | "/icons/close.svg"
+    | "/icons/email.svg"
+    | "/icons/github.svg"
+    | "/icons/icon_128.png"
+    | "/icons/icon_16.png"
+    | "/icons/icon_48.png"
+    | "/icons/settings.svg"
     | "/popup.html"
   type HtmlPublicPath = Extract<PublicPath, `${string}.html`>
   export interface WxtRuntime {
