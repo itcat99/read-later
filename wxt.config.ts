@@ -2,10 +2,37 @@ import { defineConfig } from 'wxt';
 
 export default defineConfig({
   srcDir: 'src-new',
+  manifestVersion: 3,
   manifest: {
-    manifest_version: 3,
     name: 'Read Later',
-    description: 'a chrome extension for saving links to read later.',
+    short_name: 'read later',
+    description: 'This extension save pages when you want to read later.',
     version: '0.3.8',
+    action: {
+      default_icon: './icons/icon_48.png',
+      default_popup: 'popup.html',
+      default_title: 'read later',
+    },
+    permissions: [
+      'tabs',
+      'contextMenus',
+      'notifications',
+      'storage',
+      'bookmarks',
+    ],
+    icons: {
+      16: './icons/icon_16.png',
+      48: './icons/icon_48.png',
+      128: './icons/icon_128.png',
+    },
+    commands: {
+      ADD_POST: {
+        suggested_key: {
+          default: 'Ctrl+Shift+M',
+          mac: 'MacCtrl+Shift+M',
+        },
+        description: 'add a new read later post.',
+      },
+    },
   },
 });
