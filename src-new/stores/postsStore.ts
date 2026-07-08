@@ -19,7 +19,7 @@ interface PostsState {
   getPosts: () => void;
 }
 
-export const usePostsStore = create<PostsState>((set, get) => ({
+export const usePostsStore = create<PostsState>((set) => ({
   posts: [],
 
   updatePosts: (posts: Post[]) => {
@@ -27,14 +27,14 @@ export const usePostsStore = create<PostsState>((set, get) => ({
   },
 
   removePost: (id: string) => {
-    chrome.runtime.sendMessage({ type: REMOVE_POST, payload: id } as Message);
+    browser.runtime.sendMessage({ type: REMOVE_POST, payload: id } as Message);
     set((state) => ({
       posts: state.posts.filter((item) => item.id !== id),
     }));
   },
 
   clear: () => {
-    chrome.runtime.sendMessage({ type: CLEAR } as Message);
+    browser.runtime.sendMessage({ type: CLEAR } as Message);
     set({ posts: [] });
   },
 
@@ -49,6 +49,6 @@ export const usePostsStore = create<PostsState>((set, get) => ({
   },
 
   getPosts: () => {
-    chrome.runtime.sendMessage({ type: GET_POSTS } as Message);
+    browser.runtime.sendMessage({ type: GET_POSTS } as Message);
   },
 }));

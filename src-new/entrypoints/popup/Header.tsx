@@ -73,7 +73,7 @@ const Header: React.FC = () => {
   const search = usePostsStore((s) => s.search);
   const setOpen = useSettingsStore((s) => s.setOpen);
 
-  const getVersion = () => chrome.runtime.getManifest().version;
+  const getVersion = () => browser.runtime.getManifest().version;
 
   return (
     <StyledRoot>

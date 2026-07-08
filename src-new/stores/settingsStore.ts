@@ -21,11 +21,11 @@ export const useSettingsStore = create<SettingsState>((set) => ({
   },
 
   getSettings: () => {
-    chrome.runtime.sendMessage({ type: GET_SETTINGS } as Message);
+    browser.runtime.sendMessage({ type: GET_SETTINGS } as Message);
   },
 
   updateSettings: (settings: Config) => {
-    chrome.runtime.sendMessage({
+    browser.runtime.sendMessage({
       type: UPDATE_SETTINGS,
       payload: settings,
     } as Message);
