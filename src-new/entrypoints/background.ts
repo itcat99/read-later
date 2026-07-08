@@ -35,6 +35,7 @@ export default defineBackground(() => {
     setBadgeColor();
 
     createContextMenus();
+    setupContextMenuListener();
   }
 
   function setBadgeNum(
@@ -58,9 +59,17 @@ export default defineBackground(() => {
 
   function createContextMenus(): void {
     browser.contextMenus.create({
+      id: 'read-later',
       title: 'read later',
       contexts: ['page'],
-      onclick: addPost,
+    });
+  }
+
+  function setupContextMenuListener(): void {
+    browser.contextMenus.onClicked.addListener((info, tab) => {
+      if (info.menuItemId === 'read-later') {
+        addPost();
+      }
     });
   }
 
