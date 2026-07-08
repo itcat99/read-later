@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { GET_POSTS, REMOVE_POST, CLEAR } from '../lib/constents';
 import type { Message } from '../lib/constents';
+import { CLEAR, GET_POSTS, REMOVE_POST } from '../lib/constents';
 
 interface Post {
   id: string;

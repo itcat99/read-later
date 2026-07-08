@@ -1,7 +1,8 @@
-import React, { memo } from 'react';
+import type React from 'react';
+import { memo } from 'react';
 import styled from 'styled-components';
-import { usePostsStore } from '../../stores/postsStore';
 import { useMaskStore } from '../../stores/maskStore';
+import { usePostsStore } from '../../stores/postsStore';
 
 const StyleRoot = styled.div<{ $show: boolean }>`
   display: ${(props) => (props.$show ? 'block' : 'none')};

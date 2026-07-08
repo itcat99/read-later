@@ -1,18 +1,18 @@
-import config from '../lib/config';
 import type { Config } from '../lib/config';
-import { bookmarks, popMsg, sendMsg } from '../lib/helpers';
+import config from '../lib/config';
+import type { Message } from '../lib/constents';
 import {
   ADD_POST,
-  REMOVE_POST,
-  GET_POSTS,
-  RETURN_POSTS,
   CLEAR,
+  GET_POSTS,
   GET_SETTINGS,
+  REMOVE_POST,
+  RESET_SETTINGS,
+  RETURN_POSTS,
   RETURN_SETTINGS,
   UPDATE_SETTINGS,
-  RESET_SETTINGS,
 } from '../lib/constents';
-import type { Message } from '../lib/constents';
+import { bookmarks, popMsg, sendMsg } from '../lib/helpers';
 
 export default defineBackground(() => {
   const cacheConfig: Config = { ...config };
@@ -66,7 +66,7 @@ export default defineBackground(() => {
   }
 
   function setupContextMenuListener(): void {
-    browser.contextMenus.onClicked.addListener((info, tab) => {
+    browser.contextMenus.onClicked.addListener((info, _tab) => {
       if (info.menuItemId === 'read-later') {
         addPost();
       }
@@ -75,21 +75,15 @@ export default defineBackground(() => {
 
   // ---- Bookmark operations ----
 
-  async function getFolder(
-    title: string,
-  ): Promise<browser.bookmarks.BookmarkTreeNode[]> {
+  async function getFolder(title: string): Promise<browser.bookmarks.BookmarkTreeNode[]> {
     return bookmarks('search', { title });
   }
 
-  async function createFolder(
-    title: string,
-  ): Promise<browser.bookmarks.BookmarkTreeNode> {
+  async function createFolder(title: string): Promise<browser.bookmarks.BookmarkTreeNode> {
     return bookmarks('create', { title }) as Promise<browser.bookmarks.BookmarkTreeNode>;
   }
 
-  async function getPosts(
-    folderId: string,
-  ): Promise<browser.bookmarks.BookmarkTreeNode[]> {
+  async function getPosts(folderId: string): Promise<browser.bookmarks.BookmarkTreeNode[]> {
     return bookmarks('getChildren', folderId);
   }
 
@@ -133,7 +127,7 @@ export default defineBackground(() => {
     url: string,
     info: browser.bookmarks.BookmarkTreeNode | null = folderInfo,
     postList: browser.bookmarks.BookmarkTreeNode[] = posts,
-  ): Promise<boolean | void> {
+  ): Promise<boolean | undefined> {
     if (!info) return;
 
     const isDuplicate = postList.some((item) => item.url === url);
@@ -162,9 +156,7 @@ export default defineBackground(() => {
     popMsg('success', 'remove post.');
   }
 
-  async function clear(
-    postList: browser.bookmarks.BookmarkTreeNode[] = posts,
-  ): Promise<void> {
+  async function clear(postList: browser.bookmarks.BookmarkTreeNode[] = posts): Promise<void> {
     try {
       for (const post of postList) {
         await bookmarks('remove', post.id);
@@ -204,10 +196,7 @@ export default defineBackground(() => {
     },
   );
 
-  async function handleMessage(
-    type: string,
-    payload: unknown,
-  ): Promise<void> {
+  async function handleMessage(type: string, payload: unknown): Promise<void> {
     switch (type) {
       case REMOVE_POST:
         await removeMark(payload as string);

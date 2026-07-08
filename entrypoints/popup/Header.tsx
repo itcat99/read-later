@@ -1,4 +1,5 @@
-import React, { memo } from 'react';
+import type React from 'react';
+import { memo } from 'react';
 import styled from 'styled-components';
 import { globalVars } from '../../lib/_vars';
 import { usePostsStore } from '../../stores/postsStore';
@@ -85,18 +86,10 @@ const Header: React.FC = () => {
       <SettingsIcon title="settings" onClick={() => setOpen(true)} />
 
       <Contact>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://github.com/itcat99/read-later"
-        >
+        <a target="_blank" rel="noopener noreferrer" href="https://github.com/itcat99/read-later">
           <GitIcon />
         </a>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="mailto:boiping2010@gmail.com"
-        >
+        <a target="_blank" rel="noopener noreferrer" href="mailto:boiping2010@gmail.com">
           <EmailIcon />
         </a>
       </Contact>

@@ -1,4 +1,5 @@
-import React, { memo, useRef, useCallback, useEffect } from 'react';
+import type React from 'react';
+import { memo, useCallback, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { globalVars } from '../../lib/_vars';
 
@@ -113,16 +114,11 @@ const Post: React.FC<PostProps> = memo(
 
     return (
       <StyledRoot $show={show}>
-        <Icon
-          ref={iconRef}
-          src={imgsrc}
-          alt={title}
-          onLoad={handleLoad}
-        />
+        <Icon ref={iconRef} src={imgsrc} alt={title} onLoad={handleLoad} />
         <Link href={url} target="_blank" rel="noopener noreferrer">
           {title}
         </Link>
-        <RemoveBtn onClick={() => remove(id)} role="remove-button" />
+        <RemoveBtn onClick={() => remove(id)} />
       </StyledRoot>
     );
   },

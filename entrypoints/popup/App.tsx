@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react';
+import type React from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { panel } from '../../lib/_vars';
 import { usePostsStore } from '../../stores/postsStore';
 import { useSettingsStore } from '../../stores/settingsStore';
+import Footer from './Footer';
 import Header from './Header';
 import Main from './MainView';
-import Footer from './Footer';
 import Mask from './Mask';
 import Settings from './Settings';
 

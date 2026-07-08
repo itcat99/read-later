@@ -1,8 +1,9 @@
-import React, { useState, memo, useCallback } from 'react';
+import type React from 'react';
+import { memo, useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { useSettingsStore } from '../../stores/settingsStore';
-import defaultConfig from '../../lib/config';
 import type { Config } from '../../lib/config';
+import defaultConfig from '../../lib/config';
+import { useSettingsStore } from '../../stores/settingsStore';
 
 const StyleRoot = styled.section<{ $isOpen: boolean }>`
   display: ${(props) => (props.$isOpen ? 'flex' : 'none')};
@@ -87,26 +88,24 @@ interface SettingsItemProps {
   onChange: (data: Partial<Config>) => void;
 }
 
-const SettingsItem: React.FC<SettingsItemProps> = memo(
-  ({ name, value, title, onChange }) => {
-    return (
-      <ItemRoot>
-        <label htmlFor={name}>{title}: </label>
-        <input
-          type="text"
-          name={name}
-          id={name}
-          defaultValue={String(value)}
-          onInput={(e) => {
-            const data: Partial<Config> = {};
-            (data as any)[name] = (e.target as HTMLInputElement).value;
-            onChange(data);
-          }}
-        />
-      </ItemRoot>
-    );
-  },
-);
+const SettingsItem: React.FC<SettingsItemProps> = memo(({ name, value, title, onChange }) => {
+  return (
+    <ItemRoot>
+      <label htmlFor={name}>{title}: </label>
+      <input
+        type="text"
+        name={name}
+        id={name}
+        defaultValue={String(value)}
+        onInput={(e) => {
+          const data: Partial<Config> = {};
+          (data as any)[name] = (e.target as HTMLInputElement).value;
+          onChange(data);
+        }}
+      />
+    </ItemRoot>
+  );
+});
 
 const Settings: React.FC = () => {
   const open = useSettingsStore((s) => s.open);

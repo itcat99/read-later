@@ -1,9 +1,10 @@
-import React, { memo } from 'react';
+import type React from 'react';
+import { memo } from 'react';
 import styled from 'styled-components';
 import { usePostsStore } from '../../stores/postsStore';
 import { useSettingsStore } from '../../stores/settingsStore';
-import Post from './Post';
 import Empty from './Empty';
+import Post from './Post';
 
 const StyledRoot = styled.div`
   flex-grow: 1;
@@ -25,7 +26,7 @@ function getIcon(url: string, settings: any): string {
   try {
     src = favicon_api
       ? `${favicon_api}${url.replace(/^(https|http):\/\//, '')}`
-      : `${url.match(/(^[a-zA-z]+:\/\/).*?\//)![0]}favicon.ico`;
+      : `${url.match(/(^[a-zA-z]+:\/\/).*?\//)?.[0]}favicon.ico`;
   } catch {
     src = `${url}/favicon.ico`;
   }
@@ -54,8 +55,7 @@ const Main: React.FC = () => {
     );
   });
 
-  const content =
-    !posts || !posts.length ? <Empty /> : <List>{renderPosts}</List>;
+  const content = !posts?.length ? <Empty /> : <List>{renderPosts}</List>;
 
   return <StyledRoot>{content}</StyledRoot>;
 };

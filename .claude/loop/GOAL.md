@@ -140,9 +140,11 @@ Redux 状态管理 + Redux-Saga 副作用处理。
 
 ---
 
-## M7: 构建与工程化
+## M7: 构建与工程化（已被 M8 替代）
 
-项目构建、代码质量工具链。
+> ⚠️ M8 完成迁移后，Webpack/Babel/旧 ESLint 已被 WXT/Vite/新工具链替代。F7.3 测试覆盖仍需实现。
+
+项目构建、代码质量工具链（迁移前旧版）。
 
 - [x] **F7.1 Webpack 构建** — 开发/生产环境打包
   - 验收标准: `yarn dev` 启动 watch 模式开发构建
@@ -154,19 +156,22 @@ Redux 状态管理 + Redux-Saga 副作用处理。
   - 验收标准: precommit hook 通过 lint-staged + husky 自动检查
 
 - [ ] **F7.3 测试覆盖** — 当前项目无测试目录
-  - 验收标准: 至少覆盖 posts reducer 的核心逻辑（ADD/REMOVE/SEARCH/CLEAR）
-  - 验收标准: 至少覆盖 background.js 中 createMark/removeMark/clear 方法
+  - 验收标准: 至少覆盖 postsStore 的核心逻辑（ADD/REMOVE/SEARCH/CLEAR）
+  - 验收标准: 至少覆盖 background.ts 中 createMark/removeMark/clear 方法
 
 ---
 
 ## 技术约束
 
-- 运行环境: Chrome Extension (Manifest V2)
-- 存储: Chrome Bookmark API（非 chrome.storage）
-- 状态管理: Redux + Redux-Saga（单向数据流）
-- 样式方案: styled-components（CSS-in-JS）
-- 通信: popup ↔ background 通过 `chrome.runtime.sendMessage`
-- 构建: Webpack 4 + Babel 7
+- 框架: WXT 0.20 + Vite
+- 运行时: Chrome Extension Manifest V3
+- UI: React 19 + Function Components + Hooks + TypeScript
+- 样式: styled-components 6
+- 状态管理: Zustand 5
+- 存储: Chrome Bookmark API
+- 包管理: Bun
+- 类型: TypeScript strict mode
+- 通信: popup ↔ service worker 通过 `browser.runtime.sendMessage`（WXT webextension-polyfill）
 - 代码规范: ESLint + Prettier（precommit hook）
 
 ---
@@ -232,15 +237,20 @@ Redux 状态管理 + Redux-Saga 副作用处理。
 - [x] **F8.8 构建工具链替换** — 移除旧构建系统，WXT 成为唯一构建工具
   - 验收标准: 删除 `webpack.dev.js`、`webpack.prod.js`、`.babelrc`
   - 验收标准: 删除旧 `dist/` 目录（WXT 输出到 `.output/` 或配置 outDir 为 `dist/`）
-  - 验收标准: `yarn dev` 使用 WXT dev mode（比 Webpack watch 快）
-  - 验收标准: `yarn build` 使用 WXT build，产出可发布的 zip
+  - 验收标准: `bun dev` 使用 WXT dev mode（比 Webpack watch 快）
+  - 验收标准: `bun run build` 使用 WXT build，产出可发布的 zip
   - 验收标准: Bundle analyzer 通过 WXT 的 `wxt build --analyze` 可用
+  - [x] **F8.8a 构建前清理 dist/** — `bun run build` 执行前自动清空 dist 目录，避免旧产物残留
+    - 验收标准: 运行 `bun run build` 后 dist/ 中只包含当次 WXT 构建产物，无旧 Webpack 遗留文件
+    - 验收标准: 旧 dist/assets/vendor.js、dist/assets/pop.js、dist/assets/background.js 等文件在构建后不存在
+    - 验收标准: 构建后的 dist/ 结构与 WXT `.output/` 输出一致（manifest.json + popup.html + assets/）
 
-- [x] **F8.9 代码质量与 CI** — 更新 Lint/Format 工具链
-  - 验收标准: ESLint 配置支持 TypeScript（@typescript-eslint）
-  - 验收标准: Prettier 配置支持 `.ts`/`.tsx` 文件
-  - 验收标准: `yarn format:js`（或等效命令）能检查新代码
-  - 验收标准: precommit hook 更新为检查 `.ts`/`.tsx` 文件
+- [x] **F8.9 代码质量工具迁移** — 用 Biome 替代 ESLint + Prettier
+  - 验收标准: 安装 `@biomejs/biome` 为 devDependency，无需 eslint/prettier 相关依赖
+  - 验收标准: `biome.json` 配置文件存在，覆盖 `entrypoints/`、`lib/`、`stores/` 目录
+  - 验收标准: `bun run format` → `biome format --write .`，`bun run lint` → `biome lint .`
+  - 验收标准: precommit hook（husky + lint-staged）使用 `biome check --staged --fix` 替代 eslint
+  - 验收标准: 删除 `.eslintrc.json` 及所有 eslint/prettier 配置和依赖
 
 - [x] **F8.10 全功能回归验证** — 确认所有 M1-M6 功能在迁移后正常
   - 验收标准: M1-F1.1~F1.5 书签 CRUD 全部通过（添加/查看/删除/清空/搜索）

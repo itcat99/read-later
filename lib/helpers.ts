@@ -1,9 +1,6 @@
 import type { BookmarkTreeNode } from 'wxt/browser';
 
-export function bookmarks(
-  type: string,
-  ...config: unknown[]
-): Promise<BookmarkTreeNode[]> {
+export function bookmarks(type: string, ...config: unknown[]): Promise<BookmarkTreeNode[]> {
   return new Promise((resolve, reject) => {
     try {
       (browser.bookmarks as Record<string, Function>)[type](

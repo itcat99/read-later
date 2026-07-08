@@ -1,4 +1,5 @@
-import React, { memo } from 'react';
+import type React from 'react';
+import { memo } from 'react';
 import styled from 'styled-components';
 
 const StyleRoot = styled.a.attrs((props: { $data: string; $download: string }) => ({

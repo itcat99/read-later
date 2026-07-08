@@ -1,4 +1,5 @@
-import React, { memo, useRef, useCallback } from 'react';
+import type React from 'react';
+import { memo, useCallback, useRef } from 'react';
 import styled from 'styled-components';
 import { globalVars } from '../../lib/_vars';
 
@@ -66,12 +67,7 @@ const Search: React.FC<SearchProps> = memo(({ search }) => {
 
   return (
     <StyleRoot>
-      <input
-        type="text"
-        placeholder="please search..."
-        ref={inputRef}
-        onInput={handleInput}
-      />
+      <input type="text" placeholder="please search..." ref={inputRef} onInput={handleInput} />
       <RemoveBtn onClick={handleClear} />
     </StyleRoot>
   );

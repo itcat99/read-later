@@ -1,8 +1,8 @@
 import { create } from 'zustand';
-import { GET_SETTINGS, UPDATE_SETTINGS } from '../lib/constents';
-import type { Message } from '../lib/constents';
 import type { Config } from '../lib/config';
 import defaultConfig from '../lib/config';
+import type { Message } from '../lib/constents';
+import { GET_SETTINGS, UPDATE_SETTINGS } from '../lib/constents';
 
 interface SettingsState {
   open: boolean;
