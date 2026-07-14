@@ -13,3 +13,9 @@ key.pem
 # WXT
 .wxt/
 dist/
+
+# Claude Code worktrees (loop engine isolated branches)
+.claude/worktrees/
+
+# local build output
+.output/

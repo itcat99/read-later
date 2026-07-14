@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Read Later</title>
+  <meta name="description" content="Privacy policy for the Read Later Chrome extension. The extension does not collect, transmit, or share personal data." />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #1a1a1a;
+      --muted: #5a5a5a;
+      --accent: #4779ED;
+      --border: #e4e4e7;
+      --code-bg: #f5f5f7;
+      --max: 760px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f0f10;
+        --fg: #e6e6e6;
+        --muted: #9a9a9a;
+        --accent: #6f97f5;
+        --border: #2a2a2e;
+        --code-bg: #1a1a1d;
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 56px 24px 96px;
+    }
+
+    header {
+      margin-bottom: 40px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .badge .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-size: clamp(28px, 5vw, 40px);
+      line-height: 1.2;
+      margin: 0 0 14px;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 16px;
+      margin: 0;
+    }
+
+    .updated {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 16px;
+    }
+
+    .summary {
+      margin: 36px 0;
+      padding: 20px 22px;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 15px;
+    }
+
+    .summary strong { color: var(--fg); }
+
+    h2 {
+      font-size: 21px;
+      margin: 40px 0 12px;
+      letter-spacing: -0.01em;
+    }
+
+    h3 {
+      font-size: 16px;
+      margin: 24px 0 8px;
+      color: var(--fg);
+    }
+
+    p { margin: 0 0 14px; }
+
+    ul, ol {
+      margin: 0 0 16px;
+      padding-left: 22px;
+    }
+
+    li { margin-bottom: 6px; }
+
+    code {
+      background: var(--code-bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: "SFMono-Regular", ui-monospace, "Menlo", monospace;
+    }
+
+    .perms {
+      list-style: none;
+      padding: 0;
+      margin: 16px 0 0;
+    }
+
+    .perms li {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .perms li:last-child { border-bottom: none; }
+
+    .perms .name {
+      display: inline-block;
+      font-family: "SFMono-Regular", ui-monospace, "Menlo", monospace;
+      font-size: 13px;
+      color: var(--accent);
+      background: var(--code-bg);
+      padding: 2px 8px;
+      border-radius: 5px;
+      margin-right: 8px;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover { text-decoration: underline; }
+
+    footer {
+      margin-top: 56px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .toc {
+      margin: 28px 0;
+      padding: 18px 22px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .toc ul { margin: 0; padding-left: 18px; }
+    .toc li { margin-bottom: 4px; }
+
+    @media (max-width: 520px) {
+      .wrap { padding: 40px 18px 64px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="badge"><span class="dot"></span>Read Later — Privacy Policy</span>
+      <h1>Privacy Policy</h1>
+      <p class="subtitle">How the Read Later Chrome extension handles your data.</p>
+      <p class="updated">Last updated: July 14, 2026</p>
+    </header>
+
+    <div class="summary">
+      <strong>The short version:</strong> Read Later does not collect, transmit, sell, or share any personal data. Everything it saves stays on your own device — as bookmarks in your browser. No accounts, no analytics, no servers, no tracking.
+    </div>
+
+    <nav class="toc">
+      <strong>Contents</strong>
+      <ul>
+        <li><a href="#overview">1. Overview</a></li>
+        <li><a href="#data">2. Information We Collect</a></li>
+        <li><a href="#permissions">3. Browser Permissions &amp; How They Are Used</a></li>
+        <li><a href="#storage">4. How Data Is Stored</a></li>
+        <li><a href="#third">5. Third-Party Services</a></li>
+        <li><a href="#remote">6. Remote Code</a></li>
+        <li><a href="#children">7. Children's Privacy</a></li>
+        <li><a href="#changes">8. Changes to This Policy</a></li>
+        <li><a href="#contact">9. Contact</a></li>
+      </ul>
+    </nav>
+
+    <section id="overview">
+      <h2>1. Overview</h2>
+      <p>
+        Read Later ("the extension") is a lightweight read-it-later tool that lets you quickly save the web page you are currently viewing into a dedicated bookmarks folder, and manage those saved pages so you can return to them later. This policy explains what the extension does and does not do with any data involved in that process.
+      </p>
+      <p>
+        This policy applies to the Read Later extension distributed via the Chrome Web Store. By installing and using the extension, you are interacting with this policy.
+      </p>
+    </section>
+
+    <section id="data">
+      <h2>2. Information We Collect</h2>
+      <p>
+        The extension does <strong>not</strong> collect any personal information. It does not require you to create an account, sign in, or provide any identifying details.
+      </p>
+      <p>Specifically, the extension does <strong>not</strong> collect, transmit, or process:</p>
+      <ul>
+        <li>Your name, email address, or any contact details.</li>
+        <li>Your browsing history or the pages you visit.</li>
+        <li>Authentication credentials, tokens, or payment information.</li>
+        <li>Device identifiers, advertising identifiers, or precise/coarse location.</li>
+        <li>Personal communications or the content of web pages.</li>
+      </ul>
+      <p>
+        The only data the extension reads is the <strong>title and URL of the active tab</strong>, and only at the exact moment you choose to save a page for later reading. That information is then stored as a bookmark — it is never sent anywhere outside your browser.
+      </p>
+    </section>
+
+    <section id="permissions">
+      <h2>3. Browser Permissions &amp; How They Are Used</h2>
+      <p>
+        The extension requests a small set of browser permissions. Each is used solely to deliver its core function of saving and managing pages for later reading. Below is the purpose of each.
+      </p>
+
+      <ul class="perms">
+        <li>
+          <span class="name">bookmarks</span>
+          Core to the extension. Saved pages are stored as bookmarks inside a dedicated "read later" folder managed by the extension. The extension reads, creates, moves, updates, and removes bookmarks <strong>only within its own folder</strong>. It does not access, read, or modify the rest of your bookmarks.
+        </li>
+        <li>
+          <span class="name">tabs</span>
+          Used to read the title and URL of the currently active tab when you choose to save a page. Only the active tab's title and URL are read at the moment of saving; no tab content is read and no browsing history is collected.
+        </li>
+        <li>
+          <span class="name">contextMenus</span>
+          Used to add a "read later" item to the browser's right-click context menu on pages, so you can save the current page without opening the popup.
+        </li>
+        <li>
+          <span class="name">notifications</span>
+          Used to show a small success/warning notification when a page is saved, a duplicate is detected, or a post is removed, giving you immediate feedback on the action you just performed.
+        </li>
+        <li>
+          <span class="name">storage</span>
+          Used to persist your extension settings (such as the bookmarks folder name) locally, so your configuration survives browser restarts. No personally identifiable information is stored; settings are kept on your device only.
+        </li>
+      </ul>
+    </section>
+
+    <section id="storage">
+      <h2>4. How Data Is Stored</h2>
+      <p>
+        All data the extension creates lives on your own device, inside your browser profile:
+      </p>
+      <ul>
+        <li><strong>Saved pages</strong> are stored as ordinary bookmarks in the browser's native bookmarks system, within the "read later" folder.</li>
+        <li><strong>Settings</strong> are stored in the browser's local extension storage.</li>
+      </ul>
+      <p>
+        The extension has no backend server and no database under its control. Your data never leaves your browser. Because saved items are normal bookmarks, you can view, export, back up, or delete them at any time using the browser's built-in bookmarks manager — uninstalling the extension does not delete the bookmarks it created.
+      </p>
+    </section>
+
+    <section id="third">
+      <h2>5. Third-Party Services</h2>
+      <p>
+        The extension does not integrate with, send data to, or rely on any third-party service. There are no analytics providers, advertising networks, tracking SDKs, or external APIs used. No external servers receive any data from the extension.
+      </p>
+    </section>
+
+    <section id="remote">
+      <h2>6. Remote Code</h2>
+      <p>
+        The extension does not load, execute, or reference any remote code. All JavaScript and assets are bundled within the extension package at build time. The extension does not fetch or evaluate code from any external server, CDN, or URL at runtime.
+      </p>
+    </section>
+
+    <section id="children">
+      <h2>7. Children's Privacy</h2>
+      <p>
+        The extension is intended for a general audience and does not knowingly collect any data from anyone, including children. Because no personal data is collected at all, no special protections for children's data are required — there is nothing to protect.
+      </p>
+    </section>
+
+    <section id="changes">
+      <h2>8. Changes to This Policy</h2>
+      <p>
+        If the extension's data practices change in a way that materially affects this policy, this page will be updated and the "Last updated" date above revised. Because the extension does not collect personal data, material changes to data handling are not expected.
+      </p>
+    </section>
+
+    <section id="contact">
+      <h2>9. Contact</h2>
+      <p>
+        If you have questions about this privacy policy or the extension's data practices, you can reach out via:
+      </p>
+      <ul>
+        <li>
+          Email: <a href="mailto:boping2010@gmail.com">boping2010@gmail.com</a>
+        </li>
+        <li>
+          GitHub Issues: <a href="https://github.com/itcat99/read-later/issues" target="_blank" rel="noopener noreferrer">https://github.com/itcat99/read-later/issues</a>
+        </li>
+      </ul>
+    </section>
+
+    <footer>
+      <p>
+        This privacy policy applies to the Read Later Chrome extension. Read Later is open source software released under the MIT License.
+      </p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -11,9 +11,9 @@ export default defineConfig({
     name: 'Read Later',
     short_name: 'read later',
     description: 'This extension save pages when you want to read later.',
-    version: '0.3.8',
+    version: '0.4.0',
     action: {
-      default_icon: './icons/icon_48.png',
+      default_icon: 'icons/icon_48.png',
       default_popup: 'popup.html',
       default_title: 'read later',
     },
@@ -25,9 +25,9 @@ export default defineConfig({
       'bookmarks',
     ],
     icons: {
-      16: './icons/icon_16.png',
-      48: './icons/icon_48.png',
-      128: './icons/icon_128.png',
+      16: 'icons/icon_16.png',
+      48: 'icons/icon_48.png',
+      128: 'icons/icon_128.png',
     },
     commands: {
       ADD_POST: {
